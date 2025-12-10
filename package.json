@@ -1,0 +1,20 @@
+{
+  "name": "rajinikanth-ai",
+  "version": "1.0.0",
+  "description": "A tribute website celebrating Superstar Rajinikanth's 50 years in Indian cinema (1975-2024)",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "deploy": "vercel"
+  },
+  "keywords": [
+    "rajinikanth",
+    "superstar",
+    "tamil-cinema",
+    "indian-cinema",
+    "tribute",
+    "50-years"
+  ],
+  "author": "Rajinikanth Fan",
+  "license": "MIT"
+}
