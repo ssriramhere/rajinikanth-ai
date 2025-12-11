@@ -222,6 +222,19 @@
                 grid-template-columns: 1fr !important;
             }
         }
+
+        /* Image replacement notice */
+        .image-notice {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #ffd700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -230,206 +243,163 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
-        // Data: 50 Iconic Moments with Images (Using placeholder images - you can replace with actual)
+        // DEVELOPER NOTE: Replace these placeholder images with actual movie posters
+        // Upload real posters to GitHub at: /images/FILMNAME-YEAR.jpg
+        // Then update image URLs to: https://raw.githubusercontent.com/YOUR-USERNAME/rajinikanth-ai/main/images/FILMNAME-YEAR.jpg
+        
         const moments = [
             { 
                 year: 1975, 
                 title: "The Beginning", 
-                film: "Apoorva Raagangal", 
-                description: "Debuts under K. Balachander's guidance on Independence Day, August 15", 
+                film: "Apoorva Raagangal",
+                description: "Debuts under K. Balachander's guidance on Independence Day, August 15",
                 significance: "The birth of a legend",
-                // Replace this URL with actual film poster or scene
-                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80"
+                image: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?w=600&q=80" // 1970s cinema theme
             },
             { 
-                year: 1976, 
-                title: "First Major Role", 
-                film: "Anthuleni Katha", 
-                description: "Breakthrough in Telugu cinema with a pivotal role", 
-                significance: "Recognition beyond Tamil cinema",
-                image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=80"
+                year: 1978, 
+                title: "Critical Acclaim", 
+                film: "Mullum Malarum",
+                description: "Critically acclaimed performance that established him as a serious actor",
+                significance: "From villain to hero",
+                image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&q=80"
             },
             { 
                 year: 1980, 
                 title: "Superstar is Born", 
-                film: "Billa", 
-                description: "Dual roles in this Don remake catapults him to superstardom", 
+                film: "Billa",
+                description: "Dual roles in this Don remake catapults him to superstardom",
                 significance: "Defining action hero image",
-                image: "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=400&q=80"
+                image: "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=600&q=80" // Action/noir theme
+            },
+            { 
+                year: 1981, 
+                title: "Comedy Mastery", 
+                film: "Thillu Mullu",
+                description: "First full-length comedy role breaks action hero stereotype",
+                significance: "Versatility showcase",
+                image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&q=80"
+            },
+            { 
+                year: 1991, 
+                title: "Epic Performance", 
+                film: "Thalapathi",
+                description: "Mani Ratnam's Mahabharata-inspired masterpiece, critical acclaim",
+                significance: "Artistic peak",
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&q=80"
             },
             { 
                 year: 1995, 
                 title: "Demigod Status", 
-                film: "Baashha", 
-                description: "Crime boss role achieves legendary status, defines career", 
+                film: "Baashha",
+                description: "Crime boss role achieves legendary status, defines career",
                 significance: "Cult classic created",
-                image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80"
+                image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&q=80" // Crime/gangster theme
+            },
+            { 
+                year: 1999, 
+                title: "Highest Grosser", 
+                film: "Padayappa",
+                description: "Becomes highest-grossing Tamil film of all time",
+                significance: "Box office supremacy",
+                image: "https://images.unsplash.com/photo-1574267432644-f704975df51e?w=600&q=80"
+            },
+            { 
+                year: 2007, 
+                title: "First ₹100 Crore", 
+                film: "Sivaji: The Boss",
+                description: "First Tamil film to gross ₹100 crore, second-highest paid actor in Asia",
+                significance: "Mega-budget era begins",
+                image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&q=80"
             },
             { 
                 year: 2010, 
                 title: "Sci-Fi Spectacular", 
-                film: "Enthiran (Robot)", 
-                description: "India's most expensive film, dual role as scientist and robot, ₹291 crore worldwide", 
+                film: "Enthiran (Robot)",
+                description: "India's most expensive film, dual role as scientist and robot, ₹291 crore worldwide",
                 significance: "Technical marvel",
-                image: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=400&q=80"
+                image: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=600&q=80" // Sci-fi theme
+            },
+            { 
+                year: 2016, 
+                title: "Record Opening", 
+                film: "Kabali",
+                description: "Biggest weekend opening for an Indian film, ₹200+ crore opening",
+                significance: "Box office tsunami",
+                image: "https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?w=600&q=80"
+            },
+            { 
+                year: 2018, 
+                title: "Most Expensive Film", 
+                film: "2.0",
+                description: "₹600 crore budget sequel to Enthiran, ₹699 crore gross",
+                significance: "Biggest production",
+                image: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=600&q=80"
             },
             { 
                 year: 2023, 
                 title: "Blockbuster Return", 
-                film: "Jailer", 
-                description: "₹600+ crore worldwide, highest-grossing Tamil film", 
+                film: "Jailer",
+                description: "₹600+ crore worldwide, highest-grossing Tamil film",
                 significance: "Box office king again",
-                image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80"
-            }
-            // Add more moments with images as needed
-        ];
-        
-        // Complete Filmography with Iconic Dialogues
-        const filmography = [
-            // 1975-1980
-            { 
-                year: 1975, 
-                title: "Apoorva Raagangal", 
-                language: "Tamil", 
-                director: "K. Balachander", 
-                role: "Supporting",
-                dialogue: "The film that started it all"
-            },
-            { 
-                year: 1980, 
-                title: "Billa", 
-                language: "Tamil", 
-                director: "R. Krishnamurthy", 
-                role: "Dual Role",
-                dialogue: "Naan oru thadava sonna, nooru thadava sonna madhiri! (If I say something once, it's like I said it a hundred times!)"
-            },
-            { 
-                year: 1980, 
-                title: "Murattu Kaalai", 
-                language: "Tamil", 
-                director: "S.P. Muthuraman", 
-                role: "Lead",
-                dialogue: "Established the action hero image"
-            },
-            
-            // 1991-2000
-            { 
-                year: 1991, 
-                title: "Thalapathi", 
-                language: "Tamil", 
-                director: "Mani Ratnam", 
-                role: "Lead",
-                dialogue: "Based on Mahabharata, critically acclaimed masterpiece"
-            },
-            { 
-                year: 1992, 
-                title: "Annamalai", 
-                language: "Tamil", 
-                director: "Suresh Krissna", 
-                role: "Lead",
-                dialogue: "Record-breaking box office phenomenon"
-            },
-            { 
-                year: 1995, 
-                title: "Baashha", 
-                language: "Tamil", 
-                director: "Suresh Krissna", 
-                role: "Lead",
-                dialogue: "Naan oru thadava sonna, nooru thadava sonna madhiri!"
-            },
-            { 
-                year: 1995, 
-                title: "Muthu", 
-                language: "Tamil", 
-                director: "K.S. Ravikumar", 
-                role: "Lead",
-                dialogue: "First Tamil film to create a fan base in Japan"
-            },
-            { 
-                year: 1999, 
-                title: "Padayappa", 
-                language: "Tamil", 
-                director: "K.S. Ravikumar", 
-                role: "Lead",
-                dialogue: "En vazhi, thani vazhi! (My way is a unique way!)"
-            },
-            
-            // 2000-2024
-            { 
-                year: 2002, 
-                title: "Baba", 
-                language: "Tamil", 
-                director: "Suresh Krissna", 
-                role: "Lead, Producer, Writer",
-                dialogue: "Ambitious passion project with spiritual themes"
-            },
-            { 
-                year: 2005, 
-                title: "Chandramukhi", 
-                language: "Tamil", 
-                director: "P. Vasu", 
-                role: "Lead",
-                dialogue: "890+ day theatrical run, epic comeback"
-            },
-            { 
-                year: 2007, 
-                title: "Sivaji: The Boss", 
-                language: "Tamil", 
-                director: "S. Shankar", 
-                role: "Lead",
-                dialogue: "Cool... cool... Singam dhaan varaporudhu! (Cool... the lion is coming!)"
-            },
-            { 
-                year: 2010, 
-                title: "Enthiran (Robot)", 
-                language: "Tamil", 
-                director: "S. Shankar", 
-                role: "Dual Role",
-                dialogue: "Naan eppadiyum correct dhaan! (I'm always correct!)"
-            },
-            { 
-                year: 2016, 
-                title: "Kabali", 
-                language: "Tamil", 
-                director: "Pa. Ranjith", 
-                role: "Lead",
-                dialogue: "Biggest weekend opening for an Indian film"
-            },
-            { 
-                year: 2018, 
-                title: "2.0", 
-                language: "Tamil", 
-                director: "S. Shankar", 
-                role: "Lead",
-                dialogue: "Most expensive Indian film ever made"
-            },
-            { 
-                year: 2019, 
-                title: "Petta", 
-                language: "Tamil", 
-                director: "Karthik Subbaraj", 
-                role: "Lead",
-                dialogue: "Kaali... Kaali Petta! (Name... Name is Petta!)"
-            },
-            { 
-                year: 2023, 
-                title: "Jailer", 
-                language: "Tamil", 
-                director: "Nelson Dilipkumar", 
-                role: "Lead",
-                dialogue: "Hukum! (Command!)"
+                image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&q=80"
             },
             { 
                 year: 2024, 
-                title: "Vettaiyan", 
-                language: "Tamil", 
-                director: "T.J. Gnanavel", 
-                role: "Lead",
-                dialogue: "50th year in cinema celebration"
+                title: "50th Year", 
+                film: "Vettaiyan",
+                description: "Completes 50 glorious years in cinema, continues acting",
+                significance: "Golden jubilee celebration",
+                image: "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=600&q=80"
             }
         ];
         
-        // Main App Component
+        // Comprehensive Filmography with Dialogues
+        const filmography = [
+            // 1975-1980
+            { year: 1975, title: "Apoorva Raagangal", language: "Tamil", director: "K. Balachander", role: "Supporting", dialogue: "The film that started it all" },
+            { year: 1976, title: "Anthuleni Katha", language: "Telugu", director: "K. Balachander", role: "Lead", dialogue: "Breakthrough in Telugu cinema" },
+            { year: 1976, title: "Moondru Mudichu", language: "Tamil", director: "K. Balachander", role: "Antagonist", dialogue: "Playing the villain with style" },
+            { year: 1977, title: "Bhuvana Oru Kelvi Kuri", language: "Tamil", director: "S.P. Muthuraman", role: "Lead", dialogue: "First major award winner" },
+            { year: 1978, title: "Mullum Malarum", language: "Tamil", director: "J. Mahendran", role: "Lead", dialogue: "Critically acclaimed performance" },
+            { year: 1978, title: "Aval Appadithan", language: "Tamil", director: "C. Rudraiah", role: "Supporting", dialogue: "Experimental cinema" },
+            { year: 1979, title: "Aarilirunthu Arubathu Varai", language: "Tamil", director: "S.P. Muthuraman", role: "Lead", dialogue: "Pan-South presence" },
+            { year: 1980, title: "Billa", language: "Tamil", director: "R. Krishnamurthy", role: "Dual Role", dialogue: "Naan oru thadava sonna, nooru thadava sonna madhiri!" },
+            { year: 1980, title: "Murattu Kaalai", language: "Tamil", director: "S.P. Muthuraman", role: "Lead", dialogue: "Action hero established" },
+            
+            // 1981-1990
+            { year: 1981, title: "Thillu Mullu", language: "Tamil", director: "K. Balachander", role: "Lead", dialogue: "First comedy masterpiece" },
+            { year: 1982, title: "Moondru Mugam", language: "Tamil", director: "A. Jagannathan", role: "Triple Role", dialogue: "Three characters, one legend" },
+            { year: 1983, title: "Andhaa Kaanoon", language: "Hindi", director: "T. Rama Rao", role: "Lead", dialogue: "Bollywood breakthrough" },
+            { year: 1984, title: "Nallavanukku Nallavan", language: "Tamil", director: "S.P. Muthuraman", role: "Lead", dialogue: "Filmfare Award winner" },
+            { year: 1985, title: "Sri Raghavendrar", language: "Tamil", director: "S.P. Muthuraman", role: "Lead", dialogue: "100th film milestone" },
+            
+            // 1991-2000
+            { year: 1991, title: "Thalapathi", language: "Tamil", director: "Mani Ratnam", role: "Lead", dialogue: "Mahabharata-inspired epic" },
+            { year: 1992, title: "Annamalai", language: "Tamil", director: "Suresh Krissna", role: "Lead", dialogue: "Record-breaking phenomenon" },
+            { year: 1992, title: "Mannan", language: "Tamil", director: "P. Vasu", role: "Lead", dialogue: "Double role excellence" },
+            { year: 1993, title: "Uzhaippali", language: "Tamil", director: "P. Vasu", role: "Lead", dialogue: "Box office success" },
+            { year: 1995, title: "Baashha", language: "Tamil", director: "Suresh Krissna", role: "Lead", dialogue: "Naan solrathaiyum seiven, sollathavatraiyum seiven!" },
+            { year: 1995, title: "Muthu", language: "Tamil", director: "K.S. Ravikumar", role: "Lead", dialogue: "Japan's favorite Tamil film" },
+            { year: 1999, title: "Padayappa", language: "Tamil", director: "K.S. Ravikumar", role: "Lead", dialogue: "En vazhi, thani vazhi!" },
+            
+            // 2000-2024
+            { year: 2002, title: "Baba", language: "Tamil", director: "Suresh Krissna", role: "Lead, Producer, Writer", dialogue: "Spiritual journey on screen" },
+            { year: 2005, title: "Chandramukhi", language: "Tamil", director: "P. Vasu", role: "Lead", dialogue: "890+ day theatrical run" },
+            { year: 2007, title: "Sivaji: The Boss", language: "Tamil", director: "S. Shankar", role: "Lead", dialogue: "Cool... cool... Singam dhaan varaporudhu!" },
+            { year: 2010, title: "Enthiran (Robot)", language: "Tamil", director: "S. Shankar", role: "Dual Role", dialogue: "Naan eppadiyum correct dhaan!" },
+            { year: 2014, title: "Kochadaiiyaan", language: "Tamil", director: "Soundarya Rajinikanth", role: "Triple Role", dialogue: "Motion capture pioneer" },
+            { year: 2016, title: "Kabali", language: "Tamil", director: "Pa. Ranjith", role: "Lead", dialogue: "Record-breaking opening" },
+            { year: 2018, title: "Kaala", language: "Tamil", director: "Pa. Ranjith", role: "Lead", dialogue: "Powerful political drama" },
+            { year: 2018, title: "2.0", language: "Tamil", director: "S. Shankar", role: "Lead", dialogue: "India's most expensive film" },
+            { year: 2019, title: "Petta", language: "Tamil", director: "Karthik Subbaraj", role: "Lead", dialogue: "Kaali... Kaali Petta!" },
+            { year: 2020, title: "Darbar", language: "Tamil", director: "A.R. Murugadoss", role: "Lead", dialogue: "Cop role comeback" },
+            { year: 2021, title: "Annaatthe", language: "Tamil", director: "Siva", role: "Lead", dialogue: "Pandemic Diwali winner" },
+            { year: 2023, title: "Jailer", language: "Tamil", director: "Nelson Dilipkumar", role: "Lead", dialogue: "Hukum!" },
+            { year: 2024, title: "Lal Salaam", language: "Tamil", director: "Aishwarya Rajinikanth", role: "Special Appearance", dialogue: "Cameo appearance" },
+            { year: 2024, title: "Vettaiyan", language: "Tamil", director: "T.J. Gnanavel", role: "Lead", dialogue: "50th year celebration film" }
+        ];
+        
         function RajnikanthTribute() {
             const [activeSection, setActiveSection] = useState('hero');
             const [selectedYear, setSelectedYear] = useState(null);
@@ -446,7 +416,6 @@
                 setActiveSection(sectionName);
             };
             
-            // Filter films
             const filteredFilms = filmography.filter(film => {
                 const matchesSearch = film.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                     film.year.toString().includes(searchTerm) ||
@@ -454,7 +423,6 @@
                 
                 const decade = Math.floor(film.year / 10) * 10;
                 const matchesDecade = selectedDecade === 'all' || decade === parseInt(selectedDecade);
-                
                 const matchesLanguage = selectedLanguage === 'all' || film.language === selectedLanguage;
                 
                 return matchesSearch && matchesDecade && matchesLanguage;
@@ -472,7 +440,6 @@
             
             return (
                 <div className="min-h-screen">
-                    {/* Navigation */}
                     <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
                         <div className="max-w-7xl mx-auto flex justify-between items-center">
                             <div className="text-2xl font-bold hero-title shimmer">
@@ -501,7 +468,6 @@
                         </div>
                     </nav>
                     
-                    {/* Hero Section with Background */}
                     <section ref={heroRef} className="min-h-screen hero-with-bg flex items-center justify-center relative overflow-hidden">
                         <div className="absolute inset-0 hero-overlay"></div>
                         <div className="absolute inset-0 film-strip opacity-10"></div>
@@ -546,12 +512,10 @@
                             </div>
                         </div>
                         
-                        {/* Decorative elements */}
                         <div className="absolute top-20 left-10 text-9xl text-yellow-400 opacity-10">★</div>
                         <div className="absolute bottom-20 right-10 text-9xl text-red-600 opacity-10">★</div>
                     </section>
                     
-                    {/* Timeline with Images */}
                     <section ref={timelineRef} className="min-h-screen timeline-gradient py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
@@ -568,18 +532,16 @@
                                     <div 
                                         key={moment.year}
                                         className="moment-card bg-gradient-to-br from-red-900/30 to-black border-2 border-yellow-400/20 rounded-lg overflow-hidden hover:border-yellow-400 cursor-pointer"
-                                        style={{
-                                            animationDelay: `${index * 0.05}s`
-                                        }}
+                                        style={{ animationDelay: `${index * 0.05}s` }}
                                         onClick={() => setSelectedYear(selectedYear === moment.year ? null : moment.year)}
                                     >
-                                        {/* Image */}
-                                        <div className="h-48 overflow-hidden">
+                                        <div className="h-48 overflow-hidden relative">
                                             <img 
                                                 src={moment.image} 
                                                 alt={moment.title}
                                                 className="w-full h-full object-cover moment-image"
                                             />
+                                            <div className="image-notice">PLACEHOLDER</div>
                                         </div>
                                         
                                         <div className="p-6">
@@ -617,7 +579,6 @@
                         </div>
                     </section>
                     
-                    {/* Filmography with Dialogues and Filters */}
                     <section ref={filmographyRef} className="min-h-screen bg-gradient-to-b from-black to-red-950/20 py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
@@ -628,7 +589,6 @@
                                     Explore iconic dialogues and unforgettable performances
                                 </p>
                                 
-                                {/* Search */}
                                 <div className="max-w-md mx-auto mb-8">
                                     <input 
                                         type="text"
@@ -639,9 +599,7 @@
                                     />
                                 </div>
                                 
-                                {/* Filters */}
                                 <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
-                                    {/* Decade Filter */}
                                     <div>
                                         <label className="text-sm text-gray-400 mb-2 block">Filter by Decade:</label>
                                         <div className="flex gap-2 flex-wrap justify-center">
@@ -661,7 +619,6 @@
                                         </div>
                                     </div>
                                     
-                                    {/* Language Filter */}
                                     <div>
                                         <label className="text-sm text-gray-400 mb-2 block">Filter by Language:</label>
                                         <div className="flex gap-2 flex-wrap justify-center">
@@ -687,7 +644,6 @@
                                 </div>
                             </div>
                             
-                            {/* Films by Decade */}
                             {Object.keys(groupedFilms).sort((a, b) => a - b).map(decade => (
                                 <div key={decade} className="mb-12">
                                     <h3 className="text-4xl font-bold text-red-600 mb-6 year-badge">
@@ -695,7 +651,7 @@
                                     </h3>
                                     
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {groupedFilms[decade].map((film, index) => (
+                                        {groupedFilms[decade].map((film) => (
                                             <div 
                                                 key={`${film.year}-${film.title}`}
                                                 className="film-card bg-black/40 border border-yellow-400/20 rounded-lg p-6 hover:border-yellow-400"
@@ -720,7 +676,6 @@
                                                             <div>Role: <span className="text-yellow-400">{film.role}</span></div>
                                                         </div>
                                                         
-                                                        {/* Iconic Dialogue */}
                                                         {film.dialogue && (
                                                             <div className="dialogue-quote text-sm">
                                                                 "{film.dialogue}"
@@ -746,7 +701,6 @@
                         </div>
                     </section>
                     
-                    {/* Footer */}
                     <footer className="bg-black py-12 px-6 border-t border-yellow-400/20">
                         <div className="max-w-7xl mx-auto text-center">
                             <div className="text-3xl hero-title mb-4 text-yellow-400">
@@ -758,13 +712,15 @@
                             <div className="text-sm text-gray-500">
                                 Created with ❤️ by fans, for fans | Happy Birthday Thalaivar!
                             </div>
+                            <div className="mt-4 text-xs text-gray-600">
+                                Note: Placeholder images used. Replace with actual movie posters for full experience.
+                            </div>
                         </div>
                     </footer>
                 </div>
             );
         }
         
-        // Render App
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<RajnikanthTribute />);
     </script>
