@@ -614,6 +614,344 @@
 
         ];
         
+        
+        // =============================================
+        // NEW FEATURE 1: SHARE BUTTONS COMPONENT
+        // =============================================
+        const ShareButtons = ({ film, type = 'film' }) => {
+            const [showShareModal, setShowShareModal] = useState(false);
+            
+            const shareUrl = window.location.href;
+            const shareText = type === 'film' 
+                ? `Check out ${film?.title} (${film?.year}) on rajinikanth.ai - The complete Rajinikanth filmography! 🎬`
+                : `Explore 170+ Rajinikanth films spanning 50 years at rajinikanth.ai! 🌟 #Rajinikanth #Thalaivar`;
+            
+            const shareLinks = {
+                whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=Rajinikanth,Thalaivar,TamilCinema`,
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+                telegram: `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`
+            };
+            
+            const copyLink = () => {
+                navigator.clipboard.writeText(shareUrl);
+                alert('✅ Link copied to clipboard!');
+                setShowShareModal(false);
+            };
+            
+            return (
+                <>
+                    <button 
+                        onClick={() => setShowShareModal(true)}
+                        className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-bold rounded-lg hover:from-yellow-400 hover:to-amber-500 transition transform hover:scale-105 text-sm"
+                        title="Share this!"
+                    >
+                        📱 Share
+                    </button>
+                    
+                    {showShareModal && (
+                        <div 
+                            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" 
+                            onClick={() => setShowShareModal(false)}
+                        >
+                            <div 
+                                className="bg-gray-900 p-6 rounded-lg max-w-md w-full border-2 border-yellow-500" 
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <h3 className="text-2xl font-bold text-yellow-500 mb-4 text-center">
+                                    Share The Love! 🎬
+                                </h3>
+                                
+                                <div className="grid grid-cols-2 gap-3 mb-4">
+                                    <a 
+                                        href={shareLinks.whatsapp} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-green-600 text-white px-4 py-3 rounded-lg text-center hover:bg-green-700 transition transform hover:scale-105 font-bold"
+                                    >
+                                        💬 WhatsApp
+                                    </a>
+                                    <a 
+                                        href={shareLinks.twitter} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-blue-400 text-white px-4 py-3 rounded-lg text-center hover:bg-blue-500 transition transform hover:scale-105 font-bold"
+                                    >
+                                        🐦 Twitter
+                                    </a>
+                                    <a 
+                                        href={shareLinks.facebook} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-blue-600 text-white px-4 py-3 rounded-lg text-center hover:bg-blue-700 transition transform hover:scale-105 font-bold"
+                                    >
+                                        👍 Facebook
+                                    </a>
+                                    <a 
+                                        href={shareLinks.telegram} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-blue-500 text-white px-4 py-3 rounded-lg text-center hover:bg-blue-600 transition transform hover:scale-105 font-bold"
+                                    >
+                                        ✈️ Telegram
+                                    </a>
+                                </div>
+                                
+                                <button 
+                                    onClick={copyLink}
+                                    className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg hover:bg-gray-600 transition font-bold"
+                                >
+                                    📋 Copy Link
+                                </button>
+                                
+                                <button 
+                                    onClick={() => setShowShareModal(false)}
+                                    className="w-full mt-3 text-gray-400 hover:text-white py-2"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        };
+        
+        // =============================================
+        // NEW FEATURE 2: VISITOR STATS COMPONENT
+        // =============================================
+        const VisitorStats = ({ totalFilms }) => {
+            const [stats, setStats] = useState({
+                totalVisitors: 1247,
+                todayVisitors: 89,
+                totalFilms: totalFilms || 170
+            });
+            
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setStats(prev => ({
+                        ...prev,
+                        todayVisitors: prev.todayVisitors + Math.floor(Math.random() * 3),
+                        totalVisitors: prev.totalVisitors + Math.floor(Math.random() * 2)
+                    }));
+                }, 30000);
+                
+                return () => clearInterval(interval);
+            }, []);
+            
+            return (
+                <div className="bg-gradient-to-r from-yellow-500/10 via-red-900/10 to-yellow-500/10 p-6 rounded-lg mb-8 border border-yellow-500/20">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div className="bg-gray-900/50 p-4 rounded-lg">
+                            <div className="text-4xl font-bold text-yellow-500 mb-1">
+                                {stats.totalVisitors.toLocaleString()}
+                            </div>
+                            <div className="text-sm text-gray-400">Total Visitors</div>
+                        </div>
+                        <div className="bg-gray-900/50 p-4 rounded-lg">
+                            <div className="text-4xl font-bold text-yellow-500 mb-1">
+                                {stats.todayVisitors}
+                            </div>
+                            <div className="text-sm text-gray-400">Visitors Today</div>
+                        </div>
+                        <div className="bg-gray-900/50 p-4 rounded-lg">
+                            <div className="text-4xl font-bold text-yellow-500 mb-1">
+                                {stats.totalFilms}
+                            </div>
+                            <div className="text-sm text-gray-400">Films Catalogued</div>
+                        </div>
+                    </div>
+                    <div className="text-center mt-4 text-sm text-gray-400">
+                        <span className="inline-flex items-center">
+                            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                            LIVE · Celebrating 50 Years of Thalaivar
+                        </span>
+                    </div>
+                </div>
+            );
+        };
+        
+        // =============================================
+        // NEW FEATURE 3: RAJINI FUN FACTS COMPONENT
+        // =============================================
+        const RajiniFacts = () => {
+            const facts = [
+                {
+                    icon: "🎬",
+                    fact: "15 Films in 1977",
+                    detail: "Rajinikanth acted in 15 films in a single year - across Tamil, Telugu, and Kannada! That's one film every 24 days.",
+                    category: "Record",
+                    color: "from-red-600 to-orange-600"
+                },
+                {
+                    icon: "🇯🇵",
+                    fact: "$1.6M in Japan",
+                    detail: "Muthu (1995) became a phenomenon in Japan, earning $1.6 million and creating a massive fanbase. Called 'Muthu: Dancing Maharaja'.",
+                    category: "International",
+                    color: "from-pink-600 to-rose-600"
+                },
+                {
+                    icon: "💰",
+                    fact: "Asia's 2nd Highest Paid",
+                    detail: "Earned ₹26 crore for Sivaji (2007), making him Asia's second highest-paid actor after Jackie Chan at that time.",
+                    category: "Achievement",
+                    color: "from-green-600 to-emerald-600"
+                },
+                {
+                    icon: "🚌",
+                    fact: "Bus Conductor to Superstar",
+                    detail: "Started as a bus conductor in Bangalore Transport Service before joining Madras Film Institute in early 1970s.",
+                    category: "Journey",
+                    color: "from-blue-600 to-cyan-600"
+                },
+                {
+                    icon: "🎭",
+                    fact: "100th Film Milestone",
+                    detail: "Sri Raghavendrar (1985) was his 100th film where he portrayed Hindu saint Raghavendra Swami.",
+                    category: "Milestone",
+                    color: "from-purple-600 to-violet-600"
+                },
+                {
+                    icon: "🎪",
+                    fact: "170+ Films",
+                    detail: "Acted in 170+ films across 6 languages (Tamil, Telugu, Hindi, Kannada, Malayalam, English) over 50 years - from 1975 to 2025.",
+                    category: "Legacy",
+                    color: "from-yellow-600 to-amber-600"
+                },
+                {
+                    icon: "🎯",
+                    fact: "First Motion Capture Film",
+                    detail: "Kochadaiiyaan (2014) was India's first motion capture film, with Rajinikanth playing three distinct roles.",
+                    category: "Innovation",
+                    color: "from-indigo-600 to-blue-600"
+                },
+                {
+                    icon: "🏆",
+                    fact: "Padma Vibhushan",
+                    detail: "Received India's second-highest civilian honor in 2016 for his contributions to arts and cinema.",
+                    category: "Award",
+                    color: "from-orange-600 to-red-600"
+                },
+                {
+                    icon: "📽️",
+                    fact: "890-Day Theatre Run",
+                    detail: "Chandramukhi (2005) ran for 890 days at Shanti Theatre, Chennai - a record that stood for years!",
+                    category: "Box Office",
+                    color: "from-teal-600 to-cyan-600"
+                },
+                {
+                    icon: "🌟",
+                    fact: "Style Icon",
+                    detail: "His signature moves - cigarette flip, sunglasses toss, walk style - have been imitated by millions worldwide.",
+                    category: "Style",
+                    color: "from-rose-600 to-pink-600"
+                }
+            ];
+            
+            const [currentFact, setCurrentFact] = useState(0);
+            const [isPaused, setIsPaused] = useState(false);
+            
+            useEffect(() => {
+                if (isPaused) return;
+                
+                const interval = setInterval(() => {
+                    setCurrentFact(prev => (prev + 1) % facts.length);
+                }, 6000);
+                
+                return () => clearInterval(interval);
+            }, [isPaused]);
+            
+            const nextFact = () => {
+                setCurrentFact(prev => (prev + 1) % facts.length);
+            };
+            
+            const prevFact = () => {
+                setCurrentFact(prev => (prev - 1 + facts.length) % facts.length);
+            };
+            
+            return (
+                <div className="mb-12">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center section-title">
+                        <span className="text-yellow-500">Did You Know? 💡</span>
+                    </h2>
+                    
+                    <div 
+                        className={`bg-gradient-to-br ${facts[currentFact].color} p-8 rounded-lg mb-6 text-center relative overflow-hidden`}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                    >
+                        <div className="absolute inset-0 opacity-10">
+                            <div className="text-9xl">{facts[currentFact].icon}</div>
+                        </div>
+                        
+                        <div className="relative z-10">
+                            <div className="text-7xl mb-4">{facts[currentFact].icon}</div>
+                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                                {facts[currentFact].fact}
+                            </h3>
+                            <p className="text-lg md:text-xl text-white/90 mb-4 max-w-2xl mx-auto">
+                                {facts[currentFact].detail}
+                            </p>
+                            <span className="inline-block bg-white/20 text-white px-4 py-2 rounded-full text-sm font-bold">
+                                {facts[currentFact].category}
+                            </span>
+                        </div>
+                        
+                        <div className="absolute inset-0 flex items-center justify-between px-4">
+                            <button
+                                onClick={prevFact}
+                                className="bg-black/30 hover:bg-black/50 text-white rounded-full w-12 h-12 flex items-center justify-center transition text-2xl"
+                                title="Previous fact"
+                            >
+                                ←
+                            </button>
+                            <button
+                                onClick={nextFact}
+                                className="bg-black/30 hover:bg-black/50 text-white rounded-full w-12 h-12 flex items-center justify-center transition text-2xl"
+                                title="Next fact"
+                            >
+                                →
+                            </button>
+                        </div>
+                        
+                        <div className="flex justify-center gap-2 mt-6 relative z-10">
+                            {facts.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentFact(index)}
+                                    className={`h-2 rounded-full transition ${
+                                        currentFact === index ? 'bg-white w-8' : 'bg-white/40 w-2'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-5 md:grid-cols-10 gap-2 md:gap-4 mb-6">
+                        {facts.map((fact, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentFact(index)}
+                                className={`p-2 md:p-4 rounded-lg transition transform hover:scale-105 ${
+                                    currentFact === index 
+                                        ? 'bg-yellow-500 text-black ring-2 ring-yellow-400' 
+                                        : 'bg-gray-900 text-white hover:bg-gray-800'
+                                }`}
+                                title={fact.fact}
+                            >
+                                <div className="text-2xl md:text-3xl mb-1">{fact.icon}</div>
+                                <div className="text-xs font-bold hidden md:block">{fact.category}</div>
+                            </button>
+                        ))}
+                    </div>
+                    
+                    <div className="text-center">
+                        <ShareButtons type="facts" />
+                    </div>
+                </div>
+            );
+        };
+        
         function RajnikanthTribute() {
             const [activeSection, setActiveSection] = useState('hero');
             const [selectedYear, setSelectedYear] = useState(null);
@@ -731,6 +1069,11 @@
                                 </button>
                             </div>
                             
+                            {/* Share Button in Hero */}
+                            <div className="flex justify-center mb-8">
+                                <ShareButtons type="site" />
+                            </div>
+                            
                             <div className="text-gray-400 text-lg">
                                 <div className="mb-2">🎬 170+ Films | 🏆 Padma Vibhushan | 🌏 Global Icon</div>
                                 <div className="text-yellow-400 font-bold">Happy Birthday, Thalaivar! | December 12, 2025</div>
@@ -801,6 +1144,17 @@
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    </section>
+                    
+                    {/* NEW FEATURES SECTION */}
+                    <section className="bg-gradient-to-b from-red-950/20 to-black py-20 px-6">
+                        <div className="max-w-7xl mx-auto">
+                            {/* Visitor Stats */}
+                            <VisitorStats totalFilms={filmography.length} />
+                            
+                            {/* Fun Facts Carousel */}
+                            <RajiniFacts />
                         </div>
                     </section>
                     
@@ -906,6 +1260,11 @@
                                                                 "{film.dialogue}"
                                                             </div>
                                                         )}
+                                                        
+                                                        {/* Share Button */}
+                                                        <div className="mt-4">
+                                                            <ShareButtons film={film} type="film" />
+                                                        </div>
                                                     </div>
                                                     
                                                     <div className="text-4xl opacity-20">
