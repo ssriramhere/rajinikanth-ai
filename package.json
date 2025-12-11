@@ -1,20 +1,25 @@
 {
   "name": "rajinikanth-ai",
   "version": "1.0.0",
-  "description": "A tribute website celebrating Superstar Rajinikanth's 50 years in Indian cinema (1975-2024)",
+  "description": "Celebrating 50 years of Superstar Rajinikanth - The complete filmography and tribute site",
   "main": "index.html",
   "scripts": {
-    "dev": "python -m http.server 8000",
-    "deploy": "vercel"
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   },
   "keywords": [
     "rajinikanth",
-    "superstar",
+    "thalaivar",
     "tamil-cinema",
-    "indian-cinema",
-    "tribute",
-    "50-years"
+    "filmography",
+    "superstar"
   ],
-  "author": "Rajinikanth Fan",
-  "license": "MIT"
+  "author": "Sriram",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
 }
