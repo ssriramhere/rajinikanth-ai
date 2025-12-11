@@ -617,15 +617,19 @@
             };
             
             const filteredFilms = filmography.filter(film => {
-                const matchesSearch = film.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                    film.year.toString().includes(searchTerm) ||
-                                    (film.dialogue && film.dialogue.toLowerCase().includes(searchTerm.toLowerCase()));
+                const filteredFilms = filmography.filter(film => {
+                const matchesDecade = selectedDecade === 'all' || 
+                    Math.floor(film.year / 10) * 10 === parseInt(selectedDecade);
                 
-                const decade = Math.floor(film.year / 10) * 10;
-                const matchesDecade = selectedDecade === 'all' || decade === parseInt(selectedDecade);
-                const matchesLanguage = selectedLanguage === 'all' || film.language === selectedLanguage;
+                const matchesLanguage = selectedLanguage === 'all' || 
+                    film.language?.trim() === selectedLanguage.trim();
                 
-                return matchesSearch && matchesDecade && matchesLanguage;
+                const matchesSearch = !searchTerm || 
+                    film.title?.toLowerCase().includes(searchTerm) || 
+                    film.dialogue?.toLowerCase().includes(searchTerm) ||
+                    film.director?.toLowerCase().includes(searchTerm);
+                
+                return matchesDecade && matchesLanguage && matchesSearch;
             });
             
             const groupedFilms = filteredFilms.reduce((acc, film) => {
