@@ -617,13 +617,20 @@
             };
             
             const filteredFilms = filmography.filter(film => {
-                //const filteredFilms = filmography.filter(film => {
-                const matchesDecade = selectedDecade === 'all' || 
-                    Math.floor(film.year / 10) * 10 === parseInt(selectedDecade);
+                // Decade filter
+                const matchesDecade = selectedDecade === 'all' ||
+                    (selectedDecade === '1970s' && film.year >= 1970 && film.year <= 1979) ||
+                    (selectedDecade === '1980s' && film.year >= 1980 && film.year <= 1989) ||
+                    (selectedDecade === '1990s' && film.year >= 1990 && film.year <= 1999) ||
+                    (selectedDecade === '2000s' && film.year >= 2000 && film.year <= 2009) ||
+                    (selectedDecade === '2010s' && film.year >= 2010 && film.year <= 2019) ||
+                    (selectedDecade === '2020s' && film.year >= 2020 && film.year <= 2029);
                 
+                // Language filter
                 const matchesLanguage = selectedLanguage === 'all' || 
                     film.language?.trim() === selectedLanguage.trim();
-                
+
+                // Search filter
                 const matchesSearch = !searchTerm || 
                     film.title?.toLowerCase().includes(searchTerm) || 
                     film.dialogue?.toLowerCase().includes(searchTerm) ||
@@ -817,7 +824,7 @@
                                                             : 'border-yellow-400/30 text-gray-300 hover:border-yellow-400'
                                                     }`}
                                                 >
-                                                    {decade === 'all' ? 'All' : `${decade}s`}
+                                                    {decade === 'all' ? 'All Decades' : decade}
                                                 </button>
                                             ))}
                                         </div>
