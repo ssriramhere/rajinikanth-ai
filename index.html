@@ -617,7 +617,7 @@
             };
             
             const filteredFilms = filmography.filter(film => {
-                const filteredFilms = filmography.filter(film => {
+                //const filteredFilms = filmography.filter(film => {
                 const matchesDecade = selectedDecade === 'all' || 
                     Math.floor(film.year / 10) * 10 === parseInt(selectedDecade);
                 
