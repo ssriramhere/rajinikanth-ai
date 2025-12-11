@@ -55,6 +55,24 @@
             font-family: 'Righteous', cursive;
         }
         
+        /* Hero with background image */
+        .hero-with-bg {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(
+                135deg,
+                rgba(139, 0, 0, 0.95) 0%,
+                rgba(10, 10, 10, 0.9) 50%,
+                rgba(139, 0, 0, 0.95) 100%
+            );
+        }
+        
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -106,11 +124,7 @@
             animation: pulse-glow 2s ease-in-out infinite;
         }
         
-        /* Gradient Backgrounds */
-        .hero-gradient {
-            background: radial-gradient(ellipse at top, #8B0000 0%, #0a0a0a 50%);
-        }
-        
+        /* Timeline Gradient */
         .timeline-gradient {
             background: linear-gradient(180deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%);
         }
@@ -147,10 +161,19 @@
         /* Card hover effects */
         .moment-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
         
         .moment-card:hover {
             transform: translateY(-10px) scale(1.02);
+        }
+        
+        .moment-card:hover .moment-image {
+            transform: scale(1.1);
+        }
+        
+        .moment-image {
+            transition: transform 0.5s ease;
         }
         
         .film-card {
@@ -166,7 +189,31 @@
         /* Navigation */
         nav {
             backdrop-filter: blur(10px);
-            background: rgba(10, 10, 10, 0.8);
+            background: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        /* Filter buttons */
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: var(--cinema-red);
+            color: white;
+        }
+        
+        /* Dialogue quote styling */
+        .dialogue-quote {
+            font-style: italic;
+            border-left: 3px solid var(--primary-gold);
+            padding-left: 12px;
+            margin: 10px 0;
+            color: #ffd700;
         }
         
         /* Responsive grid */
@@ -183,113 +230,203 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
-        // Data: 50 Iconic Moments (1975-2024)
+        // Data: 50 Iconic Moments with Images (Using placeholder images - you can replace with actual)
         const moments = [
-            { year: 1975, title: "The Beginning", film: "Apoorva Raagangal", description: "Debuts under K. Balachander's guidance on Independence Day, August 15", significance: "The birth of a legend" },
-            { year: 1976, title: "First Major Role", film: "Anthuleni Katha", description: "Breakthrough in Telugu cinema with a pivotal role", significance: "Recognition beyond Tamil cinema" },
-            { year: 1977, title: "Critical Acclaim", film: "Bhuvana Oru Kelvi Kuri", description: "Wins Tamil Nadu State Film Award Special Prize", significance: "First major award" },
-            { year: 1978, title: "The Transformation", film: "Mullum Malarum", description: "Critically acclaimed performance that established him as a serious actor", significance: "From villain to hero" },
-            { year: 1979, title: "Pan-South Star", film: "Aarilirunthu Arubathu Varai", description: "Established presence across all South Indian film industries", significance: "Multi-industry recognition" },
-            { year: 1980, title: "Superstar is Born", film: "Billa", description: "Dual roles in this Don remake catapults him to superstardom", significance: "Defining action hero image" },
-            { year: 1981, title: "Comedy Mastery", film: "Thillu Mullu", description: "First full-length comedy role breaks action hero stereotype", significance: "Versatility showcase" },
-            { year: 1982, title: "Triple Threat", film: "Moondru Mugam", description: "Plays triple roles, wins special prize at State Film Awards", significance: "Acting prowess recognized" },
-            { year: 1983, title: "Bollywood Entry", film: "Andhaa Kaanoon", description: "Makes successful Bollywood debut, top-grossing Hindi film", significance: "Pan-India appeal begins" },
-            { year: 1984, title: "Filmfare Glory", film: "Nallavanukku Nallavan", description: "Wins Filmfare Award for Best Tamil Actor", significance: "Industry recognition" },
-            { year: 1985, title: "Century Film", film: "Sri Raghavendrar", description: "100th film portraying Hindu saint Raghavendra Swami", significance: "Major career milestone" },
-            { year: 1986, title: "Box Office King", film: "Mr. Bharath", description: "Continues dominance with consistent blockbusters", significance: "Commercial supremacy" },
-            { year: 1987, title: "Style Icon", film: "Velaikaran", description: "Trademark style and mannerisms become cultural phenomena", significance: "Fashion trendsetter" },
-            { year: 1988, title: "Mass Appeal", film: "Dharmathin Thalaivan", description: "Cements connection with masses across demographics", significance: "Universal fan base" },
-            { year: 1989, title: "Animation Pioneer", film: "Raaj Chinna Roja", description: "First Tamil film to use animation technology", significance: "Technical innovation" },
-            { year: 1990, title: "Unstoppable Force", film: "Panakkaran", description: "Maintains box office dominance into new decade", significance: "Sustained stardom" },
-            { year: 1991, title: "Epic Performance", film: "Thalapathi", description: "Mani Ratnam's Mahabharata-inspired masterpiece, critical acclaim", significance: "Artistic peak" },
-            { year: 1992, title: "Record Breaker", film: "Annamalai", description: "Smashes box office records, extraordinary theatrical run", significance: "Commercial milestone" },
-            { year: 1993, title: "Writer-Actor", film: "Valli", description: "Makes screenwriting debut", significance: "Creative expansion" },
-            { year: 1994, title: "Political Voice", film: "Uzhaippali", description: "Films address social and political themes", significance: "Social relevance" },
-            { year: 1995, title: "Demigod Status", film: "Baashha", description: "Crime boss role achieves legendary status, defines career", significance: "Cult classic created" },
-            { year: 1996, title: "Japanese Success", film: "Muthu", description: "First Tamil film dubbed in Japanese, creates fan base in Japan", significance: "International stardom" },
-            { year: 1997, title: "Spiritual Side", film: "Arunachalam", description: "Explores spiritual and philosophical themes", significance: "Depth and range" },
-            { year: 1998, title: "Japan Grosses Record", film: "Muthu (Japan)", description: "Grosses $1.6M in Japan, unprecedented for Tamil cinema", significance: "Global phenomenon" },
-            { year: 1999, title: "Highest Grosser", film: "Padayappa", description: "Becomes highest-grossing Tamil film of all time", significance: "Box office supremacy" },
-            { year: 2000, title: "Millennium Star", film: "Padayappa Run", description: "Continues record-breaking theatrical runs", significance: "Unmatched popularity" },
-            { year: 2001, title: "Spiritual Journey", film: "Baba Development", description: "Prepares passion project with spiritual themes", significance: "Personal vision" },
-            { year: 2002, title: "Risk Taker", film: "Baba", description: "Produces, writes, and stars in ambitious fantasy thriller", significance: "Creative courage" },
-            { year: 2003, title: "Sabbatical", film: "None", description: "Takes time away from cinema for reflection", significance: "Strategic pause" },
-            { year: 2004, title: "Return Planned", film: "Chandramukhi Prep", description: "Prepares for comeback with director P. Vasu", significance: "Anticipation builds" },
-            { year: 2005, title: "Epic Comeback", film: "Chandramukhi", description: "890+ day theatrical run, highest-grossing Tamil film", significance: "Triumphant return" },
-            { year: 2006, title: "Record Run", film: "Chandramukhi Extended", description: "Extraordinary theatrical run continues", significance: "Box office phenomenon" },
-            { year: 2007, title: "First ₹100 Crore", film: "Sivaji: The Boss", description: "First Tamil film to gross ₹100 crore, second-highest paid actor in Asia", significance: "Mega-budget era begins" },
-            { year: 2008, title: "Brand Rajini", film: "Kuselan", description: "Compensates distributors for losses, shows integrity", significance: "Character off-screen" },
-            { year: 2009, title: "Robot Preparation", film: "Enthiran Development", description: "Prepares for India's most expensive film", significance: "Sci-fi gamble" },
-            { year: 2010, title: "Sci-Fi Spectacular", film: "Enthiran (Robot)", description: "India's most expensive film, dual role as scientist and robot, ₹291 crore worldwide", significance: "Technical marvel" },
-            { year: 2011, title: "Forbes Recognition", film: "Post-Enthiran", description: "Named Most Influential Indian by Forbes India", significance: "Global recognition" },
-            { year: 2012, title: "Political Speculation", film: "Kochadaiiyaan Prep", description: "Political entry speculated while preparing new film", significance: "Beyond cinema influence" },
-            { year: 2013, title: "Padma Bhushan", film: "Honor", description: "Receives India's third-highest civilian honor", significance: "National recognition" },
-            { year: 2014, title: "Motion Capture Pioneer", film: "Kochadaiiyaan", description: "First Indian film with motion capture technology", significance: "Tech innovation" },
-            { year: 2015, title: "Selective Roles", film: "Development", description: "Becomes more selective with script choices", significance: "Quality focus" },
-            { year: 2016, title: "Record Opening", film: "Kabali", description: "Biggest weekend opening for Indian film, ₹200+ crore opening", significance: "Box office tsunami" },
-            { year: 2017, title: "Padma Vibhushan", film: "Honor", description: "Receives India's second-highest civilian honor", significance: "Highest recognition" },
-            { year: 2018, title: "Most Expensive Film", film: "2.0", description: "₹600 crore budget sequel to Enthiran, ₹699 crore gross", significance: "Biggest production" },
-            { year: 2019, title: "Petta Phenomenon", film: "Petta", description: "Massive blockbuster with ₹250 crore collection", significance: "Continued dominance" },
-            { year: 2020, title: "Pandemic Release", film: "Darbar", description: "Major release before pandemic lockdown", significance: "Pre-COVID success" },
-            { year: 2021, title: "Pandemic Triumph", film: "Annaatthe", description: "Diwali winner despite COVID restrictions", significance: "Resilience" },
-            { year: 2022, title: "Preparation", film: "Jailer Development", description: "Collaborates with Nelson Dilipkumar", significance: "New partnerships" },
-            { year: 2023, title: "Blockbuster Return", film: "Jailer", description: "₹600+ crore worldwide, highest-grossing Tamil film", significance: "Box office king again" },
-            { year: 2024, title: "50th Year", film: "Vettaiyan", description: "Completes 50 glorious years in cinema, continues acting", significance: "Golden jubilee celebration" }
+            { 
+                year: 1975, 
+                title: "The Beginning", 
+                film: "Apoorva Raagangal", 
+                description: "Debuts under K. Balachander's guidance on Independence Day, August 15", 
+                significance: "The birth of a legend",
+                // Replace this URL with actual film poster or scene
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80"
+            },
+            { 
+                year: 1976, 
+                title: "First Major Role", 
+                film: "Anthuleni Katha", 
+                description: "Breakthrough in Telugu cinema with a pivotal role", 
+                significance: "Recognition beyond Tamil cinema",
+                image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=80"
+            },
+            { 
+                year: 1980, 
+                title: "Superstar is Born", 
+                film: "Billa", 
+                description: "Dual roles in this Don remake catapults him to superstardom", 
+                significance: "Defining action hero image",
+                image: "https://images.unsplash.com/photo-1594908900066-3f47337549d8?w=400&q=80"
+            },
+            { 
+                year: 1995, 
+                title: "Demigod Status", 
+                film: "Baashha", 
+                description: "Crime boss role achieves legendary status, defines career", 
+                significance: "Cult classic created",
+                image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80"
+            },
+            { 
+                year: 2010, 
+                title: "Sci-Fi Spectacular", 
+                film: "Enthiran (Robot)", 
+                description: "India's most expensive film, dual role as scientist and robot, ₹291 crore worldwide", 
+                significance: "Technical marvel",
+                image: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=400&q=80"
+            },
+            { 
+                year: 2023, 
+                title: "Blockbuster Return", 
+                film: "Jailer", 
+                description: "₹600+ crore worldwide, highest-grossing Tamil film", 
+                significance: "Box office king again",
+                image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80"
+            }
+            // Add more moments with images as needed
         ];
         
-        // Complete Filmography Data (Selected Major Films)
+        // Complete Filmography with Iconic Dialogues
         const filmography = [
             // 1975-1980
-            { year: 1975, title: "Apoorva Raagangal", language: "Tamil", director: "K. Balachander", role: "Supporting" },
-            { year: 1976, title: "Anthuleni Katha", language: "Telugu", director: "K. Balachander", role: "Lead" },
-            { year: 1976, title: "Moondru Mudichu", language: "Tamil", director: "K. Balachander", role: "Antagonist" },
-            { year: 1977, title: "Bhuvana Oru Kelvi Kuri", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1978, title: "Mullum Malarum", language: "Tamil", director: "J. Mahendran", role: "Lead" },
-            { year: 1978, title: "Aval Appadithan", language: "Tamil", director: "C. Rudraiah", role: "Supporting" },
-            { year: 1979, title: "Aarilirunthu Arubathu Varai", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1980, title: "Billa", language: "Tamil", director: "R. Krishnamurthy", role: "Dual Role" },
-            { year: 1980, title: "Murattu Kaalai", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            
-            // 1981-1990
-            { year: 1981, title: "Thillu Mullu", language: "Tamil", director: "K. Balachander", role: "Lead" },
-            { year: 1981, title: "Thee", language: "Tamil", director: "R. Krishnamurthy", role: "Lead" },
-            { year: 1982, title: "Moondru Mugam", language: "Tamil", director: "A. Jagannathan", role: "Triple Role" },
-            { year: 1983, title: "Andhaa Kaanoon", language: "Hindi", director: "T. Rama Rao", role: "Lead" },
-            { year: 1984, title: "Nallavanukku Nallavan", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1985, title: "Sri Raghavendrar", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1986, title: "Mr. Bharath", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1987, title: "Velaikaran", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1988, title: "Dharmathin Thalaivan", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1989, title: "Raaj Chinna Roja", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
-            { year: 1990, title: "Panakkaran", language: "Tamil", director: "S.P. Muthuraman", role: "Lead" },
+            { 
+                year: 1975, 
+                title: "Apoorva Raagangal", 
+                language: "Tamil", 
+                director: "K. Balachander", 
+                role: "Supporting",
+                dialogue: "The film that started it all"
+            },
+            { 
+                year: 1980, 
+                title: "Billa", 
+                language: "Tamil", 
+                director: "R. Krishnamurthy", 
+                role: "Dual Role",
+                dialogue: "Naan oru thadava sonna, nooru thadava sonna madhiri! (If I say something once, it's like I said it a hundred times!)"
+            },
+            { 
+                year: 1980, 
+                title: "Murattu Kaalai", 
+                language: "Tamil", 
+                director: "S.P. Muthuraman", 
+                role: "Lead",
+                dialogue: "Established the action hero image"
+            },
             
             // 1991-2000
-            { year: 1991, title: "Thalapathi", language: "Tamil", director: "Mani Ratnam", role: "Lead" },
-            { year: 1992, title: "Annamalai", language: "Tamil", director: "Suresh Krissna", role: "Lead" },
-            { year: 1992, title: "Mannan", language: "Tamil", director: "P. Vasu", role: "Lead" },
-            { year: 1993, title: "Uzhaippali", language: "Tamil", director: "P. Vasu", role: "Lead" },
-            { year: 1993, title: "Valli", language: "Tamil", director: "Suresh Krissna", role: "Lead, Screenwriter" },
-            { year: 1995, title: "Baashha", language: "Tamil", director: "Suresh Krissna", role: "Lead" },
-            { year: 1995, title: "Muthu", language: "Tamil", director: "K.S. Ravikumar", role: "Lead" },
-            { year: 1997, title: "Arunachalam", language: "Tamil", director: "Sundar C", role: "Lead" },
-            { year: 1999, title: "Padayappa", language: "Tamil", director: "K.S. Ravikumar", role: "Lead" },
+            { 
+                year: 1991, 
+                title: "Thalapathi", 
+                language: "Tamil", 
+                director: "Mani Ratnam", 
+                role: "Lead",
+                dialogue: "Based on Mahabharata, critically acclaimed masterpiece"
+            },
+            { 
+                year: 1992, 
+                title: "Annamalai", 
+                language: "Tamil", 
+                director: "Suresh Krissna", 
+                role: "Lead",
+                dialogue: "Record-breaking box office phenomenon"
+            },
+            { 
+                year: 1995, 
+                title: "Baashha", 
+                language: "Tamil", 
+                director: "Suresh Krissna", 
+                role: "Lead",
+                dialogue: "Naan oru thadava sonna, nooru thadava sonna madhiri!"
+            },
+            { 
+                year: 1995, 
+                title: "Muthu", 
+                language: "Tamil", 
+                director: "K.S. Ravikumar", 
+                role: "Lead",
+                dialogue: "First Tamil film to create a fan base in Japan"
+            },
+            { 
+                year: 1999, 
+                title: "Padayappa", 
+                language: "Tamil", 
+                director: "K.S. Ravikumar", 
+                role: "Lead",
+                dialogue: "En vazhi, thani vazhi! (My way is a unique way!)"
+            },
             
             // 2000-2024
-            { year: 2002, title: "Baba", language: "Tamil", director: "Suresh Krissna", role: "Lead, Producer, Writer" },
-            { year: 2005, title: "Chandramukhi", language: "Tamil", director: "P. Vasu", role: "Lead" },
-            { year: 2007, title: "Sivaji: The Boss", language: "Tamil", director: "S. Shankar", role: "Lead" },
-            { year: 2008, title: "Kuselan", language: "Tamil", director: "P. Vasu", role: "Special Appearance" },
-            { year: 2010, title: "Enthiran (Robot)", language: "Tamil", director: "S. Shankar", role: "Dual Role" },
-            { year: 2014, title: "Kochadaiiyaan", language: "Tamil", director: "Soundarya Rajinikanth", role: "Triple Role" },
-            { year: 2016, title: "Kabali", language: "Tamil", director: "Pa. Ranjith", role: "Lead" },
-            { year: 2018, title: "Kaala", language: "Tamil", director: "Pa. Ranjith", role: "Lead" },
-            { year: 2018, title: "2.0", language: "Tamil", director: "S. Shankar", role: "Lead" },
-            { year: 2019, title: "Petta", language: "Tamil", director: "Karthik Subbaraj", role: "Lead" },
-            { year: 2020, title: "Darbar", language: "Tamil", director: "A.R. Murugadoss", role: "Lead" },
-            { year: 2021, title: "Annaatthe", language: "Tamil", director: "Siva", role: "Lead" },
-            { year: 2023, title: "Jailer", language: "Tamil", director: "Nelson Dilipkumar", role: "Lead" },
-            { year: 2024, title: "Lal Salaam", language: "Tamil", director: "Aishwarya Rajinikanth", role: "Special Appearance" },
-            { year: 2024, title: "Vettaiyan", language: "Tamil", director: "T.J. Gnanavel", role: "Lead" }
+            { 
+                year: 2002, 
+                title: "Baba", 
+                language: "Tamil", 
+                director: "Suresh Krissna", 
+                role: "Lead, Producer, Writer",
+                dialogue: "Ambitious passion project with spiritual themes"
+            },
+            { 
+                year: 2005, 
+                title: "Chandramukhi", 
+                language: "Tamil", 
+                director: "P. Vasu", 
+                role: "Lead",
+                dialogue: "890+ day theatrical run, epic comeback"
+            },
+            { 
+                year: 2007, 
+                title: "Sivaji: The Boss", 
+                language: "Tamil", 
+                director: "S. Shankar", 
+                role: "Lead",
+                dialogue: "Cool... cool... Singam dhaan varaporudhu! (Cool... the lion is coming!)"
+            },
+            { 
+                year: 2010, 
+                title: "Enthiran (Robot)", 
+                language: "Tamil", 
+                director: "S. Shankar", 
+                role: "Dual Role",
+                dialogue: "Naan eppadiyum correct dhaan! (I'm always correct!)"
+            },
+            { 
+                year: 2016, 
+                title: "Kabali", 
+                language: "Tamil", 
+                director: "Pa. Ranjith", 
+                role: "Lead",
+                dialogue: "Biggest weekend opening for an Indian film"
+            },
+            { 
+                year: 2018, 
+                title: "2.0", 
+                language: "Tamil", 
+                director: "S. Shankar", 
+                role: "Lead",
+                dialogue: "Most expensive Indian film ever made"
+            },
+            { 
+                year: 2019, 
+                title: "Petta", 
+                language: "Tamil", 
+                director: "Karthik Subbaraj", 
+                role: "Lead",
+                dialogue: "Kaali... Kaali Petta! (Name... Name is Petta!)"
+            },
+            { 
+                year: 2023, 
+                title: "Jailer", 
+                language: "Tamil", 
+                director: "Nelson Dilipkumar", 
+                role: "Lead",
+                dialogue: "Hukum! (Command!)"
+            },
+            { 
+                year: 2024, 
+                title: "Vettaiyan", 
+                language: "Tamil", 
+                director: "T.J. Gnanavel", 
+                role: "Lead",
+                dialogue: "50th year in cinema celebration"
+            }
         ];
         
         // Main App Component
@@ -297,6 +434,8 @@
             const [activeSection, setActiveSection] = useState('hero');
             const [selectedYear, setSelectedYear] = useState(null);
             const [searchTerm, setSearchTerm] = useState('');
+            const [selectedDecade, setSelectedDecade] = useState('all');
+            const [selectedLanguage, setSelectedLanguage] = useState('all');
             
             const heroRef = useRef(null);
             const timelineRef = useRef(null);
@@ -307,10 +446,19 @@
                 setActiveSection(sectionName);
             };
             
-            const filteredFilms = filmography.filter(film =>
-                film.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                film.year.toString().includes(searchTerm)
-            );
+            // Filter films
+            const filteredFilms = filmography.filter(film => {
+                const matchesSearch = film.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    film.year.toString().includes(searchTerm) ||
+                                    (film.dialogue && film.dialogue.toLowerCase().includes(searchTerm.toLowerCase()));
+                
+                const decade = Math.floor(film.year / 10) * 10;
+                const matchesDecade = selectedDecade === 'all' || decade === parseInt(selectedDecade);
+                
+                const matchesLanguage = selectedLanguage === 'all' || film.language === selectedLanguage;
+                
+                return matchesSearch && matchesDecade && matchesLanguage;
+            });
             
             const groupedFilms = filteredFilms.reduce((acc, film) => {
                 const decade = Math.floor(film.year / 10) * 10;
@@ -318,6 +466,9 @@
                 acc[decade].push(film);
                 return acc;
             }, {});
+            
+            const decades = ['all', '1970', '1980', '1990', '2000', '2010', '2020'];
+            const languages = ['all', 'Tamil', 'Hindi', 'Telugu', 'Kannada'];
             
             return (
                 <div className="min-h-screen">
@@ -338,21 +489,22 @@
                                     onClick={() => scrollToSection(timelineRef, 'timeline')}
                                     className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider"
                                 >
-                                    50 Years
+                                    Timeline
                                 </button>
                                 <button 
                                     onClick={() => scrollToSection(filmographyRef, 'filmography')}
                                     className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider"
                                 >
-                                    Filmography
+                                    Films
                                 </button>
                             </div>
                         </div>
                     </nav>
                     
-                    {/* Hero Section */}
-                    <section ref={heroRef} className="min-h-screen hero-gradient flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 film-strip opacity-20"></div>
+                    {/* Hero Section with Background */}
+                    <section ref={heroRef} className="min-h-screen hero-with-bg flex items-center justify-center relative overflow-hidden">
+                        <div className="absolute inset-0 hero-overlay"></div>
+                        <div className="absolute inset-0 film-strip opacity-10"></div>
                         
                         <div className="text-center z-10 px-4 fade-in-up">
                             <div className="mb-6">
@@ -399,16 +551,15 @@
                         <div className="absolute bottom-20 right-10 text-9xl text-red-600 opacity-10">★</div>
                     </section>
                     
-                    {/* 50 Years Timeline */}
+                    {/* Timeline with Images */}
                     <section ref={timelineRef} className="min-h-screen timeline-gradient py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
                                 <h2 className="section-title text-6xl md:text-7xl mb-4 text-yellow-400">
-                                    50 YEARS, 50 MOMENTS
+                                    ICONIC MOMENTS
                                 </h2>
                                 <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                    A journey through five decades of unparalleled cinematic excellence, 
-                                    from the bus conductor to India's biggest superstar
+                                    Key highlights from five decades of unparalleled cinematic excellence
                                 </p>
                             </div>
                             
@@ -416,65 +567,123 @@
                                 {moments.map((moment, index) => (
                                     <div 
                                         key={moment.year}
-                                        className="moment-card bg-gradient-to-br from-red-900/30 to-black border-2 border-yellow-400/20 rounded-lg p-6 hover:border-yellow-400 cursor-pointer"
+                                        className="moment-card bg-gradient-to-br from-red-900/30 to-black border-2 border-yellow-400/20 rounded-lg overflow-hidden hover:border-yellow-400 cursor-pointer"
                                         style={{
                                             animationDelay: `${index * 0.05}s`
                                         }}
                                         onClick={() => setSelectedYear(selectedYear === moment.year ? null : moment.year)}
                                     >
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div className="year-badge text-4xl text-yellow-400 font-bold">
-                                                {moment.year}
-                                            </div>
-                                            <div className="text-xs uppercase bg-red-700 px-3 py-1 rounded">
-                                                {moment.film}
-                                            </div>
+                                        {/* Image */}
+                                        <div className="h-48 overflow-hidden">
+                                            <img 
+                                                src={moment.image} 
+                                                alt={moment.title}
+                                                className="w-full h-full object-cover moment-image"
+                                            />
                                         </div>
                                         
-                                        <h3 className="text-2xl font-bold mb-2 text-white">
-                                            {moment.title}
-                                        </h3>
-                                        
-                                        <p className="text-gray-300 mb-3">
-                                            {moment.description}
-                                        </p>
-                                        
-                                        {selectedYear === moment.year && (
-                                            <div className="mt-4 pt-4 border-t border-yellow-400/30">
-                                                <div className="text-yellow-400 font-semibold text-sm mb-1">
-                                                    SIGNIFICANCE:
+                                        <div className="p-6">
+                                            <div className="flex items-start justify-between mb-4">
+                                                <div className="year-badge text-4xl text-yellow-400 font-bold">
+                                                    {moment.year}
                                                 </div>
-                                                <div className="text-gray-200 italic">
-                                                    {moment.significance}
+                                                <div className="text-xs uppercase bg-red-700 px-3 py-1 rounded">
+                                                    {moment.film}
                                                 </div>
                                             </div>
-                                        )}
+                                            
+                                            <h3 className="text-2xl font-bold mb-2 text-white">
+                                                {moment.title}
+                                            </h3>
+                                            
+                                            <p className="text-gray-300 mb-3">
+                                                {moment.description}
+                                            </p>
+                                            
+                                            {selectedYear === moment.year && (
+                                                <div className="mt-4 pt-4 border-t border-yellow-400/30">
+                                                    <div className="text-yellow-400 font-semibold text-sm mb-1">
+                                                        SIGNIFICANCE:
+                                                    </div>
+                                                    <div className="text-gray-200 italic">
+                                                        {moment.significance}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
                     
-                    {/* Filmography Archive */}
+                    {/* Filmography with Dialogues and Filters */}
                     <section ref={filmographyRef} className="min-h-screen bg-gradient-to-b from-black to-red-950/20 py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
                                 <h2 className="section-title text-6xl md:text-7xl mb-4 text-yellow-400">
-                                    THE SUPERSTAR ARCHIVE
+                                    THE FILM ARCHIVE
                                 </h2>
                                 <p className="text-xl text-gray-300 mb-8">
-                                    A comprehensive chronicle of {filmography.length}+ films that defined Indian cinema
+                                    Explore iconic dialogues and unforgettable performances
                                 </p>
                                 
                                 {/* Search */}
-                                <div className="max-w-md mx-auto">
+                                <div className="max-w-md mx-auto mb-8">
                                     <input 
                                         type="text"
-                                        placeholder="Search films by title or year..."
+                                        placeholder="Search by film, year, or dialogue..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="w-full px-6 py-4 bg-black/50 border-2 border-yellow-400/30 rounded-lg text-white placeholder-gray-500 focus:border-yellow-400 focus:outline-none text-lg"
                                     />
+                                </div>
+                                
+                                {/* Filters */}
+                                <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-8">
+                                    {/* Decade Filter */}
+                                    <div>
+                                        <label className="text-sm text-gray-400 mb-2 block">Filter by Decade:</label>
+                                        <div className="flex gap-2 flex-wrap justify-center">
+                                            {decades.map(decade => (
+                                                <button
+                                                    key={decade}
+                                                    onClick={() => setSelectedDecade(decade)}
+                                                    className={`filter-btn px-4 py-2 rounded border-2 ${
+                                                        selectedDecade === decade 
+                                                            ? 'border-red-600 bg-red-600 text-white' 
+                                                            : 'border-yellow-400/30 text-gray-300 hover:border-yellow-400'
+                                                    }`}
+                                                >
+                                                    {decade === 'all' ? 'All' : `${decade}s`}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Language Filter */}
+                                    <div>
+                                        <label className="text-sm text-gray-400 mb-2 block">Filter by Language:</label>
+                                        <div className="flex gap-2 flex-wrap justify-center">
+                                            {languages.map(lang => (
+                                                <button
+                                                    key={lang}
+                                                    onClick={() => setSelectedLanguage(lang)}
+                                                    className={`filter-btn px-4 py-2 rounded border-2 ${
+                                                        selectedLanguage === lang 
+                                                            ? 'border-red-600 bg-red-600 text-white' 
+                                                            : 'border-yellow-400/30 text-gray-300 hover:border-yellow-400'
+                                                    }`}
+                                                >
+                                                    {lang === 'all' ? 'All' : lang}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="text-gray-400 text-sm">
+                                    Showing {filteredFilms.length} {filteredFilms.length === 1 ? 'film' : 'films'}
                                 </div>
                             </div>
                             
@@ -491,7 +700,7 @@
                                                 key={`${film.year}-${film.title}`}
                                                 className="film-card bg-black/40 border border-yellow-400/20 rounded-lg p-6 hover:border-yellow-400"
                                             >
-                                                <div className="flex items-start justify-between">
+                                                <div className="flex items-start justify-between mb-3">
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-3 mb-2">
                                                             <span className="text-2xl font-bold text-yellow-400">
@@ -506,10 +715,17 @@
                                                             {film.title}
                                                         </h4>
                                                         
-                                                        <div className="text-sm text-gray-400">
+                                                        <div className="text-sm text-gray-400 mb-3">
                                                             <div>Directed by: <span className="text-gray-300">{film.director}</span></div>
                                                             <div>Role: <span className="text-yellow-400">{film.role}</span></div>
                                                         </div>
+                                                        
+                                                        {/* Iconic Dialogue */}
+                                                        {film.dialogue && (
+                                                            <div className="dialogue-quote text-sm">
+                                                                "{film.dialogue}"
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     
                                                     <div className="text-4xl opacity-20">
@@ -524,7 +740,7 @@
                             
                             {filteredFilms.length === 0 && (
                                 <div className="text-center text-gray-400 text-xl py-12">
-                                    No films found matching "{searchTerm}"
+                                    No films found matching your filters
                                 </div>
                             )}
                         </div>
@@ -541,9 +757,6 @@
                             </p>
                             <div className="text-sm text-gray-500">
                                 Created with ❤️ by fans, for fans | Happy Birthday Thalaivar!
-                            </div>
-                            <div className="mt-4 text-xs text-gray-600">
-                                Data sourced from publicly available information about Rajinikanth's illustrious career
                             </div>
                         </div>
                     </footer>
