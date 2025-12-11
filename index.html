@@ -2072,6 +2072,857 @@
             );
         }; //RajiniTrivia ends
     
+        // =============================================
+        // RAJINI DIALOGUE CARD GENERATOR
+        // Add this to your index.html after the DailyRajiniTrivia component
+        // =============================================
+        
+        const DialogueCardGenerator = () => {
+            const [selectedDialogue, setSelectedDialogue] = useState(null);
+            const [selectedStyle, setSelectedStyle] = useState('classic');
+            const [userName, setUserName] = useState('');
+            const [generating, setGenerating] = useState(false);
+            const [showPreview, setShowPreview] = useState(false);
+            const cardRef = useRef(null);
+            
+            // =============================================
+            // FAMOUS RAJINI DIALOGUES DATABASE
+            // =============================================
+            const dialogues = [
+                {
+                    id: 1,
+                    text: "Naan oru thadava sonna, nooru thadava sonna madhiri",
+                    english: "When I say something once, it's like saying it a hundred times",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Power",
+                    icon: "🎭"
+                },
+                {
+                    id: 2,
+                    text: "En vazhi, thani vazhi",
+                    english: "My way is a unique way",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Confidence",
+                    icon: "👑"
+                },
+                {
+                    id: 3,
+                    text: "Naan epdi irukannu mudivu panni mudi vechiteenga... Aana naan epdi irupen nu ungalukku theriyaadhu!",
+                    english: "You decided how I should be... But you don't know how I will be!",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Attitude",
+                    icon: "⚡"
+                },
+                {
+                    id: 4,
+                    text: "Mind it!",
+                    english: "Mind it!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Warning",
+                    icon: "⚠️"
+                },
+                {
+                    id: 5,
+                    text: "Kanna panna nu pannadheenga... Pannunadhaan kaanom",
+                    english: "Don't do nonsense... or we'll see",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Threat",
+                    icon: "🔥"
+                },
+                {
+                    id: 6,
+                    text: "Naan oru thief-a maari dress panirupaaney, aana thief-a irukka maaten",
+                    english: "I may dress like a thief, but I won't be one",
+                    film: "Billa",
+                    year: 1980,
+                    character: "Billa/Raju",
+                    category: "Style",
+                    icon: "😎"
+                },
+                {
+                    id: 7,
+                    text: "Oruvan oruvan mudhalali",
+                    english: "Everyone is a boss in their own way",
+                    film: "Muthu",
+                    year: 1995,
+                    character: "Muthu",
+                    category: "Equality",
+                    icon: "🎪"
+                },
+                {
+                    id: 8,
+                    text: "I am version 2.0!",
+                    english: "I am version 2.0!",
+                    film: "Enthiran",
+                    year: 2010,
+                    character: "Chitti",
+                    category: "Technology",
+                    icon: "🤖"
+                },
+                {
+                    id: 9,
+                    text: "Kaali vandhuruchu!",
+                    english: "Kaali has arrived!",
+                    film: "Petta",
+                    year: 2019,
+                    character: "Kaali",
+                    category: "Entry",
+                    icon: "💪"
+                },
+                {
+                    id: 10,
+                    text: "Naan solla maaten, kanna vechuttu paar!",
+                    english: "I won't say it, keep your eyes open and see!",
+                    film: "Annamalai",
+                    year: 1992,
+                    character: "Annamalai",
+                    category: "Challenge",
+                    icon: "👁️"
+                },
+                {
+                    id: 11,
+                    text: "Yaaraiyum yeliya paakkaama... yaaru kitta yum kumbidu pogaama... irukkara idathula iruppan Padayappa!",
+                    english: "Without looking down on anyone... without bowing to anyone... Padayappa will stay where he is!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Pride",
+                    icon: "🦁"
+                },
+                {
+                    id: 12,
+                    text: "Enna paarkka Appaavi maathiri theriyum, aana apdilaam illa da dei",
+                    english: "I may look innocent, but I'm not like that at all",
+                    film: "Thalapathi",
+                    year: 1991,
+                    character: "Surya",
+                    category: "Deception",
+                    icon: "😏"
+                },
+                {
+                    id: 13,
+                    text: "En pera solli kizhichathum daan... konja kashtam daan",
+                    english: "Tarnishing my name... that's a bit difficult",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Reputation",
+                    icon: "🎖️"
+                },
+                {
+                    id: 14,
+                    text: "Singam single-ah dhan varum... ganangala varaadhu",
+                    english: "A lion comes alone... not in groups",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Strength",
+                    icon: "🦁"
+                },
+                {
+                    id: 15,
+                    text: "Nee vechu paaru... naan vechikaren!",
+                    english: "You try... I'll show you!",
+                    film: "Annamalai",
+                    year: 1992,
+                    character: "Annamalai",
+                    category: "Competition",
+                    icon: "⚔️"
+                },
+                {
+                    id: 16,
+                    text: "Style is style... Yours is discount!",
+                    english: "Style is style... Yours is discount!",
+                    film: "Baba",
+                    year: 2002,
+                    character: "Baba",
+                    category: "Swag",
+                    icon: "🕶️"
+                },
+                {
+                    id: 17,
+                    text: "Parattai-a irunthalum Shankar-a irukkara aalu daan Parattai",
+                    english: "Even if he's a ruffian, Parattai is still honest",
+                    film: "16 Vayathinile",
+                    year: 1977,
+                    character: "Parattai",
+                    category: "Honesty",
+                    icon: "💎"
+                },
+                {
+                    id: 18,
+                    text: "Enna paathu sirikkadheenga... Naan comedy maatri theriyalaam aanal dangerous!",
+                    english: "Don't laugh at me... I may look funny but I'm dangerous!",
+                    film: "Mullum Malarum",
+                    year: 1978,
+                    character: "Kali",
+                    category: "Underestimation",
+                    icon: "🃏"
+                },
+                {
+                    id: 19,
+                    text: "Cool... Cool... Maapla cool!",
+                    english: "Cool... Cool... Be cool bro!",
+                    film: "Muthu",
+                    year: 1995,
+                    character: "Muthu",
+                    category: "Calm",
+                    icon: "❄️"
+                },
+                {
+                    id: 20,
+                    text: "Naan oru dhadava commit panna... apram naane enna maathikka maaten!",
+                    english: "Once I commit... I won't change even myself!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Commitment",
+                    icon: "🤝"
+                },
+                {
+                    id: 21,
+                    text: "Adhuvum Bangalore-la, idhuvum Bangalore-la!",
+                    english: "That was in Bangalore, this too is in Bangalore!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Return",
+                    icon: "🔄"
+                },
+                {
+                    id: 22,
+                    text: "Apdi podu!",
+                    english: "That's how you do it!",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Victory",
+                    icon: "✨"
+                },
+                {
+                    id: 23,
+                    text: "Kanna... summa andhathan solluvaan... sandhai madhiri sannasiyaa nadakkum!",
+                    english: "Look... I'll just say it... but chaos will follow!",
+                    film: "Arunachalam",
+                    year: 1997,
+                    character: "Arunachalam",
+                    category: "Impact",
+                    icon: "💥"
+                },
+                {
+                    id: 24,
+                    text: "Boss... nee kidakka pola peyya paakudhu!",
+                    english: "Boss... it looks like it's about to rain!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Warning",
+                    icon: "🌧️"
+                },
+                {
+                    id: 25,
+                    text: "Enakku thani Rajini Style!",
+                    english: "I have my own Rajini Style!",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Unique",
+                    icon: "💫"
+                },
+                {
+                    id: 26,
+                    text: "Thalaivan irukkra idathula... vettu theruvlaam illa!",
+                    english: "Where the leader is... there are no cross streets!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Leadership",
+                    icon: "👑"
+                },
+                {
+                    id: 27,
+                    text: "Neenga nallavara kettavara nu theriyala... aana naan nallavaran",
+                    english: "I don't know if you're good or bad... but I am good",
+                    film: "Annamalai",
+                    year: 1992,
+                    character: "Annamalai",
+                    category: "Morality",
+                    icon: "⚖️"
+                },
+                {
+                    id: 28,
+                    text: "Dhool-a vandhu, storm-a pogaporan!",
+                    english: "I came like dust, I'll leave like a storm!",
+                    film: "Chandramukhi",
+                    year: 2005,
+                    character: "Vettaiyan Raja",
+                    category: "Transformation",
+                    icon: "🌪️"
+                },
+                {
+                    id: 29,
+                    text: "Kakka... kaa... kaa!",
+                    english: "Crow... caw... caw!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Mockery",
+                    icon: "🦅"
+                },
+                {
+                    id: 30,
+                    text: "En friend-a thoda... you have touched my friend!",
+                    english: "You touched my friend!",
+                    film: "Thalapathi",
+                    year: 1991,
+                    character: "Surya",
+                    category: "Friendship",
+                    icon: "🤜"
+                },
+                // Adding 20 more for variety
+                {
+                    id: 31,
+                    text: "Naan adicha aduthavan... eduthu vechi paathupaan!",
+                    english: "The one I hit... will preserve it carefully!",
+                    film: "Murattu Kaalai",
+                    year: 1980,
+                    character: "Kaalai",
+                    category: "Power",
+                    icon: "💪"
+                },
+                {
+                    id: 32,
+                    text: "Glass-la whisky aala... aana bottle-la water illa",
+                    english: "There's whisky in the glass... but no water in the bottle",
+                    film: "Ejamaan",
+                    year: 1993,
+                    character: "Vaanavaraayan",
+                    category: "Clever",
+                    icon: "🥃"
+                },
+                {
+                    id: 33,
+                    text: "Enna da oru mathiri paakareenga?",
+                    english: "Why are you looking at me like that?",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Question",
+                    icon: "🤔"
+                },
+                {
+                    id: 34,
+                    text: "Seri vara vara seekiram vara vara... late-a vara late-a varuven",
+                    english: "If I come right, I'll come quickly... if late, I'll come late",
+                    film: "Baba",
+                    year: 2002,
+                    character: "Baba",
+                    category: "Timing",
+                    icon: "⏰"
+                },
+                {
+                    id: 35,
+                    text: "Robot naan... aana dhrogam pannamaten",
+                    english: "I'm a robot... but I won't betray",
+                    film: "Enthiran",
+                    year: 2010,
+                    character: "Chitti",
+                    category: "Loyalty",
+                    icon: "🤖"
+                },
+                {
+                    id: 36,
+                    text: "Adhukku mela pesunaen... azhuga arambipeenga!",
+                    english: "If I say more... you'll start crying!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Threat",
+                    icon: "😢"
+                },
+                {
+                    id: 37,
+                    text: "Yevanda indha look-u?",
+                    english: "Who gave you this look?",
+                    film: "Billa",
+                    year: 1980,
+                    character: "Billa",
+                    category: "Style",
+                    icon: "👀"
+                },
+                {
+                    id: 38,
+                    text: "Just think... don't simply talk!",
+                    english: "Just think... don't simply talk!",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Wisdom",
+                    icon: "🧠"
+                },
+                {
+                    id: 39,
+                    text: "En per kettudu romba naal aachu!",
+                    english: "It's been a long time since you heard my name!",
+                    film: "Petta",
+                    year: 2019,
+                    character: "Kaali",
+                    category: "Return",
+                    icon: "📣"
+                },
+                {
+                    id: 40,
+                    text: "Summa iru... naan paarthukaren!",
+                    english: "Just stay quiet... I'll take care of it!",
+                    film: "Annamalai",
+                    year: 1992,
+                    character: "Annamalai",
+                    category: "Assurance",
+                    icon: "🛡️"
+                },
+                {
+                    id: 41,
+                    text: "Indha Sivaji'ku innonu Sivaji theriyum",
+                    english: "This Sivaji knows another Sivaji",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Duality",
+                    icon: "🎭"
+                },
+                {
+                    id: 42,
+                    text: "Ketta kekkara per... nalla paatha nalla irukken!",
+                    english: "Though I have a bad name... if you look properly, I'm good!",
+                    film: "16 Vayathinile",
+                    year: 1977,
+                    character: "Parattai",
+                    category: "Misjudged",
+                    icon: "🔍"
+                },
+                {
+                    id: 43,
+                    text: "Nan panna thappey illa... aana payalugalku pudikala!",
+                    english: "I didn't do anything wrong... but the guys didn't like it!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Misunderstood",
+                    icon: "🤷"
+                },
+                {
+                    id: 44,
+                    text: "Speed-a po... slow-a pogadha!",
+                    english: "Go fast... don't go slow!",
+                    film: "Chandramukhi",
+                    year: 2005,
+                    character: "Vettaiyan Raja",
+                    category: "Speed",
+                    icon: "🏎️"
+                },
+                {
+                    id: 45,
+                    text: "Innaiku irundhudhan en kaadhal life start!",
+                    english: "Only from today my love life starts!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Romance",
+                    icon: "❤️"
+                },
+                {
+                    id: 46,
+                    text: "Naan kettavan da!",
+                    english: "I am the bad one!",
+                    film: "Baashha",
+                    year: 1995,
+                    character: "Manickam",
+                    category: "Admission",
+                    icon: "😈"
+                },
+                {
+                    id: 47,
+                    text: "Konga punda... apram thaan kundi!",
+                    english: "First the crown... then the throne!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Order",
+                    icon: "👸"
+                },
+                {
+                    id: 48,
+                    text: "Semma mass-u!",
+                    english: "Super cool!",
+                    film: "Sivaji",
+                    year: 2007,
+                    character: "Sivaji",
+                    category: "Appreciation",
+                    icon: "🔥"
+                },
+                {
+                    id: 49,
+                    text: "Unga birthday-ku enna gift kudukradhunu theriyala... andha gift-a naan daan!",
+                    english: "I didn't know what gift to give for your birthday... I am that gift!",
+                    film: "Arunachalam",
+                    year: 1997,
+                    character: "Arunachalam",
+                    category: "Humor",
+                    icon: "🎁"
+                },
+                {
+                    id: 50,
+                    text: "Manushana nalla irukanum... aana maanga ketta irukanum!",
+                    english: "The person should be good... but the mango should be rotten!",
+                    film: "Padayappa",
+                    year: 1999,
+                    character: "Padayappa",
+                    category: "Philosophy",
+                    icon: "🥭"
+                }
+            ];
+            
+            // =============================================
+            // STYLE TEMPLATES
+            // =============================================
+            const styles = {
+                classic: {
+                    name: "Classic Cinema",
+                    bg: "linear-gradient(135deg, #1a1a1a 0%, #000000 100%)",
+                    textColor: "#FFD700",
+                    accentColor: "#DC143C",
+                    border: "4px solid #FFD700",
+                    pattern: "film-strip"
+                },
+                baashha: {
+                    name: "Baashha Style",
+                    bg: "linear-gradient(135deg, #2d2d2d 0%, #0a0a0a 100%)",
+                    textColor: "#ffffff",
+                    accentColor: "#8B0000",
+                    border: "4px solid #8B0000",
+                    pattern: "smoke"
+                },
+                padayappa: {
+                    name: "Padayappa Gold",
+                    bg: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                    textColor: "#000000",
+                    accentColor: "#ffffff",
+                    border: "4px solid #ffffff",
+                    pattern: "crown"
+                },
+                muthu: {
+                    name: "Muthu Rainbow",
+                    bg: "linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%)",
+                    textColor: "#ffffff",
+                    accentColor: "#fbbf24",
+                    border: "4px solid #ffffff",
+                    pattern: "confetti"
+                },
+                enthiran: {
+                    name: "Enthiran Tech",
+                    bg: "linear-gradient(135deg, #1e40af 0%, #0369a1 100%)",
+                    textColor: "#00ffff",
+                    accentColor: "#ffffff",
+                    border: "4px solid #00ffff",
+                    pattern: "circuit"
+                },
+                minimalist: {
+                    name: "Minimalist",
+                    bg: "#ffffff",
+                    textColor: "#000000",
+                    accentColor: "#DC143C",
+                    border: "2px solid #000000",
+                    pattern: "none"
+                }
+            };
+            
+            // =============================================
+            // GENERATE AND DOWNLOAD CARD
+            // =============================================
+            const generateCard = async () => {
+                if (!selectedDialogue) return;
+                
+                setGenerating(true);
+                
+                try {
+                    // Wait for next frame to ensure DOM is updated
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    
+                    // Use html2canvas to capture the card
+                    const canvas = await html2canvas(cardRef.current, {
+                        scale: 2,
+                        backgroundColor: null,
+                        logging: false,
+                        useCORS: true
+                    });
+                    
+                    // Convert to blob
+                    canvas.toBlob((blob) => {
+                        // Create download link
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = `rajini-dialogue-${selectedDialogue.id}.png`;
+                        link.click();
+                        URL.revokeObjectURL(url);
+                        
+                        setGenerating(false);
+                    });
+                } catch (error) {
+                    console.error('Error generating card:', error);
+                    alert('Error generating card. Please try again!');
+                    setGenerating(false);
+                }
+            };
+            
+            // Share card
+            const shareCard = async () => {
+                if (!selectedDialogue) return;
+                
+                const shareText = `"${selectedDialogue.text}"\n\n- ${selectedDialogue.film} (${selectedDialogue.year})\n\nCreate your own Rajini dialogue card at rajinikanth.ai 🎬\n\n#Rajinikanth #Thalaivar`;
+                const shareUrl = 'https://rajinikanth.ai';
+                
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Rajini Dialogue Card',
+                            text: shareText,
+                            url: shareUrl
+                        });
+                    } catch (err) {
+                        console.log('Share cancelled or failed', err);
+                    }
+                } else {
+                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                    window.open(twitterUrl, '_blank');
+                }
+            };
+            
+            return (
+                <div className="mb-12">
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4 section-title">
+                            <span className="text-yellow-500">🎨 Dialogue Card Generator</span>
+                        </h2>
+                        <p className="text-xl text-gray-300">
+                            Create beautiful cards with iconic Rajini dialogues!
+                        </p>
+                    </div>
+                    
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* Left: Selection Panel */}
+                            <div>
+                                {/* Step 1: Choose Dialogue */}
+                                <div className="mb-6">
+                                    <h3 className="text-2xl font-bold text-yellow-500 mb-4">
+                                        1️⃣ Choose Your Dialogue
+                                    </h3>
+                                    <div className="bg-gray-900 rounded-lg p-4 max-h-96 overflow-y-auto">
+                                        <div className="space-y-2">
+                                            {dialogues.map((dialogue) => (
+                                                <button
+                                                    key={dialogue.id}
+                                                    onClick={() => setSelectedDialogue(dialogue)}
+                                                    className={`w-full text-left p-3 rounded-lg transition ${
+                                                        selectedDialogue?.id === dialogue.id
+                                                            ? 'bg-yellow-500 text-black'
+                                                            : 'bg-gray-800 hover:bg-gray-700 text-white'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-start justify-between">
+                                                        <div className="flex-1">
+                                                            <div className="font-bold mb-1">
+                                                                {dialogue.icon} {dialogue.text.substring(0, 50)}...
+                                                            </div>
+                                                            <div className="text-sm opacity-75">
+                                                                {dialogue.film} ({dialogue.year})
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Step 2: Choose Style */}
+                                {selectedDialogue && (
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl font-bold text-yellow-500 mb-4">
+                                            2️⃣ Choose Card Style
+                                        </h3>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {Object.entries(styles).map(([key, style]) => (
+                                                <button
+                                                    key={key}
+                                                    onClick={() => setSelectedStyle(key)}
+                                                    className={`p-4 rounded-lg transition ${
+                                                        selectedStyle === key
+                                                            ? 'ring-4 ring-yellow-500'
+                                                            : 'ring-2 ring-gray-700 hover:ring-gray-600'
+                                                    }`}
+                                                    style={{ background: style.bg }}
+                                                >
+                                                    <div className="text-center font-bold" style={{ color: style.textColor }}>
+                                                        {style.name}
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Step 3: Add Your Name (Optional) */}
+                                {selectedDialogue && (
+                                    <div className="mb-6">
+                                        <h3 className="text-2xl font-bold text-yellow-500 mb-4">
+                                            3️⃣ Add Your Name (Optional)
+                                        </h3>
+                                        <input
+                                            type="text"
+                                            placeholder="Your Name"
+                                            value={userName}
+                                            onChange={(e) => setUserName(e.target.value)}
+                                            className="w-full p-3 bg-gray-800 border-2 border-gray-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none"
+                                        />
+                                    </div>
+                                )}
+                                
+                                {/* Action Buttons */}
+                                {selectedDialogue && (
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <button
+                                            onClick={generateCard}
+                                            disabled={generating}
+                                            className="flex-1 bg-gradient-to-r from-yellow-500 to-amber-600 text-black px-6 py-4 rounded-lg text-lg font-bold hover:from-yellow-400 hover:to-amber-500 transition transform hover:scale-105 disabled:opacity-50"
+                                        >
+                                            {generating ? '⏳ Generating...' : '💾 Download Card'}
+                                        </button>
+                                        <button
+                                            onClick={shareCard}
+                                            className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-4 rounded-lg text-lg font-bold hover:from-red-500 hover:to-red-600 transition transform hover:scale-105"
+                                        >
+                                            📱 Share
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {/* Right: Preview */}
+                            <div>
+                                <h3 className="text-2xl font-bold text-yellow-500 mb-4">
+                                    👁️ Preview
+                                </h3>
+                                
+                                {selectedDialogue ? (
+                                    <div 
+                                        ref={cardRef}
+                                        className="aspect-square rounded-lg overflow-hidden shadow-2xl"
+                                        style={{
+                                            background: styles[selectedStyle].bg,
+                                            border: styles[selectedStyle].border,
+                                            padding: '40px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'space-between',
+                                            position: 'relative'
+                                        }}
+                                    >
+                                        {/* Icon/Pattern Background */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '20px',
+                                            right: '20px',
+                                            fontSize: '80px',
+                                            opacity: 0.1
+                                        }}>
+                                            {selectedDialogue.icon}
+                                        </div>
+                                        
+                                        {/* Dialogue */}
+                                        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <div style={{ textAlign: 'center' }}>
+                                                <div style={{
+                                                    fontSize: '36px',
+                                                    fontWeight: 'bold',
+                                                    color: styles[selectedStyle].textColor,
+                                                    marginBottom: '20px',
+                                                    lineHeight: 1.2,
+                                                    textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                                                }}>
+                                                    "{selectedDialogue.text}"
+                                                </div>
+                                                <div style={{
+                                                    fontSize: '18px',
+                                                    color: styles[selectedStyle].accentColor,
+                                                    fontStyle: 'italic',
+                                                    marginTop: '10px'
+                                                }}>
+                                                    {selectedDialogue.english}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Film Info */}
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{
+                                                fontSize: '24px',
+                                                fontWeight: 'bold',
+                                                color: styles[selectedStyle].accentColor,
+                                                marginBottom: '10px'
+                                            }}>
+                                                — {selectedDialogue.film} ({selectedDialogue.year})
+                                            </div>
+                                            
+                                            {userName && (
+                                                <div style={{
+                                                    fontSize: '18px',
+                                                    color: styles[selectedStyle].textColor,
+                                                    opacity: 0.8,
+                                                    marginTop: '10px'
+                                                }}>
+                                                    Shared by {userName}
+                                                </div>
+                                            )}
+                                            
+                                            <div style={{
+                                                fontSize: '14px',
+                                                color: styles[selectedStyle].textColor,
+                                                opacity: 0.6,
+                                                marginTop: '15px'
+                                            }}>
+                                                Created at rajinikanth.ai 🎬
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="aspect-square rounded-lg bg-gray-900 border-2 border-gray-700 flex items-center justify-center">
+                                        <div className="text-center text-gray-500">
+                                            <div className="text-6xl mb-4">🎬</div>
+                                            <p className="text-xl">Select a dialogue to preview</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }; // Diaglogue Card Component ends
+
+
         
 
                
@@ -2284,6 +3135,10 @@
 
                             {/* Rajini Trivia Quiz */}
                             <DailyRajiniTrivia />
+
+                            {/* Dialogue Card Generator */}
+                            <DialogueCardGenerator />
+                            
                         </div>
                     </section>
                     
