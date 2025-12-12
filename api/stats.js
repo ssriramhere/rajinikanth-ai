@@ -1,6 +1,4 @@
-import { Redis } from '@upstash/redis';
-
-const redis = Redis.fromEnv();
+import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,9 +14,12 @@ export default async function handler(req, res) {
         const totalKey = 'total_visitors';
         const todayKey = `visitors_${today}`;
         
-        const totalVisitors = await redis.incr(totalKey);
-        const todayVisitors = await redis.incr(todayKey);
-        await redis.expire(todayKey, 86400);
+        // Increment counters
+        const totalVisitors = await kv.incr(totalKey);
+        const todayVisitors = await kv.incr(todayKey);
+        
+        // Set expiry on today's counter
+        await kv.expire(todayKey, 86400);
         
         return res.status(200).json({
             success: true,
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
         });
         
     } catch (error) {
-        console.error('Redis Error:', error);
+        console.error('KV Error:', error);
         return res.status(200).json({
             success: false,
             totalVisitors: 1247,
