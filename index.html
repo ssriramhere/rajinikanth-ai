@@ -252,109 +252,604 @@
         // Upload real posters to GitHub at: /images/FILMNAME-YEAR.jpg
         // Then update image URLs to: https://raw.githubusercontent.com/YOUR-USERNAME/rajinikanth-ai/main/images/FILMNAME-YEAR.jpg
         
-        const moments = [
-            { 
-                year: 1975, 
-                title: "The Beginning", 
-                film: "Apoorva Raagangal",
-                description: "Debuts under K. Balachander's guidance",
-                significance: "The birth of a legend",
+        const iconicMovies = [
+            // 1970s - The Beginning (1975-1979)
+            {
+                year: 1975,
+                title: "Apoorva Raagangal",
+                tamil: "அபூர்வ ராகங்கள்",
+                role: "Pandiyan",
+                language: "Tamil",
+                director: "K. Balachander",
+                significance: "Debut Film - National Award Winner",
+                description: "Rajinikanth's debut film that won the National Award",
+                icon: "🎬",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/apoorva-raagangal-1975.jpg"
             },
-            { 
-                year: 1978, 
-                title: "Critical Acclaim", 
-                film: "Mullum Malarum",
-                description: "Critically acclaimed performance",
-                significance: "From villain to hero",
+            {
+                year: 1976,
+                title: "Moondru Mudichu",
+                tamil: "மூன்று முடிச்சு",
+                role: "Prasath",
+                language: "Tamil",
+                director: "K. Balachander",
+                significance: "First film with Kamal Haasan",
+                description: "First collaboration with Kamal Haasan under K. Balachander",
+                icon: "🎭",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/moondru-mudichu-1976.jpg"
+            },
+            {
+                year: 1977,
+                title: "16 Vayathinile",
+                tamil: "16 வயதினிலே",
+                role: "Parattai",
+                language: "Tamil",
+                director: "Bharathiraja",
+                significance: "First major breakthrough as antagonist",
+                description: "Breakthrough role as the menacing Parattai",
+                icon: "⭐",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/16-vayathinile-1977.jpg"
+            },
+            {
+                year: 1978,
+                title: "Mullum Malarum",
+                tamil: "முள்ளும் மலரும்",
+                role: "Kali",
+                language: "Tamil",
+                director: "J. Mahendran",
+                significance: "First film as lead hero",
+                description: "Powerful performance as Kali - first lead role",
+                icon: "🌺",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/mullum-malarum-1978.jpg"
             },
-            { 
-                year: 1980, 
-                title: "Superstar is Born", 
-                film: "Billa",
-                description: "Dual roles in this Don remake",
-                significance: "Defining action hero image",
+            {
+                year: 1978,
+                title: "Bhuvana Oru Kelvikkuri",
+                tamil: "புவன ஒரு கெள்விக்குறி",
+                role: "Bhuvana",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Critical acclaim for performance",
+                description: "Critically acclaimed performance in social drama",
+                icon: "❓",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/bhuvana-oru-kelvikkuri-1978.jpg"
+            },
+            
+            // 1980s - Rising Superstar (1980-1989)
+            {
+                year: 1980,
+                title: "Billa",
+                tamil: "பில்லா",
+                role: "Billa/Raju",
+                language: "Tamil",
+                director: "R. Krishnamurthy",
+                significance: "Stylish gangster - Cult classic",
+                description: "Iconic stylish gangster role that became a cult classic",
+                icon: "😎",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/billa-1980.jpg"
             },
-            { 
-                year: 1981, 
-                title: "Comedy Mastery", 
-                film: "Thillu Mullu",
-                description: "First full-length comedy role",
-                significance: "Versatility showcase",
+            {
+                year: 1980,
+                title: "Murattu Kaalai",
+                tamil: "முரட்டு கள்ளை",
+                role: "Kaalaiyan",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Action hero image cemented",
+                description: "Action-packed role that cemented his mass hero image",
+                icon: "💪",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/murattu-kaalai-1980.jpg"
+            },
+            {
+                year: 1981,
+                title: "Thillu Mullu",
+                tamil: "தில்லு முல்லு",
+                role: "Chandran",
+                language: "Tamil",
+                director: "K. Balachander",
+                significance: "Comedy masterpiece - Remake of Gol Maal",
+                description: "Comedy masterpiece that showcased his versatility",
+                icon: "😂",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/thillu-mullu-1981.jpg"
             },
-            { 
-                year: 1991, 
-                title: "Epic Performance", 
-                film: "Thalapathi",
-                description: "Mani Ratnam's masterpiece",
-                significance: "Artistic peak",
+            {
+                year: 1981,
+                title: "Enkeyo Ketta Kural",
+                tamil: "எங்கேயோ கேட்ட குரல்",
+                role: "Ponni",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Musical drama",
+                description: "Musical drama with memorable songs",
+                icon: "🎵",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/enkeyo-ketta-kural-1981.jpg"
+            },
+            {
+                year: 1982,
+                title: "Moondru Mugam",
+                tamil: "மூன்று முகம்",
+                role: "Triple role",
+                language: "Tamil",
+                director: "A. Jagannathan",
+                significance: "First triple role - Box office hit",
+                description: "First triple role performance - major box office success",
+                icon: "🎭",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/moondru-mugam-1982.jpg"
+            },
+            {
+                year: 1982,
+                title: "Ranuva Veeran",
+                tamil: "ரணுவ வீரன்",
+                role: "Rajinikanth",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Action film",
+                description: "High-octane action entertainer",
+                icon: "⚔️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/ranuva-veeran-1982.jpg"
+            },
+            {
+                year: 1983,
+                title: "Nallavanuku Nallavan",
+                tamil: "நல்லவனுக்கு நல்லவன்",
+                role: "Manickam",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Dual role - Major success",
+                description: "Dual role performance in this major blockbuster",
+                icon: "⚖️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/nallavanuku-nallavan-1983.jpg"
+            },
+            {
+                year: 1983,
+                title: "Thanga Magan",
+                tamil: "தங்க மகன்",
+                role: "Velayudham",
+                language: "Tamil",
+                director: "A. Jagannathan",
+                significance: "Family drama",
+                description: "Emotional family drama with powerful performance",
+                icon: "👨‍👩‍👧",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/thanga-magan-1983.jpg"
+            },
+            {
+                year: 1984,
+                title: "Naan Mahaan Alla",
+                tamil: "நான் மகான் அல்ல",
+                role: "Vijay",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Revenge drama - Cult following",
+                description: "Revenge drama that developed a massive cult following",
+                icon: "🔥",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/naan-mahaan-alla-1984.jpg"
+            },
+            {
+                year: 1985,
+                title: "Padikkadavan",
+                tamil: "படிக்காதவன்",
+                role: "Rajinikanth",
+                language: "Tamil",
+                director: "Rajasekhar",
+                significance: "Commercial blockbuster",
+                description: "Commercial blockbuster with mass appeal",
+                icon: "📚",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/padikkadavan-1985.jpg"
+            },
+            {
+                year: 1985,
+                title: "Geraftaar",
+                tamil: "கெரஃப்தார்",
+                role: "Kishan",
+                language: "Hindi",
+                director: "Prayag Raj",
+                significance: "Bollywood venture",
+                description: "Successful Bollywood venture with Amitabh Bachchan",
+                icon: "🔗",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/geraftaar-1985.jpg"
+            },
+            {
+                year: 1986,
+                title: "Mr. Bharath",
+                tamil: "மிஸ்டர் பாரத்",
+                role: "Bharath",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Action thriller",
+                description: "Stylish action thriller with international locales",
+                icon: "🕵️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/mr-bharath-1986.jpg"
+            },
+            {
+                year: 1986,
+                title: "Dharmadorai",
+                tamil: "தர்மதுரை",
+                role: "Dharmadurai",
+                language: "Tamil",
+                director: "Rajasekhar",
+                significance: "Remake of Mr. Bharath",
+                description: "Telugu remake that was equally successful",
+                icon: "⚖️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/dharmadorai-1986.jpg"
+            },
+            {
+                year: 1987,
+                title: "Velaikaran",
+                tamil: "வேலைக்காரன்",
+                role: "Ragupathi",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Worker's rights theme - Social message",
+                description: "Powerful social message about worker's rights",
+                icon: "👷",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/velaikaran-1987.jpg"
+            },
+            {
+                year: 1987,
+                title: "Manithan",
+                tamil: "மனிதன்",
+                role: "Ravi",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Emotional drama",
+                description: "Emotional drama showcasing his acting prowess",
+                icon: "💔",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/manithan-1987.jpg"
+            },
+            {
+                year: 1988,
+                title: "Dharmathin Thalaivan",
+                tamil: "தர்மத்தின் தலைவன்",
+                role: "Rajinikanth",
+                language: "Tamil",
+                director: "S. P. Muthuraman",
+                significance: "Justice theme",
+                description: "Justice-themed drama with powerful social commentary",
+                icon: "⚖️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/dharmathin-thalaivan-1988.jpg"
+            },
+            {
+                year: 1988,
+                title: "Bloodstone",
+                tamil: "ப்ளட்ஸ்டோன்",
+                role: "Taxi Driver",
+                language: "English",
+                director: "Dwight H. Little",
+                significance: "Hollywood debut - Cameo",
+                description: "Hollywood debut in this action adventure film",
+                icon: "🎬",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/bloodstone-1988.jpg"
+            },
+            
+            // 1990s - Superstardom Peak (1990-1999)
+            {
+                year: 1991,
+                title: "Thalapathi",
+                tamil: "தலபதி",
+                role: "Surya",
+                language: "Tamil",
+                director: "Mani Ratnam",
+                significance: "Based on Mahabharata - Critically acclaimed",
+                description: "Mani Ratnam's masterpiece based on Mahabharata's Karna",
+                icon: "👑",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/thalapathi-1991.jpg"
             },
-            { 
-                year: 1995, 
-                title: "Demigod Status", 
-                film: "Baashha",
-                description: "Crime boss role achieves legendary status",
-                significance: "Cult classic created",
+            {
+                year: 1991,
+                title: "Hum",
+                tamil: "ஹம்",
+                role: "Giridhar",
+                language: "Hindi",
+                director: "Mukul Anand",
+                significance: "Highest grossing Hindi film of 1991",
+                description: "Highest grossing Hindi film of 1991 with stellar cast",
+                icon: "🎬",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/hum-1991.jpg"
+            },
+            {
+                year: 1992,
+                title: "Annamalai",
+                tamil: "அண்ணாமலை",
+                role: "Annamalai",
+                language: "Tamil",
+                director: "Suresh Krissna",
+                significance: "Rags to riches - Iconic dialogues",
+                description: "Rags to riches story with legendary dialogues",
+                icon: "🐘",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/annamalai-1992.jpg"
+            },
+            {
+                year: 1992,
+                title: "Phool Bane Angaray",
+                tamil: "பூல் பனே அங்காரே",
+                role: "Raja",
+                language: "Hindi",
+                director: "K. C. Bokadia",
+                significance: "Action drama",
+                description: "High-voltage action drama in Bollywood",
+                icon: "🌸",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/phool-bane-angaray-1992.jpg"
+            },
+            {
+                year: 1993,
+                title: "Uzhaippali",
+                tamil: "உழைப்பாளி",
+                role: "Raja",
+                language: "Tamil",
+                director: "P. Vasu",
+                significance: "Worker anthem",
+                description: "Worker's anthem celebrating labor and dignity",
+                icon: "👨‍🏭",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/uzhaippali-1993.jpg"
+            },
+            {
+                year: 1993,
+                title: "Ejamaan",
+                tamil: "எஜமான்",
+                role: "Vaanavaraayan",
+                language: "Tamil",
+                director: "R. V. Udayakumar",
+                significance: "Rural drama - Massive hit",
+                description: "Rural drama that became a massive box office hit",
+                icon: "🌾",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/ejamaan-1993.jpg"
+            },
+            {
+                year: 1994,
+                title: "Veera",
+                tamil: "வீரா",
+                role: "Veera",
+                language: "Tamil",
+                director: "Suresh Krissna",
+                significance: "Brother sentiment - Blockbuster",
+                description: "Emotional brother sentiment that touched hearts",
+                icon: "👥",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/veera-1994.jpg"
+            },
+            {
+                year: 1995,
+                title: "Baashha",
+                tamil: "பாஷா",
+                role: "Manickam/Manik Baashha",
+                language: "Tamil",
+                director: "Suresh Krissna",
+                significance: "Cult classic - Highest grosser of the decade",
+                description: "Legendary cult classic - highest grossing film of 1990s",
+                icon: "🔥",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/baashha-1995.jpg"
             },
-            { 
-                year: 1999, 
-                title: "Highest Grosser", 
-                film: "Padayappa",
-                description: "Becomes highest-grossing Tamil film",
-                significance: "Box office supremacy",
+            {
+                year: 1995,
+                title: "Muthu",
+                tamil: "முத்து",
+                role: "Muthu",
+                language: "Tamil",
+                director: "K. S. Ravikumar",
+                significance: "First Tamil film to gross ₹100 crore - Japan sensation",
+                description: "First Tamil film to gross ₹100 crore - huge hit in Japan",
+                icon: "💫",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/muthu-1995.jpg"
+            },
+            {
+                year: 1996,
+                title: "Arunachalam",
+                tamil: "அருணாச்சலம்",
+                role: "Arunachalam",
+                language: "Tamil",
+                director: "Sundar C",
+                significance: "Family entertainer - Major success",
+                description: "Family entertainer with comedy and sentiment",
+                icon: "🎪",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/arunachalam-1997.jpg"
+            },
+            {
+                year: 1999,
+                title: "Padayappa",
+                tamil: "படையப்பா",
+                role: "Padayappa",
+                language: "Tamil",
+                director: "K. S. Ravikumar",
+                significance: "Highest grosser - Iconic character",
+                description: "Highest grosser with the iconic Padayappa character",
+                icon: "👑",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/padayappa-1999.jpg"
             },
-            { 
-                year: 2007, 
-                title: "First ₹100 Crore", 
-                film: "Sivaji: The Boss",
-                description: "First Tamil film to gross ₹100 crore",
-                significance: "Mega-budget era begins",
+            
+            // 2000s - Continued Dominance (2000-2009)
+            {
+                year: 2002,
+                title: "Baba",
+                tamil: "பாபா",
+                role: "Baba",
+                language: "Tamil",
+                director: "Suresh Krissna",
+                significance: "Spiritual theme - Written by Rajinikanth",
+                description: "Spiritual journey - story written by Rajinikanth himself",
+                icon: "🕉️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/baba-2002.jpg"
+            },
+            {
+                year: 2004,
+                title: "Chandramukhi",
+                tamil: "சந்திரமுகி",
+                role: "Dr. Vettaiyan Raja",
+                language: "Tamil",
+                director: "P. Vasu",
+                significance: "Longest running Tamil film - 890 days",
+                description: "Longest running Tamil film - 890 days in theaters",
+                icon: "👻",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/chandramukhi-2005.jpg"
+            },
+            {
+                year: 2007,
+                title: "Sivaji",
+                tamil: "சிவாஜி",
+                role: "Sivaji",
+                language: "Tamil",
+                director: "S. Shankar",
+                significance: "India's most expensive film at the time - ₹60 crore",
+                description: "India's most expensive film at ₹60 crore budget",
+                icon: "💰",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/sivaji-2007.jpg"
             },
-            { 
-                year: 2010, 
-                title: "Sci-Fi Spectacular", 
-                film: "Enthiran (Robot)",
-                description: "India's most expensive film",
-                significance: "Technical marvel",
+            {
+                year: 2008,
+                title: "Kuselan",
+                tamil: "குசேலன்",
+                role: "Ashok Kumar",
+                language: "Tamil",
+                director: "P. Vasu",
+                significance: "Friendship theme - Remake of Katha Parayumbol",
+                description: "Heartwarming tale of friendship and loyalty",
+                icon: "🤝",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/kuselan-2008.jpg"
+            },
+            
+            // 2010s - The Robot Era & Beyond (2010-2019)
+            {
+                year: 2010,
+                title: "Enthiran",
+                tamil: "எந்திரன்",
+                role: "Dr. Vaseegaran/Chitti",
+                language: "Tamil",
+                director: "S. Shankar",
+                significance: "Sci-fi epic - Highest grossing Indian film at release",
+                description: "Groundbreaking sci-fi epic - highest grossing Indian film",
+                icon: "🤖",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/enthiran-2010.jpg"
             },
-            { 
-                year: 2016, 
-                title: "Record Opening", 
-                film: "Kabali",
-                description: "Biggest weekend opening for Indian film",
-                significance: "Box office tsunami",
+            {
+                year: 2014,
+                title: "Kochadaiiyaan",
+                tamil: "கொச்சடையான்",
+                role: "Kochadaiiyaan",
+                language: "Tamil",
+                director: "Soundarya Rajinikanth",
+                significance: "India's first motion capture film",
+                description: "India's first motion capture animated film",
+                icon: "🎮",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/kochadaiiyaan-2014.jpg"
+            },
+            {
+                year: 2014,
+                title: "Lingaa",
+                tamil: "லிங்கா",
+                role: "Lingeshwaran/Lingaa",
+                language: "Tamil",
+                director: "K. S. Ravikumar",
+                significance: "Dual role - Period drama",
+                description: "Dual role in this period drama about water management",
+                icon: "💧",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/lingaa-2014.jpg"
+            },
+            {
+                year: 2016,
+                title: "Kabali",
+                tamil: "காபாலி",
+                role: "Kabali",
+                language: "Tamil",
+                director: "Pa. Ranjith",
+                significance: "Gangster drama - ₹650 crore worldwide",
+                description: "Gangster drama grossing ₹650 crore worldwide",
+                icon: "🕶️",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/kabali-2016.jpg"
             },
-            { 
-                year: 2018, 
-                title: "Most Expensive Film", 
-                film: "2.0",
-                description: "₹600 crore budget sequel",
-                significance: "Biggest production",
-                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/2point0-2018.jpg"
+            {
+                year: 2017,
+                title: "Kaala",
+                tamil: "காலா",
+                role: "Karikaalan",
+                language: "Tamil",
+                director: "Pa. Ranjith",
+                significance: "Political drama - Dharavi backdrop",
+                description: "Political drama set in Mumbai's Dharavi",
+                icon: "🏘️",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/kaala-2017.jpg"
             },
-            { 
-                year: 2023, 
-                title: "Blockbuster Return", 
-                film: "Jailer",
-                description: "₹600+ crore worldwide",
-                significance: "Box office king again",
+            {
+                year: 2018,
+                title: "2.0",
+                tamil: "2.0",
+                role: "Dr. Vaseegaran/Chitti",
+                language: "Tamil",
+                director: "S. Shankar",
+                significance: "India's most expensive film - ₹570 crore budget",
+                description: "India's most expensive film with ₹570 crore budget",
+                icon: "📱",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/2.0-2018.jpg"
+            },
+            {
+                year: 2019,
+                title: "Petta",
+                tamil: "பேட்ட",
+                role: "Kaali",
+                language: "Tamil",
+                director: "Karthik Subbaraj",
+                significance: "Mass entertainer - ₹240 crore grosser",
+                description: "Mass entertainer grossing ₹240 crore worldwide",
+                icon: "😎",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/petta-2019.jpg"
+            },
+            
+            // 2020s - The Legend Continues (2020-2024)
+            {
+                year: 2020,
+                title: "Darbar",
+                tamil: "தர்பார்",
+                role: "Aditya Arunachalam",
+                language: "Tamil",
+                director: "A. R. Murugadoss",
+                significance: "Cop drama - COVID-19 release challenges",
+                description: "High-octane cop drama released during pandemic",
+                icon: "👮",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/darbar-2020.jpg"
+            },
+            {
+                year: 2021,
+                title: "Annaatthe",
+                tamil: "அண்ணாத்த",
+                role: "Kaalaiyaan",
+                language: "Tamil",
+                director: "Siva",
+                significance: "Family drama - Diwali release",
+                description: "Family drama released during Diwali 2021",
+                icon: "👨‍👧‍👦",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/annaatthe-2021.jpg"
+            },
+            {
+                year: 2023,
+                title: "Jailer",
+                tamil: "ஜெயிலர்",
+                role: "Muthuvel Pandian",
+                language: "Tamil",
+                director: "Nelson Dilipkumar",
+                significance: "Action comedy - ₹650 crore+ worldwide hit",
+                description: "Blockbuster action comedy grossing over ₹650 crore",
+                icon: "🔒",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/jailer-2023.jpg"
             },
-            { 
-                year: 2024, 
-                title: "50th Year", 
-                film: "Vettaiyan",
-                description: "Completes 50 glorious years in cinema",
-                significance: "Golden jubilee celebration",
+            {
+                year: 2024,
+                title: "Lal Salaam",
+                tamil: "லால் சலாம்",
+                role: "Moideen Bhai",
+                language: "Tamil",
+                director: "Aishwarya Rajinikanth",
+                significance: "Extended cameo - Sports drama",
+                description: "Extended cameo in daughter's directorial sports drama",
+                icon: "🏏",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/lal-salaam-2024.jpg"
+            },
+            {
+                year: 2024,
+                title: "Vettaiyan",
+                tamil: "வேட்டையன்",
+                role: "SP Athiyan",
+                language: "Tamil",
+                director: "T. J. Gnanavel",
+                significance: "Action thriller - Latest release",
+                description: "Action thriller - Latest cinematic outing",
+                icon: "🎯",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/vettaiyan-2024.jpg"
             }
         ];
@@ -3099,9 +3594,12 @@
                     <section ref={timelineRef} className="min-h-screen timeline-gradient py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
-                                <h2 className="section-title text-6xl md:text-7xl mb-4 text-yellow-400">
-                                    ICONIC MOMENTS
+                                <h2 className="text-4xl md:text-5xl font-bold text-yellow-500 mb-4">
+                                    🎬 50 Years, 50 Iconic Movies
                                 </h2>
+                                <p className="text-gray-300 text-lg mb-8">
+                                    Celebrating five decades of Superstar's cinematic journey (1975-2024)
+                                </p>
                                 <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                                     Key highlights from five decades of unparalleled cinematic excellence
                                 </p>
