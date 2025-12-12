@@ -21,7 +21,7 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@upstash/redis": "^1.28.0"
+    "@vercel/kv": "^2.0.0"
   },
   "devDependencies": {
     "vercel": "^33.0.0"
