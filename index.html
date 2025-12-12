@@ -3613,13 +3613,18 @@
                                         style={{ animationDelay: `${index * 0.05}s` }}
                                         onClick={() => setSelectedYear(selectedYear === moment.year ? null : moment.year)}
                                     >
-                                        <div className="h-48 overflow-hidden relative">
+                                        <div className="h-48 overflow-hidden relative bg-gradient-to-br from-yellow-600/20 to-red-600/20">
                                             <img 
                                                 src={moment.image} 
                                                 alt={moment.title}
                                                 className="w-full h-full object-cover moment-image"
+                                                onError={(e) => {
+                                                    e.target.onerror = null; // Prevent infinite loop
+                                                    e.target.src = 'https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/rajini-logo-default.jpeg';
+                                                    e.target.style.objectFit = 'contain';
+                                                    e.target.style.padding = '2rem';
+                                                }}
                                             />
-                                            <div className="image-notice">PLACEHOLDER</div>
                                         </div>
                                         
                                         <div className="p-6">
