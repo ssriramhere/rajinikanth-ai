@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Celebrating 50 years of Superstar Rajinikanth - The complete filmography and tribute site",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "deploy": "vercel --prod"
@@ -16,8 +17,11 @@
   ],
   "author": "Sriram",
   "license": "MIT",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
-    "@vercel/kv": "^1.0.1"
+    "@upstash/redis": "^1.28.0"
   },
   "devDependencies": {
     "vercel": "^33.0.0"
