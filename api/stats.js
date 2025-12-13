@@ -1,7 +1,18 @@
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Get the origin from the request
+    const origin = req.headers.origin;
+    
+    // Only allow your own domain (more secure than '*')
+    if (origin === 'https://rajinikanth.ai' || 
+        origin === 'http://localhost:3000') { // for local development
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    } else {
+        // Default to your main domain
+        res.setHeader('Access-Control-Allow-Origin', 'https://rajinikanth.ai');
+    }
+    
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
