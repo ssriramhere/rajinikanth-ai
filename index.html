@@ -2582,258 +2582,236 @@
     
         // =============================================
         // DIALOGUE CARD GENERATOR WITH MOVIE POSTERS
-        // =============================================
+        // =============================================     
         
         const DialogueCardGenerator = () => {
             const [selectedDialogue, setSelectedDialogue] = React.useState(null);
-            const [selectedStyle, setSelectedStyle] = React.useState('classic');
+            const [currentStyle, setCurrentStyle] = React.useState('vintage');
             const [userName, setUserName] = React.useState('');
-            const [showNameInput, setShowNameInput] = React.useState(false);
-            const cardRef = React.useRef(null);
+            const [isDownloading, setIsDownloading] = React.useState(false);
         
-            // Iconic Rajini Dialogues with Movie Posters
-            const dialogues = [
-            {
-                id: 1,
-                text: "Naan oru thadava sonna, nooru thadava sonna madhiri",
-                english: "When I say something once, it's like saying it a hundred times",
-                film: "Baashha",
-                year: 1995,
-                poster: "/images/baashha-1995.jpg",
-                character: "Manickam",
-                category: "Power",
-                icon: "🎭"
-            },
-            {
-                id: 2,
-                text: "En vazhi, thani vazhi",
-                english: "My way is a unique way",
-                film: "Padayappa",
-                year: 1999,
-                poster: "/images/padayappa-1999.jpg",
-                character: "Padayappa",
-                category: "Confidence",
-                icon: "👑"
-            },           
-            {
-                id: 7,
-                text: "Oruvan oruvan mudhalali",
-                english: "Everyone is a boss in their own way",
-                film: "Muthu",
-                year: 1995,
-                poster: "/images/muthu-1995.jpg",
-                character: "Muthu",
-                category: "Equality",
-                icon: "🎪"
-            },
-            {
-                id: 8,
-                text: "I am version 2.0!",
-                english: "I am version 2.0!",
-                film: "Enthiran",
-                year: 2010,
-                poster: "/images/enthiran-2010.jpg",
-                character: "Chitti",
-                category: "Technology",
-                icon: "🤖"
-            },            
-            {
-                id: 14,
-                text: "Singam single-ah dhan varum... ganangala varaadhu",
-                english: "A lion comes alone... not in groups",
-                film: "Sivaji",
-                year: 2007,
-                poster: "/images/sivaji-2007.jpg",
-                character: "Sivaji",
-                category: "Strength",
-                icon: "🦁"
-            },          
-           
-            {
-                id: 25,
-                text: "Enakku thani Rajini Style!",
-                english: "I have my own Rajini Style!",
-                film: "Sivaji",
-                year: 2007,
-                poster: "/images/sivaji-2007.jpg",
-                character: "Sivaji",
-                category: "Unique",
-                icon: "💫"
-            },
-            {
-                id: 26,
-                text: "Thalaivan irukkra idathula... vettu theruvlaam illa!",
-                english: "Where the leader is... there are no cross streets!",
-                film: "Padayappa",
-                year: 1999,
-                poster: "/images/padayappa-1999.jpg",
-                character: "Padayappa",
-                category: "Leadership",
-                icon: "👑"
-            },
-            
-           
-            {
-                id: 48,
-                text: "Semma mass-u!",
-                english: "Super cool!",
-                film: "Sivaji",
-                year: 2007,
-                poster: "/images/sivaji-2007.jpg",
-                character: "Sivaji",
-                category: "Appreciation",
-                icon: "🔥"
-            },
-            
-        ];
+            // 10 Most Iconic Dialogues - Quality over Quantity
+            const iconicDialogues = [
+                {
+                    id: 1,
+                    tamil: "நான் ஒரு தடவை சொன்னா... நூறு தடவை சொன்ன மாதிரி",
+                    english: "When I say something once, it's like saying it a hundred times",
+                    film: "Baashha",
+                    year: 1995,
+                    icon: "👑"
+                },
+                {
+                    id: 2,
+                    tamil: "என் வழி... தனி வழி!",
+                    english: "My way is a unique way!",
+                    film: "Padayappa",
+                    year: 1999,
+                    icon: "🦁"
+                },
+                {
+                    id: 3,
+                    tamil: "பேர கேட்டாலே சும்மா அதிருதில்ல!",
+                    english: "Doesn't everything quake at the mere mention of my name!",
+                    film: "Sivaji",
+                    year: 2007,
+                    icon: "⚡"
+                },
+                {
+                    id: 4,
+                    tamil: "போடா, ஆண்டவனே நம்ம பக்கம் இருக்கான்",
+                    english: "God is with us, why worry?",
+                    film: "Padayappa",
+                    year: 1999,
+                    icon: "🦅"
+                },
+                {
+                    id: 5,
+                    tamil: "நான் எப்ப வருவேன் எப்படி வருவேன்னு தெரியாது, ஆனா வரவேண்டிய நேரத்துல கரெக்டா வருவேன்",
+                    english: "No one knows when or how I'll come, but I'll arrive exactly when I'm needed",
+                    film: "Muthu",
+                    year: 1995,
+                    icon: "⚖️"
+                },
+                {
+                    id: 6,
+                    tamil: "ஆண்டவன் சொல்றான், அருணாச்சலம் செய்றான்!",
+                    english: "(God wishes, Arunachalam does!",
+                    film: "Arunachalam",
+                    year: 1999,
+                    icon: "👁️"
+                },
+                {
+                    id: 7,
+                    tamil: "கெட்ட பையன் சார் இந்த காளி",
+                    english: "This Kaali is a bad boy",
+                    film: "Mullum Malarum",
+                    year: 1978,
+                    icon: "🤖"
+                },
+                {
+                    id: 8,
+                    tamil: "நான் சொல்றதையும் செய்வேன், சொல்லாததையும் செய்வேன்!",
+                    english: "I'll do what I say, and I'll also do what I don't say!",
+                    film: "Annamalai",
+                    year: 1992,
+                    icon: "🔥"
+                },
+                {
+                    id: 9,
+                    tamil: "சீவிடுவேன்!",
+                    english: "'ll slice your head!",
+                    film: "Murattu Kaalai",
+                    year: 2005,
+                    icon: "🌪️"
+                },
+                {
+                    id: 10,
+                    tamil: "கதம் கதம்! முடிஞ்சது முடிஞ்சது தான்",
+                    english: "Finished, finished! What's done is done!",
+                    film: "Baba",
+                    year: 2002,
+                    icon: "🤝"
+                }
+            ];
         
-            // Card Styles
+            // Premium Card Styles - Refined and Elegant
             const cardStyles = {
+                vintage: {
+                    name: 'Vintage Cinema',
+                    bg: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+                    border: '4px solid #d4af37',
+                    textColor: '#d4af37',
+                    accentColor: '#8b0000',
+                    pattern: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23d4af37\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
+                },
                 classic: {
-                    name: "Classic",
-                    bg: "from-yellow-600/20 via-red-600/20 to-yellow-600/20",
-                    border: "border-yellow-500",
-                    textColor: "text-yellow-400",
-                    shadow: "shadow-yellow-500/50"
-                },
-                minimal: {
-                    name: "Minimal",
-                    bg: "from-gray-900/20 via-gray-800/20 to-gray-900/20",
-                    border: "border-gray-400",
-                    textColor: "text-gray-100",
-                    shadow: "shadow-gray-500/50"
-                },
-                bold: {
-                    name: "Bold",
-                    bg: "from-red-600/20 via-orange-500/20 to-red-600/20",
-                    border: "border-red-500",
-                    textColor: "text-red-400",
-                    shadow: "shadow-red-500/50"
+                    name: 'Classic Gold',
+                    bg: 'linear-gradient(135deg, #000000 0%, #1a0000 100%)',
+                    border: '6px double #ffd700',
+                    textColor: '#ffd700',
+                    accentColor: '#ffffff',
+                    pattern: 'none'
                 },
                 elegant: {
-                    name: "Elegant",
-                    bg: "from-purple-600/20 via-pink-500/20 to-purple-600/20",
-                    border: "border-purple-400",
-                    textColor: "text-purple-300",
-                    shadow: "shadow-purple-500/50"
+                    name: 'Elegant Dark',
+                    bg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                    border: '3px solid #e94560',
+                    textColor: '#f1f1f1',
+                    accentColor: '#e94560',
+                    pattern: 'none'
                 },
-                vibrant: {
-                    name: "Vibrant",
-                    bg: "from-cyan-500/20 via-blue-500/20 to-cyan-500/20",
-                    border: "border-cyan-400",
-                    textColor: "text-cyan-300",
-                    shadow: "shadow-cyan-500/50"
-                },
-                royal: {
-                    name: "Royal",
-                    bg: "from-yellow-500/20 via-amber-600/20 to-yellow-500/20",
-                    border: "border-amber-400",
-                    textColor: "text-amber-300",
-                    shadow: "shadow-amber-500/50"
+                minimal: {
+                    name: 'Minimal White',
+                    bg: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
+                    border: '2px solid #000000',
+                    textColor: '#000000',
+                    accentColor: '#8b0000',
+                    pattern: 'none'
                 }
             };
         
-            const currentStyle = cardStyles[selectedStyle];
-        
-            // Download Card as Image
-            const downloadCard = async () => {
-                if (!cardRef.current || !selectedDialogue) return;
-        
+            const handleDownload = async () => {
+                if (!selectedDialogue) return;
+                
+                setIsDownloading(true);
+                const cardElement = document.getElementById('dialogue-card-preview');
+                
                 try {
-                    const canvas = await html2canvas(cardRef.current, {
+                    const canvas = await html2canvas(cardElement, {
                         scale: 2,
                         backgroundColor: null,
-                        useCORS: true,
-                        allowTaint: true,
-                        logging: false
+                        logging: false,
+                        useCORS: true
                     });
-        
+                    
                     const link = document.createElement('a');
-                    link.download = `rajini-dialogue-${selectedDialogue.film.toLowerCase().replace(/\s+/g, '-')}.png`;
+                    link.download = `rajini-dialogue-${selectedDialogue.id}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 } catch (error) {
-                    console.error('Error generating image:', error);
-                    alert('Failed to generate image. Please try again.');
+                    console.error('Download failed:', error);
+                    alert('Download failed. Please try again.');
+                } finally {
+                    setIsDownloading(false);
                 }
             };
         
-            // Share Card
-            const shareCard = async () => {
+            const handleShare = () => {
                 if (!selectedDialogue) return;
-        
-                const shareText = `"${selectedDialogue.text}"\n\n- ${selectedDialogue.film} (${selectedDialogue.year})\n\nCelebrating 50 Years of Superstar Rajinikanth!\n\n#Rajinikanth #Thalaivar #50YearsOfRajini`;
-        
+                
+                const shareText = `"${selectedDialogue.english}"\n\n- ${selectedDialogue.film} (${selectedDialogue.year})\n\nCreate your own at rajinikanth.ai 🎬`;
+                
                 if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: `Rajinikanth Dialogue - ${selectedDialogue.film}`,
-                            text: shareText,
-                            url: window.location.href
-                        });
-                    } catch (error) {
-                        if (error.name !== 'AbortError') {
-                            fallbackShare(shareText);
-                        }
-                    }
+                    navigator.share({
+                        title: 'Rajinikanth Dialogue',
+                        text: shareText,
+                        url: 'https://rajinikanth.ai'
+                    }).catch(() => {});
                 } else {
-                    fallbackShare(shareText);
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
                 }
             };
         
-            const fallbackShare = (text) => {
-                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-                window.open(twitterUrl, '_blank');
-            };
+            const style = cardStyles[currentStyle];
         
             return (
-                <div className="mb-16 px-4">
+                <div className="py-20 px-4" style={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%)' }}>
                     <div className="max-w-6xl mx-auto">
+                        
                         {/* Header */}
-                        <div className="text-center mb-12">
-                            <h2 className="text-4xl md:text-5xl font-bold text-yellow-500 mb-4 section-title">
+                        <div className="text-center mb-16">
+                            <h2 className="text-5xl font-bold mb-4" style={{ 
+                                background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                textShadow: '0 0 30px rgba(255, 215, 0, 0.3)'
+                            }}>
                                 🎬 Iconic Dialogues
                             </h2>
-                            <p className="text-gray-300 text-lg">
-                                Create shareable cards with Superstar's legendary dialogues
+                            <p className="text-gray-400 text-lg">
+                                Create and share vintage cinema cards with Rajinikanth's most legendary lines
                             </p>
                         </div>
         
-                        <div className="grid lg:grid-cols-2 gap-8">
+                        <div className="grid lg:grid-cols-2 gap-12">
+                            
                             {/* Left: Dialogue Selection */}
                             <div>
-                                <h3 className="text-2xl font-bold text-yellow-400 mb-6">Select Dialogue</h3>
+                                <h3 className="text-2xl font-bold text-gold-400 mb-6 flex items-center gap-3">
+                                    <span>👑</span>
+                                    <span>Select a Dialogue</span>
+                                </h3>
                                 
-                                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                                    {dialogues.map((dialogue) => (
+                                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2"
+                                     style={{
+                                         scrollbarWidth: 'thin',
+                                         scrollbarColor: '#d4af37 #1a1a1a'
+                                     }}>
+                                    {iconicDialogues.map((dialogue) => (
                                         <button
                                             key={dialogue.id}
                                             onClick={() => setSelectedDialogue(dialogue)}
-                                            className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                                            className={`w-full text-left p-5 rounded-lg transition-all duration-300 ${
                                                 selectedDialogue?.id === dialogue.id
-                                                    ? 'border-yellow-500 bg-yellow-500/10'
-                                                    : 'border-gray-700 bg-gray-800/50 hover:border-yellow-500/50'
+                                                    ? 'bg-gradient-to-r from-yellow-900/40 to-red-900/40 border-2 border-gold-500 transform scale-105'
+                                                    : 'bg-gray-900/50 border border-gray-700 hover:border-gold-500 hover:bg-gray-800/50'
                                             }`}
+                                            style={{
+                                                backdropFilter: 'blur(10px)'
+                                            }}
                                         >
                                             <div className="flex items-start gap-3">
-                                                {dialogue.poster && (
-                                                    <img 
-                                                        src={dialogue.poster} 
-                                                        alt={dialogue.film}
-                                                        className="w-12 h-16 object-cover rounded"
-                                                        loading="lazy"
-                                                    />
-                                                )}
+                                                <span className="text-3xl">{dialogue.icon}</span>
                                                 <div className="flex-1">
-                                                    <p className="text-white font-medium mb-2 line-clamp-2">
-                                                        "{dialogue.text}"
+                                                    <p className="text-lg font-semibold text-gold-300 mb-2 leading-relaxed">
+                                                        {dialogue.tamil}
                                                     </p>
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <span className="text-yellow-400 font-semibold">
-                                                            {dialogue.film}
-                                                        </span>
-                                                        <span className="text-gray-400">({dialogue.year})</span>
-                                                    </div>
+                                                    <p className="text-sm text-gray-400 italic mb-2">
+                                                        "{dialogue.english}"
+                                                    </p>
+                                                    <p className="text-xs text-gray-500">
+                                                        {dialogue.film} ({dialogue.year})
+                                                    </p>
                                                 </div>
                                             </div>
                                         </button>
@@ -2841,173 +2819,203 @@
                                 </div>
                             </div>
         
-                            {/* Right: Card Preview & Customization */}
+                            {/* Right: Preview and Customization */}
                             <div>
-                                {selectedDialogue ? (
-                                    <div className="space-y-6">
-                                        {/* Style Selection */}
-                                        <div>
-                                            <h3 className="text-xl font-bold text-yellow-400 mb-4">Choose Style</h3>
-                                            <div className="grid grid-cols-3 gap-3">
-                                                {Object.entries(cardStyles).map(([key, style]) => (
-                                                    <button
-                                                        key={key}
-                                                        onClick={() => setSelectedStyle(key)}
-                                                        className={`p-3 rounded-lg border-2 transition-all ${
-                                                            selectedStyle === key
-                                                                ? 'border-yellow-500 bg-yellow-500/10'
-                                                                : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
-                                                        }`}
-                                                    >
-                                                        <div className={`h-12 rounded bg-gradient-to-br ${style.bg} mb-2`}></div>
-                                                        <p className="text-white text-sm font-medium">{style.name}</p>
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
+                                <h3 className="text-2xl font-bold text-gold-400 mb-6 flex items-center gap-3">
+                                    <span>🎨</span>
+                                    <span>Customize Your Card</span>
+                                </h3>
         
-                                        {/* Name Input Option */}
-                                        <div>
-                                            <label className="flex items-center gap-2 text-gray-300 mb-2 cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={showNameInput}
-                                                    onChange={(e) => {
-                                                        setShowNameInput(e.target.checked);
-                                                        if (!e.target.checked) setUserName('');
-                                                    }}
-                                                    className="w-4 h-4"
-                                                />
-                                                Add your name to the card
-                                            </label>
-                                            
-                                            {showNameInput && (
-                                                <input
-                                                    type="text"
-                                                    value={userName}
-                                                    onChange={(e) => setUserName(e.target.value)}
-                                                    placeholder="Your name"
-                                                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-yellow-500 focus:outline-none"
-                                                    maxLength={30}
-                                                />
-                                            )}
-                                        </div>
-        
-                                        {/* Card Preview */}
-                                        <div>
-                                            <h3 className="text-xl font-bold text-yellow-400 mb-4">Preview</h3>
-                                            
-                                            <div 
-                                                ref={cardRef}
-                                                className={`relative w-full aspect-[9/16] rounded-2xl border-4 ${currentStyle.border} ${currentStyle.shadow} shadow-2xl overflow-hidden`}
-                                                style={{
-                                                    backgroundImage: selectedDialogue.poster ? `url(${selectedDialogue.poster})` : 'none',
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: 'center'
-                                                }}
+                                {/* Style Selection */}
+                                <div className="mb-6">
+                                    <label className="block text-gray-400 mb-3 text-sm font-semibold">CARD STYLE</label>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {Object.entries(cardStyles).map(([key, value]) => (
+                                            <button
+                                                key={key}
+                                                onClick={() => setCurrentStyle(key)}
+                                                className={`p-3 rounded-lg border-2 transition-all ${
+                                                    currentStyle === key
+                                                        ? 'border-gold-500 bg-gold-900/20'
+                                                        : 'border-gray-700 bg-gray-900/30 hover:border-gold-600'
+                                                }`}
                                             >
-                                                {/* Dark Overlay for Readability */}
-                                                <div className={`absolute inset-0 bg-gradient-to-b ${currentStyle.bg}`}></div>
-                                                <div className="absolute inset-0 bg-black/60"></div>
+                                                <div className="text-sm font-semibold text-gray-300">
+                                                    {value.name}
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+        
+                                {/* Name Input */}
+                                <div className="mb-6">
+                                    <label className="block text-gray-400 mb-3 text-sm font-semibold">ADD YOUR NAME (OPTIONAL)</label>
+                                    <input
+                                        type="text"
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                        placeholder="Enter your name..."
+                                        className="w-full px-4 py-3 rounded-lg bg-gray-900/50 border border-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                                    />
+                                </div>
+        
+                                {/* Preview Card */}
+                                {selectedDialogue ? (
+                                    <div className="mb-6">
+                                        <label className="block text-gray-400 mb-3 text-sm font-semibold">PREVIEW</label>
+                                        <div 
+                                            id="dialogue-card-preview"
+                                            className="relative rounded-xl overflow-hidden shadow-2xl"
+                                            style={{
+                                                width: '400px',
+                                                height: '560px',
+                                                background: style.bg,
+                                                backgroundImage: style.pattern,
+                                                border: style.border,
+                                                margin: '0 auto'
+                                            }}
+                                        >
+                                            {/* Decorative Corner Elements */}
+                                            <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4" 
+                                                 style={{ borderColor: style.textColor }}></div>
+                                            <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4" 
+                                                 style={{ borderColor: style.textColor }}></div>
+                                            <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4" 
+                                                 style={{ borderColor: style.textColor }}></div>
+                                            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4" 
+                                                 style={{ borderColor: style.textColor }}></div>
+        
+                                            {/* Content */}
+                                            <div className="relative h-full flex flex-col justify-between p-10">
                                                 
-                                                {/* Content */}
-                                                <div className="relative h-full flex flex-col justify-between p-8">
-                                                    {/* Top: Logo */}
-                                                    <div className="text-center">
-                                                        <div className={`text-3xl font-bold ${currentStyle.textColor} tracking-wider`}>
-                                                            RAJINIKANTH
-                                                        </div>
-                                                        <div className="text-gray-300 text-sm mt-1">
-                                                            50 YEARS OF CINEMA
-                                                        </div>
+                                                {/* Top: Branding */}
+                                                <div className="text-center">
+                                                    <div style={{ 
+                                                        color: style.textColor,
+                                                        fontSize: '32px',
+                                                        fontWeight: 'bold',
+                                                        letterSpacing: '4px',
+                                                        fontFamily: 'Georgia, serif',
+                                                        marginBottom: '8px'
+                                                    }}>
+                                                        RAJINIKANTH
                                                     </div>
-        
-                                                    {/* Middle: Dialogue */}
-                                                    <div className="flex-1 flex items-center justify-center">
-                                                        <div className="text-center">
-                                                            <div className="text-6xl mb-4">🎬</div>
-                                                            <p className="text-white text-2xl md:text-3xl font-bold leading-relaxed px-4">
-                                                                "{selectedDialogue.text}"
-                                                            </p>
-                                                        </div>
+                                                    <div style={{
+                                                        color: style.accentColor,
+                                                        fontSize: '12px',
+                                                        letterSpacing: '2px',
+                                                        fontWeight: '600'
+                                                    }}>
+                                                        50 YEARS OF CINEMA
                                                     </div>
+                                                </div>
         
-                                                    {/* Bottom: Movie Info */}
-                                                    <div className="text-center space-y-2">
-                                                        <div className={`text-2xl font-bold ${currentStyle.textColor}`}>
-                                                            {selectedDialogue.film}
+                                                {/* Middle: Icon & Dialogue */}
+                                                <div className="flex-1 flex flex-col items-center justify-center px-4">
+                                                    <div style={{ fontSize: '64px', marginBottom: '24px' }}>
+                                                        {selectedDialogue.icon}
+                                                    </div>
+                                                    
+                                                    <div style={{
+                                                        color: style.textColor,
+                                                        fontSize: '22px',
+                                                        fontWeight: '600',
+                                                        textAlign: 'center',
+                                                        lineHeight: '1.6',
+                                                        marginBottom: '20px',
+                                                        fontFamily: 'Georgia, serif'
+                                                    }}>
+                                                        "{selectedDialogue.tamil}"
+                                                    </div>
+                                                    
+                                                    <div style={{
+                                                        color: style.accentColor,
+                                                        fontSize: '14px',
+                                                        textAlign: 'center',
+                                                        fontStyle: 'italic',
+                                                        opacity: 0.9,
+                                                        lineHeight: '1.5'
+                                                    }}>
+                                                        "{selectedDialogue.english}"
+                                                    </div>
+                                                </div>
+        
+                                                {/* Bottom: Film Info & User */}
+                                                <div className="text-center">
+                                                    <div style={{
+                                                        color: style.textColor,
+                                                        fontSize: '16px',
+                                                        fontWeight: 'bold',
+                                                        marginBottom: '4px',
+                                                        letterSpacing: '1px'
+                                                    }}>
+                                                        {selectedDialogue.film}
+                                                    </div>
+                                                    <div style={{
+                                                        color: style.accentColor,
+                                                        fontSize: '14px',
+                                                        marginBottom: userName ? '12px' : '20px'
+                                                    }}>
+                                                        {selectedDialogue.year}
+                                                    </div>
+                                                    
+                                                    {userName && (
+                                                        <div style={{
+                                                            color: style.textColor,
+                                                            fontSize: '12px',
+                                                            fontStyle: 'italic',
+                                                            opacity: 0.8,
+                                                            marginBottom: '12px'
+                                                        }}>
+                                                            — {userName}
                                                         </div>
-                                                        <div className="text-gray-300 text-lg">
-                                                            {selectedDialogue.year}
-                                                        </div>
-                                                        {userName && (
-                                                            <div className="text-yellow-300 text-lg mt-4">
-                                                                - {userName}
-                                                            </div>
-                                                        )}
-                                                        <div className="text-gray-400 text-sm mt-4">
-                                                            rajinikanth.ai
-                                                        </div>
+                                                    )}
+                                                    
+                                                    <div style={{
+                                                        color: style.accentColor,
+                                                        fontSize: '11px',
+                                                        letterSpacing: '1px',
+                                                        opacity: 0.7
+                                                    }}>
+                                                        rajinikanth.ai 🎬
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-        
-                                        {/* Action Buttons */}
-                                        <div className="flex gap-4">
-                                            <button
-                                                onClick={downloadCard}
-                                                className="flex-1 bg-gradient-to-r from-yellow-500 to-red-600 text-white font-bold py-4 px-6 rounded-lg hover:from-yellow-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg"
-                                            >
-                                                📥 Download Card
-                                            </button>
-                                            <button
-                                                onClick={shareCard}
-                                                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-4 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
-                                            >
-                                                📤 Share
-                                            </button>
-                                        </div>
                                     </div>
                                 ) : (
-                                    <div className="h-full flex items-center justify-center bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-700">
-                                        <div className="text-center p-8">
-                                            <div className="text-6xl mb-4">🎬</div>
-                                            <p className="text-gray-400 text-xl">
-                                                Select a dialogue to create your card
-                                            </p>
-                                        </div>
+                                    <div className="mb-6 flex items-center justify-center h-[560px] bg-gray-900/30 rounded-xl border-2 border-dashed border-gray-700">
+                                        <p className="text-gray-500 text-lg">Select a dialogue to preview</p>
+                                    </div>
+                                )}
+        
+                                {/* Action Buttons */}
+                                {selectedDialogue && (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            onClick={handleDownload}
+                                            disabled={isDownloading}
+                                            className="px-6 py-4 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-600 text-white font-bold rounded-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                                        >
+                                            {isDownloading ? '⏳ Downloading...' : '📥 Download Card'}
+                                        </button>
+                                        
+                                        <button
+                                            onClick={handleShare}
+                                            className="px-6 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-lg"
+                                        >
+                                            📤 Share
+                                        </button>
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
-        
-                    <style>{`
-                        .custom-scrollbar::-webkit-scrollbar {
-                            width: 8px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-track {
-                            background: rgba(31, 41, 55, 0.5);
-                            border-radius: 4px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb {
-                            background: rgba(251, 191, 36, 0.5);
-                            border-radius: 4px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                            background: rgba(251, 191, 36, 0.7);
-                        }
-                        .line-clamp-2 {
-                            display: -webkit-box;
-                            -webkit-line-clamp: 2;
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                        }
-                    `}</style>
                 </div>
             );
-        }; //DialogueCardGenerator ends
+        };
+        //DialogueCardGenerator ends
 
                
         function RajnikanthTribute() {
@@ -3229,7 +3237,7 @@
                             <DailyRajiniTrivia />
 
                             {/* Dialogue Card Generator - not enabling for now */}
-                            {/*  <DialogueCardGenerator /> */}
+                            {<DialogueCardGenerator />
                             
                         </div>
                     </section>
