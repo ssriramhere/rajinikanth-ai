@@ -3240,20 +3240,20 @@
                     
                     {/* NEW FEATURES SECTION */}
                     <section className="bg-gradient-to-b from-red-950/20 to-black py-20 px-6">
-                        <div className="max-w-7xl mx-auto">
-                            {/* Visitor Stats */}
-                            <VisitorStats totalFilms={filmography.length} />
+                        <div className="max-w-7xl mx-auto">                            
                             
-                            {/* Fun Facts Carousel */}
-                            <RajiniFacts />
+                            {/* Fun Facts Carousel */}                            
+                            <section ref={quizRef} className="py-8">
+                                <RajiniFacts />
+                            </section>
 
                             {/* Which Rajini Character Quiz */}
-                            <section ref={quizRef} className="py-20">
+                            <section ref={quizRef} className="py-8">
                                 <RajiniQuiz />
                             </section>
 
                             {/* Rajini Trivia Quiz */}
-                            <section ref={cardsRef} className="py-20">
+                            <section ref={cardsRef} className="py-8">
                                 <DialogueCardGenerator />
                             </section>                           
                             
@@ -3392,6 +3392,7 @@
                             <div className="text-3xl hero-title mb-4 text-yellow-400">
                                 RAJINIKANTH.AI
                             </div>
+                            
                             <p className="text-gray-400 mb-6">
                                 A tribute to 50 years of cinematic brilliance | 1975-2025
                             </p>
@@ -3402,6 +3403,9 @@
                                 Disclaimer: Site intended purely to be a tribute. No commercial use intended. No merchandise to be sold.
                                 Images used are from IMDb, Wikipedia, or the internet.                                
                             </div>
+                            
+                            {/* Visitor Stats */}                            
+                            <VisitorStats totalFilms={filmography.length} />
                             <div className="mt-4 text-xs text-gray-600">
                                
                             </div>
