@@ -3026,6 +3026,8 @@
             const heroRef = useRef(null);
             const timelineRef = useRef(null);
             const filmographyRef = useRef(null);
+            const quizRef = React.useRef(null);
+            const cardsRef = React.useRef(null);
             
             const scrollToSection = (ref, sectionName) => {
                 ref.current?.scrollIntoView({ behavior: 'smooth' });
@@ -3067,30 +3069,44 @@
             
             return (
                 <div className="min-h-screen">
-                    <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6">
-                        <div className="max-w-7xl mx-auto flex justify-between items-center">
-                            <div className="text-2xl font-bold hero-title shimmer">
-                                RAJINIKANTH.AI
-                            </div>
-                            <div className="flex gap-6">
-                                <button 
-                                    onClick={() => scrollToSection(heroRef, 'hero')}
-                                    className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider"
-                                >
-                                    Home
-                                </button>
-                                <button 
-                                    onClick={() => scrollToSection(timelineRef, 'timeline')}
-                                    className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider"
-                                >
-                                    Timeline
-                                </button>
-                                <button 
-                                    onClick={() => scrollToSection(filmographyRef, 'filmography')}
-                                    className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider"
-                                >
-                                    Films
-                                </button>
+                   <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-sm border-b border-gray-800">
+                        <div className="max-w-7xl mx-auto px-4 py-4">
+                            <div className="flex justify-between items-center">
+                                <div className="text-2xl font-bold text-yellow-400">
+                                    RAJINIKANTH
+                                </div>
+                                <div className="flex gap-4 md:gap-6 overflow-x-auto">
+                                    <button 
+                                        onClick={() => scrollToSection(heroRef, 'home')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        Home
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection(timelineRef, 'timeline')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        Timeline
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection(filmographyRef, 'filmography')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        Films
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection(quizRef, 'quiz')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        🎯 Quiz
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection(cardsRef, 'cards')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        🎬 Cards
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </nav>
@@ -3229,10 +3245,14 @@
                             <RajiniFacts />
 
                             {/* Which Rajini Character Quiz */}
-                            <RajiniQuiz />
+                            <section ref={quizRef} className="py-20">
+                                <RajiniQuiz />
+                            </section>
 
                             {/* Rajini Trivia Quiz */}
-                            <DailyRajiniTrivia />
+                            <section ref={cardsRef} className="py-20">
+                                <DialogueCardGenerator />
+                            </section>
 
                             {/* Dialogue Card Generator - not enabling for now */}
                             <DialogueCardGenerator />
