@@ -1243,7 +1243,7 @@
             const [stats, setStats] = useState({
                 totalVisitors: 1247,
                 todayVisitors: 89,
-                totalFilms: totalFilms || 170,
+                totalFilms: totalFilms || 173,
                 loading: true,
                 isRealData: false
             });
@@ -1258,7 +1258,7 @@
                         setStats({
                             totalVisitors: data.totalVisitors,
                             todayVisitors: data.todayVisitors,
-                            totalFilms: totalFilms || 170,
+                            totalFilms: totalFilms || 173,
                             loading: false,
                             isRealData: true
                         });
@@ -1267,7 +1267,7 @@
                         setStats({
                             totalVisitors: data.totalVisitors,
                             todayVisitors: data.todayVisitors,
-                            totalFilms: totalFilms || 170,
+                            totalFilms: totalFilms || 173,
                             loading: false,
                             isRealData: false
                         });
@@ -3252,7 +3252,9 @@
                         <div className="max-w-7xl mx-auto">
                             
                             {/* Visitor Stats */}                            
-                            <VisitorStats totalFilms={filmography.length} />
+                            {/* <VisitorStats totalFilms={filmography.length} /> */}
+
+                            <VisitorStats totalFilms={173} />
                             
                             {/* Fun Facts Carousel */}                            
                             <section className="py-12 mb-8">
