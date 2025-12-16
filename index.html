@@ -1803,8 +1803,27 @@
                     popularity: "Sci-fi spectacular"
                 }
             };
+
+            // ========================================
+            // ========================================
+            const trackQuizCompletion = async (characterName) => {
+                try {
+                    await fetch('/api/engagement-stats', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'quiz_completed',
+                            data: { character: characterName }
+                        })
+                    });
+                } catch (error) {
+                    console.error('Tracking error:', error);
+                }
+            };
             
-            // Calculate result based on answers
+            // ========================================
+            // YOUR UPDATED CALCULATE RESULT FUNCTION
+            // ========================================
             const calculateResult = () => {
                 const characterScores = {};
                 
@@ -1825,7 +1844,14 @@
                     }
                 });
                 
-                return characters[resultCharacter];
+                // Get the character object
+                const finalCharacter = characters[resultCharacter];
+                
+                // TRACK THE COMPLETION
+                trackQuizCompletion(resultCharacter);
+                
+                // Return the character object
+                return finalCharacter;
             };
             
             // Handle answer selection
@@ -2088,31 +2114,8 @@
                     )}
                 </div>
             );
-        }; //Quiz component ends
-
-       // Tracking calls to Character Quiz     
-        const trackQuizCompletion = async (characterName) => {
-            try {
-                await fetch('/api/engagement-stats', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'quiz_completed',
-                        data: { character: characterName }
-                    })
-                });
-            } catch (error) {
-                console.error('Tracking error:', error);
-            }
-        };
+        }; //Quiz component ends           
         
-        // Call it when showing result
-        React.useEffect(() => {
-            if (result) {
-                trackQuizCompletion(result.name); // result.name = "Baashha", "Padayappa", etc.
-            }
-        }, [result]);
-
         // =============================================
         // DAILY RAJINI TRIVIA COMPONENT
         // Add this to your index.html after the RajiniQuiz component
