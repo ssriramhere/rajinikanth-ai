@@ -2469,6 +2469,23 @@
                         ...data
                     });
                     setShowResult(true);
+
+                    // ============================================
+                    // ADD TRACKING HERE - AFTER QUIZ COMPLETES
+                    // ============================================
+                    try {
+                        await fetch('/api/engagement-stats', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                type: 'trivia_completed',
+                                data: { score: isCorrect ? 1 : 0 }
+                            })
+                        });
+                    } catch (trackError) {
+                        console.error('Tracking error:', trackError);
+                    }
+                    // ============================================
                     
                 } catch (error) {
                     console.error('Error submitting answer:', error);
@@ -2854,6 +2871,23 @@
                     link.download = `rajini-dialogue-${selectedDialogue.id}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
+
+                    // ============================================
+                    // TRACK CARD DOWNLOAD
+                    // ============================================
+                    try {
+                        await fetch('/api/engagement-stats', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                type: 'card_downloaded',
+                                data: { dialogue: selectedDialogue.tamil }
+                            })
+                        });
+                    } catch (trackError) {
+                        console.error('Tracking error:', trackError);
+                    }
+                    
                 } catch (error) {
                     console.error('Download failed:', error);
                     alert('Download failed. Please try again.');
@@ -2862,19 +2896,58 @@
                 }
             };
         
-            const handleShare = () => {
+            const handleShare = async () => {
                 if (!selectedDialogue) return;
                 
                 const shareText = `"${selectedDialogue.english}"\n\n- ${selectedDialogue.film} (${selectedDialogue.year})\n\nCreate your own at rajinikanth.ai 🎬`;
                 
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Rajinikanth Dialogue',
-                        text: shareText,
-                        url: 'https://rajinikanth.ai'
-                    }).catch(() => {});
-                } else {
-                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
+                try {
+                    if (navigator.share) {
+                        await navigator.share({
+                            title: 'Rajinikanth Dialogue',
+                            text: shareText,
+                            url: 'https://rajinikanth.ai'
+                        });
+                        
+                        // ============================================
+                        // TRACK CARD SHARE (only if share succeeded)
+                        // ============================================
+                        try {
+                            await fetch('/api/engagement-stats', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    type: 'card_shared',
+                                    data: { dialogue: selectedDialogue.tamil }
+                                })
+                            });
+                        } catch (trackError) {
+                            console.error('Tracking error:', trackError);
+                        }
+                        // ============================================
+                        
+                    } else {
+                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
+                        
+                        // ============================================
+                        // TRACK CARD SHARE (Twitter fallback)
+                        // ============================================
+                        try {
+                            await fetch('/api/engagement-stats', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    type: 'card_shared',
+                                    data: { dialogue: selectedDialogue.tamil }
+                                })
+                            });
+                        } catch (trackError) {
+                            console.error('Tracking error:', trackError);
+                        }
+                        // ============================================
+                    }
+                } catch (error) {
+                    console.error('Share error:', error);
                 }
             };
         
