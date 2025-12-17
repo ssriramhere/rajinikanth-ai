@@ -3225,7 +3225,9 @@
             const heroRef = useRef(null);
             const timelineRef = useRef(null);
             const filmographyRef = useRef(null);
+            const statsRef = React.useRef(null);
             const quizRef = React.useRef(null);
+            const triviaRef = React.useRef(null);
             const cardsRef = React.useRef(null);
             
             const scrollToSection = (ref, sectionName) => {
@@ -3287,12 +3289,25 @@
                                     >
                                         Iconic Movies
                                     </button>
+
+                                    <button 
+                                        onClick={() => scrollToSection(statsRef, 'stats')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        Stats
+                                    </button>
                                     
                                     <button 
                                         onClick={() => scrollToSection(quizRef, 'quiz')}
                                         className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
                                     >
                                         Quiz
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection(triviaRef, 'trivia')}
+                                        className="text-sm hover:text-yellow-400 transition-colors uppercase tracking-wider whitespace-nowrap"
+                                    >
+                                        Trivia
                                     </button>
                                     <button 
                                         onClick={() => scrollToSection(cardsRef, 'cards')}
@@ -3438,7 +3453,7 @@
                     </section>
                     
                     {/* NEW FEATURES SECTION */}
-                    <section className="bg-gradient-to-b from-red-950/20 to-black py-20 px-6">
+                    <section ref={statsRef} className="bg-gradient-to-b from-red-950/20 to-black py-20 px-6">
                         <div className="max-w-7xl mx-auto">
                             
                             {/* Visitor Stats */}                            
@@ -3458,7 +3473,7 @@
                             </section>
 
                             {/* ADD THIS - Daily Rajini Trivia */}
-                            <section className="mb-8">
+                            <section ref={triviaRef} className="mb-8">
                                 <DailyRajiniTrivia />
                             </section>
                                                 
