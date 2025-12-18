@@ -2722,18 +2722,90 @@
                 </div>
             );
         }; //RajiniTrivia ends
-    
+
         // =============================================
-        // DIALOGUE CARD GENERATOR WITH MOVIE POSTERS
-        // =============================================     
+        // ENHANCED DIALOGUE CARD GENERATOR
+        // Three Modes: Classic | Movie Poster | My Photo
+        // With Cinematic Filters & Era Matching
+        // =============================================
         
         const DialogueCardGenerator = () => {
             const [selectedDialogue, setSelectedDialogue] = React.useState(null);
             const [currentStyle, setCurrentStyle] = React.useState('vintage');
             const [userName, setUserName] = React.useState('');
             const [isDownloading, setIsDownloading] = React.useState(false);
+            
+            // NEW: Photo mode state
+            const [cardMode, setCardMode] = React.useState('classic'); // 'classic' | 'poster' | 'photo'
+            const [uploadedPhoto, setUploadedPhoto] = React.useState(null);
+            const [photoPreview, setPhotoPreview] = React.useState(null);
         
-            // 10 Most Iconic Dialogues - Quality over Quantity
+            // =============================================
+            // DIALOGUE TO POSTER MAPPING
+            // =============================================
+            const dialoguePosterMap = {
+                1: "baashha-1995.jpg",      // Naan oru thadava sonna
+                2: "padayappa-1999.jpg",     // En vazhi, thani vazhi
+                3: "sivaji-2007.jpg",        // Pera kettale
+                4: "padayappa-1999.jpg",     // Pooda, Aandavane
+                5: "muthu-1995.jpg",         // Naan eppa varuven
+                6: "arunachalam-1997.jpg",   // Aandavan sollran
+                7: "mullum-malarum-1978.jpg", // Ketta payyan sir
+                8: "annamalai-1992.jpg",     // Naan solrathaiyum
+                9: "murattu-kaalai-1980.jpg", // Seividuven
+                10: "baba-2002.jpg"          // Katham katham
+            };
+        
+            // =============================================
+            // ERA-BASED FILTER PRESETS
+            // =============================================
+            const getEraFilters = (year) => {
+                if (year <= 1989) {
+                    // 1970s-1980s: Warm, grainy, high contrast
+                    return {
+                        brightness: 1.1,
+                        contrast: 1.3,
+                        saturation: 0.9,
+                        sepia: 0.15,
+                        grain: 0.4,
+                        vignette: 0.3
+                    };
+                } else if (year <= 1999) {
+                    // 1990s: Rich colors, soft glow
+                    return {
+                        brightness: 1.05,
+                        contrast: 1.15,
+                        saturation: 1.1,
+                        sepia: 0.05,
+                        grain: 0.25,
+                        vignette: 0.2
+                    };
+                } else if (year <= 2019) {
+                    // 2000s-2010s: HD clarity, vibrant
+                    return {
+                        brightness: 1.0,
+                        contrast: 1.1,
+                        saturation: 1.15,
+                        sepia: 0,
+                        grain: 0.15,
+                        vignette: 0.15
+                    };
+                } else {
+                    // 2020s: Modern, sharp
+                    return {
+                        brightness: 1.0,
+                        contrast: 1.05,
+                        saturation: 1.05,
+                        sepia: 0,
+                        grain: 0.1,
+                        vignette: 0.1
+                    };
+                }
+            };
+        
+            // =============================================
+            // 10 ICONIC DIALOGUES
+            // =============================================
             const iconicDialogues = [
                 {
                     id: 1,
@@ -2778,9 +2850,9 @@
                 {
                     id: 6,
                     tamil: "ஆண்டவன் சொல்றான், அருணாச்சலம் செய்றான்!",
-                    english: "(God wishes, Arunachalam does!",
+                    english: "God wishes, Arunachalam does!",
                     film: "Arunachalam",
-                    year: 1999,
+                    year: 1997,
                     icon: "👁️"
                 },
                 {
@@ -2789,7 +2861,7 @@
                     english: "This Kaali is a bad boy!",
                     film: "Mullum Malarum",
                     year: 1978,
-                    icon: "🤖"
+                    icon: "🔥"
                 },
                 {
                     id: 8,
@@ -2797,12 +2869,12 @@
                     english: "I'll do what I say, and I'll also do what I don't say!",
                     film: "Annamalai",
                     year: 1992,
-                    icon: "🔥"
+                    icon: "💪"
                 },
                 {
                     id: 9,
                     tamil: "சீவிடுவேன்!",
-                    english: "'ll slice your head!",
+                    english: "I'll slice your head!",
                     film: "Murattu Kaalai",
                     year: 1980,
                     icon: "🌪️"
@@ -2813,46 +2885,116 @@
                     english: "Finished, finished! What's done is done!",
                     film: "Baba",
                     year: 2002,
-                    icon: "🤝"
+                    icon: "🕉️"
                 }
             ];
         
-            // Premium Card Styles - Refined and Elegant
+            // =============================================
+            // CARD STYLES
+            // =============================================
             const cardStyles = {
                 vintage: {
                     name: 'Vintage Cinema',
-                    bg: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-                    border: '4px solid #d4af37',
                     textColor: '#d4af37',
                     accentColor: '#8b0000',
-                    pattern: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23d4af37\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
                 },
                 classic: {
                     name: 'Classic Gold',
-                    bg: 'linear-gradient(135deg, #000000 0%, #1a0000 100%)',
-                    border: '6px double #ffd700',
                     textColor: '#ffd700',
                     accentColor: '#ffffff',
-                    pattern: 'none'
                 },
                 elegant: {
                     name: 'Elegant Dark',
-                    bg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                    border: '3px solid #e94560',
                     textColor: '#f1f1f1',
                     accentColor: '#e94560',
-                    pattern: 'none'
                 },
                 minimal: {
                     name: 'Minimal White',
-                    bg: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
-                    border: '2px solid #000000',
                     textColor: '#000000',
                     accentColor: '#8b0000',
-                    pattern: 'none'
                 }
             };
         
+            // =============================================
+            // PHOTO UPLOAD HANDLER
+            // =============================================
+            const handlePhotoUpload = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+        
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload an image file');
+                    return;
+                }
+        
+                setUploadedPhoto(file);
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setPhotoPreview(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            };
+        
+            // =============================================
+            // REMOVE PHOTO
+            // =============================================
+            const removePhoto = () => {
+                setUploadedPhoto(null);
+                setPhotoPreview(null);
+                setCardMode('classic');
+            };
+        
+            // =============================================
+            // GET BACKGROUND STYLE
+            // =============================================
+            const getBackgroundStyle = () => {
+                const style = cardStyles[currentStyle];
+                
+                if (cardMode === 'classic') {
+                    // No photo background
+                    return {
+                        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+                        border: '4px solid ' + style.textColor
+                    };
+                } else if (cardMode === 'poster' && selectedDialogue) {
+                    // Movie poster background
+                    const posterFile = dialoguePosterMap[selectedDialogue.id];
+                    const posterUrl = `https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/${posterFile}`;
+                    return {
+                        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${posterUrl})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        border: '4px solid ' + style.textColor
+                    };
+                } else if (cardMode === 'photo' && photoPreview) {
+                    // User photo background with filters
+                    const filters = selectedDialogue ? getEraFilters(selectedDialogue.year) : getEraFilters(2000);
+                    const filterString = `
+                        brightness(${filters.brightness})
+                        contrast(${filters.contrast})
+                        saturate(${filters.saturation})
+                        sepia(${filters.sepia})
+                    `;
+                    return {
+                        background: `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url(${photoPreview})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        border: '4px solid ' + style.textColor,
+                        filter: filterString
+                    };
+                }
+                
+                return {
+                    background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+                    border: '4px solid ' + style.textColor
+                };
+            };
+        
+            // =============================================
+            // DOWNLOAD CARD
+            // =============================================
             const handleDownload = async () => {
                 if (!selectedDialogue) return;
                 
@@ -2864,17 +3006,16 @@
                         scale: 2,
                         backgroundColor: null,
                         logging: false,
-                        useCORS: true
+                        useCORS: true,
+                        allowTaint: true
                     });
                     
                     const link = document.createElement('a');
-                    link.download = `rajini-dialogue-${selectedDialogue.id}.png`;
+                    link.download = `rajini-dialogue-${selectedDialogue.id}-${cardMode}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
-
-                    // ============================================
-                    // TRACK CARD DOWNLOAD
-                    // ============================================
+                    
+                    // Track download
                     try {
                         await fetch('/api/engagement-stats', {
                             method: 'POST',
@@ -2896,6 +3037,9 @@
                 }
             };
         
+            // =============================================
+            // SHARE CARD
+            // =============================================
             const handleShare = async () => {
                 if (!selectedDialogue) return;
                 
@@ -2909,9 +3053,7 @@
                             url: 'https://rajinikanth.ai'
                         });
                         
-                        // ============================================
-                        // TRACK CARD SHARE (only if share succeeded)
-                        // ============================================
+                        // Track share
                         try {
                             await fetch('/api/engagement-stats', {
                                 method: 'POST',
@@ -2924,14 +3066,11 @@
                         } catch (trackError) {
                             console.error('Tracking error:', trackError);
                         }
-                        // ============================================
                         
                     } else {
                         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
                         
-                        // ============================================
-                        // TRACK CARD SHARE (Twitter fallback)
-                        // ============================================
+                        // Track share
                         try {
                             await fetch('/api/engagement-stats', {
                                 method: 'POST',
@@ -2944,7 +3083,6 @@
                         } catch (trackError) {
                             console.error('Tracking error:', trackError);
                         }
-                        // ============================================
                     }
                 } catch (error) {
                     console.error('Share error:', error);
@@ -2968,7 +3106,7 @@
                                 🎬 Iconic Dialogues
                             </h2>
                             <p className="text-gray-400 text-lg">
-                                Create and share vintage cinema cards with Rajinikanth's most legendary lines
+                                Create vintage cinema cards with Rajinikanth's legendary lines
                             </p>
                         </div>
         
@@ -2976,7 +3114,7 @@
                             
                             {/* Left: Dialogue Selection */}
                             <div>
-                                <h3 className="text-2xl font-bold text-gold-400 mb-6 flex items-center gap-3">
+                                <h3 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-3">
                                     <span>👑</span>
                                     <span>Select a Dialogue</span>
                                 </h3>
@@ -2992,8 +3130,8 @@
                                             onClick={() => setSelectedDialogue(dialogue)}
                                             className={`w-full text-left p-5 rounded-lg transition-all duration-300 ${
                                                 selectedDialogue?.id === dialogue.id
-                                                    ? 'bg-gradient-to-r from-yellow-900/40 to-red-900/40 border-2 border-gold-500 transform scale-105'
-                                                    : 'bg-gray-900/50 border border-gray-700 hover:border-gold-500 hover:bg-gray-800/50'
+                                                    ? 'bg-gradient-to-r from-yellow-900/40 to-red-900/40 border-2 border-yellow-500 transform scale-105'
+                                                    : 'bg-gray-900/50 border border-gray-700 hover:border-yellow-500 hover:bg-gray-800/50'
                                             }`}
                                             style={{
                                                 backdropFilter: 'blur(10px)'
@@ -3002,7 +3140,7 @@
                                             <div className="flex items-start gap-3">
                                                 <span className="text-3xl">{dialogue.icon}</span>
                                                 <div className="flex-1">
-                                                    <p className="text-lg font-semibold text-gold-300 mb-2 leading-relaxed">
+                                                    <p className="text-lg font-semibold text-yellow-300 mb-2 leading-relaxed">
                                                         {dialogue.tamil}
                                                     </p>
                                                     <p className="text-sm text-gray-400 italic mb-2">
@@ -3018,12 +3156,119 @@
                                 </div>
                             </div>
         
-                            {/* Right: Preview and Customization */}
+                            {/* Right: Customization & Preview */}
                             <div>
-                                <h3 className="text-2xl font-bold text-gold-400 mb-6 flex items-center gap-3">
+                                <h3 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-3">
                                     <span>🎨</span>
                                     <span>Customize Your Card</span>
                                 </h3>
+        
+                                {/* Card Background Mode */}
+                                <div className="mb-6">
+                                    <label className="block text-gray-400 mb-3 text-sm font-semibold">CARD BACKGROUND</label>
+                                    <div className="space-y-2">
+                                        <button
+                                            onClick={() => setCardMode('classic')}
+                                            className={`w-full p-3 rounded-lg border-2 transition-all text-left ${
+                                                cardMode === 'classic'
+                                                    ? 'border-yellow-500 bg-yellow-900/20'
+                                                    : 'border-gray-700 bg-gray-900/30 hover:border-yellow-600'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="text-2xl">⭐</div>
+                                                <div>
+                                                    <div className="font-semibold text-gray-300">Classic</div>
+                                                    <div className="text-xs text-gray-500">Minimalist design, no photo</div>
+                                                </div>
+                                            </div>
+                                        </button>
+        
+                                        <button
+                                            onClick={() => setCardMode('poster')}
+                                            disabled={!selectedDialogue}
+                                            className={`w-full p-3 rounded-lg border-2 transition-all text-left ${
+                                                cardMode === 'poster'
+                                                    ? 'border-yellow-500 bg-yellow-900/20'
+                                                    : 'border-gray-700 bg-gray-900/30 hover:border-yellow-600'
+                                            } ${!selectedDialogue ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="text-2xl">🎬</div>
+                                                <div>
+                                                    <div className="font-semibold text-gray-300">Movie Poster</div>
+                                                    <div className="text-xs text-gray-500">Official poster background</div>
+                                                </div>
+                                            </div>
+                                        </button>
+        
+                                        <button
+                                            onClick={() => {
+                                                if (photoPreview) {
+                                                    setCardMode('photo');
+                                                } else {
+                                                    document.getElementById('photo-upload-input').click();
+                                                }
+                                            }}
+                                            className={`w-full p-3 rounded-lg border-2 transition-all text-left ${
+                                                cardMode === 'photo'
+                                                    ? 'border-yellow-500 bg-yellow-900/20'
+                                                    : 'border-gray-700 bg-gray-900/30 hover:border-yellow-600'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="text-2xl">📸</div>
+                                                <div className="flex-1">
+                                                    <div className="font-semibold text-gray-300">My Photo</div>
+                                                    <div className="text-xs text-gray-500">
+                                                        {photoPreview ? 'Photo uploaded ✓' : 'Upload your photo'}
+                                                    </div>
+                                                </div>
+                                                {photoPreview && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            removePhoto();
+                                                        }}
+                                                        className="text-red-500 hover:text-red-400 text-sm"
+                                                    >
+                                                        ✕ Remove
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </button>
+        
+                                        <input
+                                            id="photo-upload-input"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handlePhotoUpload}
+                                            className="hidden"
+                                        />
+                                    </div>
+                                </div>
+        
+                                {/* Photo Preview */}
+                                {photoPreview && (
+                                    <div className="mb-6">
+                                        <label className="block text-gray-400 mb-3 text-sm font-semibold">PHOTO PREVIEW</label>
+                                        <div className="relative">
+                                            <img 
+                                                src={photoPreview} 
+                                                alt="Preview" 
+                                                className="w-full h-32 object-cover rounded-lg border-2 border-gray-700"
+                                            />
+                                            <div className="absolute top-2 right-2">
+                                                <button
+                                                    onClick={removePhoto}
+                                                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
         
                                 {/* Style Selection */}
                                 <div className="mb-6">
@@ -3035,8 +3280,8 @@
                                                 onClick={() => setCurrentStyle(key)}
                                                 className={`p-3 rounded-lg border-2 transition-all ${
                                                     currentStyle === key
-                                                        ? 'border-gold-500 bg-gold-900/20'
-                                                        : 'border-gray-700 bg-gray-900/30 hover:border-gold-600'
+                                                        ? 'border-yellow-500 bg-yellow-900/20'
+                                                        : 'border-gray-700 bg-gray-900/30 hover:border-yellow-600'
                                                 }`}
                                             >
                                                 <div className="text-sm font-semibold text-gray-300">
@@ -3049,13 +3294,13 @@
         
                                 {/* Name Input */}
                                 <div className="mb-6">
-                                    <label className="block text-gray-400 mb-3 text-sm font-semibold">ADD YOUR NAME (OPTIONAL)</label>
+                                    <label className="block text-gray-400 mb-3 text-sm font-semibold">YOUR NAME (OPTIONAL)</label>
                                     <input
                                         type="text"
                                         value={userName}
                                         onChange={(e) => setUserName(e.target.value)}
                                         placeholder="Enter your name..."
-                                        className="w-full px-4 py-3 rounded-lg bg-gray-900/50 border border-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-gold-500 transition-colors"
+                                        className="w-full px-4 py-3 rounded-lg bg-gray-900/50 border border-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-yellow-500 transition-colors"
                                     />
                                 </div>
         
@@ -3069,12 +3314,33 @@
                                             style={{
                                                 width: '400px',
                                                 height: '560px',
-                                                background: style.bg,
-                                                backgroundImage: style.pattern,
-                                                border: style.border,
+                                                ...getBackgroundStyle(),
                                                 margin: '0 auto'
                                             }}
                                         >
+                                            {/* Film Grain Overlay (only for photo mode) */}
+                                            {cardMode === 'photo' && selectedDialogue && (
+                                                <div 
+                                                    className="absolute inset-0 pointer-events-none"
+                                                    style={{
+                                                        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
+                                                        opacity: getEraFilters(selectedDialogue.year).grain,
+                                                        mixBlendMode: 'overlay'
+                                                    }}
+                                                />
+                                            )}
+        
+                                            {/* Vignette (for photo and poster modes) */}
+                                            {(cardMode === 'photo' || cardMode === 'poster') && selectedDialogue && (
+                                                <div 
+                                                    className="absolute inset-0 pointer-events-none"
+                                                    style={{
+                                                        background: 'radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%)',
+                                                        opacity: getEraFilters(selectedDialogue.year).vignette
+                                                    }}
+                                                />
+                                            )}
+        
                                             {/* Decorative Corner Elements */}
                                             <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4" 
                                                  style={{ borderColor: style.textColor }}></div>
@@ -3086,7 +3352,7 @@
                                                  style={{ borderColor: style.textColor }}></div>
         
                                             {/* Content */}
-                                            <div className="relative h-full flex flex-col justify-between p-10">
+                                            <div className="relative h-full flex flex-col justify-between p-10 z-10">
                                                 
                                                 {/* Top: Branding */}
                                                 <div className="text-center">
@@ -3096,7 +3362,8 @@
                                                         fontWeight: 'bold',
                                                         letterSpacing: '4px',
                                                         fontFamily: 'Georgia, serif',
-                                                        marginBottom: '8px'
+                                                        marginBottom: '8px',
+                                                        textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
                                                     }}>
                                                         RAJINIKANTH
                                                     </div>
@@ -3104,7 +3371,8 @@
                                                         color: style.accentColor,
                                                         fontSize: '12px',
                                                         letterSpacing: '2px',
-                                                        fontWeight: '600'
+                                                        fontWeight: '600',
+                                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                                                     }}>
                                                         50 YEARS OF CINEMA
                                                     </div>
@@ -3123,7 +3391,8 @@
                                                         textAlign: 'center',
                                                         lineHeight: '1.6',
                                                         marginBottom: '20px',
-                                                        fontFamily: 'Georgia, serif'
+                                                        fontFamily: 'Georgia, serif',
+                                                        textShadow: '2px 2px 4px rgba(0,0,0,0.9)'
                                                     }}>
                                                         "{selectedDialogue.tamil}"
                                                     </div>
@@ -3134,7 +3403,8 @@
                                                         textAlign: 'center',
                                                         fontStyle: 'italic',
                                                         opacity: 0.9,
-                                                        lineHeight: '1.5'
+                                                        lineHeight: '1.5',
+                                                        textShadow: '1px 1px 3px rgba(0,0,0,0.9)'
                                                     }}>
                                                         "{selectedDialogue.english}"
                                                     </div>
@@ -3147,14 +3417,16 @@
                                                         fontSize: '16px',
                                                         fontWeight: 'bold',
                                                         marginBottom: '4px',
-                                                        letterSpacing: '1px'
+                                                        letterSpacing: '1px',
+                                                        textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
                                                     }}>
                                                         {selectedDialogue.film}
                                                     </div>
                                                     <div style={{
                                                         color: style.accentColor,
                                                         fontSize: '14px',
-                                                        marginBottom: userName ? '12px' : '20px'
+                                                        marginBottom: userName ? '12px' : '20px',
+                                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                                                     }}>
                                                         {selectedDialogue.year}
                                                     </div>
@@ -3165,7 +3437,8 @@
                                                             fontSize: '12px',
                                                             fontStyle: 'italic',
                                                             opacity: 0.8,
-                                                            marginBottom: '12px'
+                                                            marginBottom: '12px',
+                                                            textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                                                         }}>
                                                             — {userName}
                                                         </div>
@@ -3175,7 +3448,8 @@
                                                         color: style.accentColor,
                                                         fontSize: '11px',
                                                         letterSpacing: '1px',
-                                                        opacity: 0.7
+                                                        opacity: 0.7,
+                                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                                                     }}>
                                                         rajinikanth.ai 🎬
                                                     </div>
@@ -3213,7 +3487,12 @@
                     </div>
                 </div>
             );
-        }; //DialogueCardGenerator ends       
+        };
+
+        
+    
+ 
+        //DialogueCardGenerator ends       
                
         function RajnikanthTribute() {
             const [activeSection, setActiveSection] = useState('hero');
