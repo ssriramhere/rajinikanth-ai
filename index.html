@@ -3528,11 +3528,14 @@
                 const matchesLanguage = selectedLanguage === 'all' || 
                     film.language?.trim() === selectedLanguage.trim();
 
+                // Convert all to lower
+                const searchLower = searchTerm.toLowerCase();
+
                 // Search filter
-                const matchesSearch = !searchTerm || 
-                    film.title?.toLowerCase().includes(searchTerm) || 
-                    film.dialogue?.toLowerCase().includes(searchTerm) ||
-                    film.director?.toLowerCase().includes(searchTerm);
+                const matchesSearch = !searchLower || 
+                    film.title?.toLowerCase().includes(searchLower) || 
+                    film.dialogue?.toLowerCase().includes(searchLower) ||
+                    film.director?.toLowerCase().includes(searchLower);
                 
                 return matchesDecade && matchesLanguage && matchesSearch;
             });
