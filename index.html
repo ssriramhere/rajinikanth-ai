@@ -2107,343 +2107,63 @@
         }; //Quiz component ends           
         
         // =============================================
-        // DAILY RAJINI TRIVIA COMPONENT
-        // Add this to your index.html after the RajiniQuiz component
+        // UPDATED DAILY RAJINI TRIVIA COMPONENT
         // =============================================
         
         const DailyRajiniTrivia = () => {
             const [userData, setUserData] = useState(null);
+            const [question, setQuestion] = useState(null);
             const [loading, setLoading] = useState(true);
             const [selectedAnswer, setSelectedAnswer] = useState(null);
             const [showResult, setShowResult] = useState(false);
             const [result, setResult] = useState(null);
             
-            // =============================================
-            // TRIVIA QUESTIONS DATABASE
-            // =============================================
-            const triviaQuestions = [
-                {
-                    id: 1,
-                    question: "In which year did Rajinikanth make his acting debut?",
-                    options: ["1973", "1975", "1977", "1979"],
-                    correct: 1, // Index 1 = 1975
-                    funFact: "Rajinikanth made his debut in 1975 with the film 'Apoorva Raagangal' directed by K. Balachander, playing an antagonist role.",
-                    category: "Career",
-                    difficulty: "easy"
-                },
-                {
-                    id: 2,
-                    question: "What was Rajinikanth's character name in the movie Baashha?",
-                    options: ["Manickam", "Muthu", "Surya", "Kaali"],
-                    correct: 0,
-                    funFact: "In Baashha (1995), Rajini played Manickam, an auto driver who was once a feared Mumbai don. The film became one of his most iconic roles!",
-                    category: "Films",
-                    difficulty: "easy"
-                },
-                {
-                    id: 3,
-                    question: "Which Rajinikanth film became a massive hit in Japan?",
-                    options: ["Sivaji", "Baashha", "Muthu", "Padayappa"],
-                    correct: 2,
-                    funFact: "Muthu (1995) earned over $1.6 million in Japan, making Rajini a superstar there! He's called 'The Dancing Maharaja' in Japan.",
-                    category: "International",
-                    difficulty: "medium"
-                },
-                {
-                    id: 4,
-                    question: "In Enthiran, what is the robot's name?",
-                    options: ["Robo", "Chitti", "Vasi", "Andro"],
-                    correct: 1,
-                    funFact: "Chitti, the intelligent robot, became one of cinema's most memorable AI characters. Enthiran was India's most expensive film at release (₹132 crore)!",
-                    category: "Films",
-                    difficulty: "easy"
-                },
-                {
-                    id: 5,
-                    question: "Which prestigious award did Rajinikanth receive in 2016?",
-                    options: ["Padma Shri", "Padma Bhushan", "Padma Vibhushan", "Bharat Ratna"],
-                    correct: 2,
-                    funFact: "Rajinikanth was awarded the Padma Vibhushan, India's second-highest civilian honor, for his contributions to the arts.",
-                    category: "Awards",
-                    difficulty: "medium"
-                },
-                {
-                    id: 6,
-                    question: "How many films did Rajinikanth act in during 1977?",
-                    options: ["5", "10", "15", "20"],
-                    correct: 2,
-                    funFact: "In just 1977, Rajini acted in an incredible 15 films! This record-breaking year established him as a rising star in Tamil cinema.",
-                    category: "Career",
-                    difficulty: "hard"
-                },
-                {
-                    id: 7,
-                    question: "Which film marked Rajinikanth's 100th movie?",
-                    options: ["Baashha", "Muthu", "Sri Raghavendra", "Annamalai"],
-                    correct: 2,
-                    funFact: "Sri Raghavendra (1985) was Rajini's milestone 100th film, where he played the Hindu saint Raghavendra Swami.",
-                    category: "Milestones",
-                    difficulty: "hard"
-                },
-                {
-                    id: 8,
-                    question: "What was Rajinikanth's profession before becoming an actor?",
-                    options: ["Teacher", "Bus Conductor", "Mechanic", "Waiter"],
-                    correct: 1,
-                    funFact: "Before stardom, Rajini worked as a bus conductor in Bangalore. His rags-to-riches story is truly inspiring!",
-                    category: "Biography",
-                    difficulty: "easy"
-                },
-                {
-                    id: 9,
-                    question: "Which 1999 film featured the famous dialogue 'En vazhi, thani vazhi'?",
-                    options: ["Baashha", "Padayappa", "Muthu", "Arunachalam"],
-                    correct: 1,
-                    funFact: "Padayappa (1999) became a cultural phenomenon! The film ran for over a year in theaters and made 'En vazhi, thani vazhi' an iconic line.",
-                    category: "Dialogues",
-                    difficulty: "easy"
-                },
-                {
-                    id: 10,
-                    question: "What is Rajinikanth's real name?",
-                    options: ["Shivaji Rao Gaekwad", "Rajendra Kumar", "Sivaji Ganesan", "Ravi Chandran"],
-                    correct: 0,
-                    funFact: "Born as Shivaji Rao Gaekwad, he adopted the screen name 'Rajinikanth' on the advice of director K. Balachander.",
-                    category: "Biography",
-                    difficulty: "medium"
-                },
-                {
-                    id: 11,
-                    question: "Which film featured Rajinikanth in a negative role early in his career?",
-                    options: ["16 Vayathinile", "Mullum Malarum", "Bhuvana Oru Kelvi Kuri", "Moondru Mudichu"],
-                    correct: 0,
-                    funFact: "In 16 Vayathinile (1977), Rajini played the villain Parattai. This role showcased his versatility and established him as a powerful actor.",
-                    category: "Films",
-                    difficulty: "medium"
-                },
-                {
-                    id: 12,
-                    question: "Which was Rajinikanth's first film to cross ₹100 crore?",
-                    options: ["Enthiran", "Sivaji", "Chandramukhi", "Padayappa"],
-                    correct: 1,
-                    funFact: "Sivaji: The Boss (2007) was Rajini's first ₹100 crore film and became the highest-grossing Tamil film at that time!",
-                    category: "Box Office",
-                    difficulty: "medium"
-                },
-                {
-                    id: 13,
-                    question: "Who directed Rajinikanth's debut film?",
-                    options: ["Bharathiraja", "K. Balachander", "Mani Ratnam", "Shankar"],
-                    correct: 1,
-                    funFact: "K. Balachander, a legendary Tamil director, launched Rajini's career and directed him in multiple films. Rajini considers him his mentor.",
-                    category: "Directors",
-                    difficulty: "medium"
-                },
-                {
-                    id: 14,
-                    question: "In which year was Baashha released?",
-                    options: ["1993", "1995", "1997", "1999"],
-                    correct: 1,
-                    funFact: "Baashha released on January 12, 1995, and became a blockbuster. It's considered one of Tamil cinema's greatest mass entertainers!",
-                    category: "Films",
-                    difficulty: "easy"
-                },
-                {
-                    id: 15,
-                    question: "Which film featured Rajini's first motion capture performance?",
-                    options: ["Enthiran", "2.0", "Kochadaiiyaan", "Lingaa"],
-                    correct: 2,
-                    funFact: "Kochadaiiyaan (2014) was India's first photorealistic motion capture film, with Rajini's performance digitally captured for the animated avatar.",
-                    category: "Innovation",
-                    difficulty: "medium"
-                },
-                {
-                    id: 16,
-                    question: "How long did Chandramukhi run in theaters?",
-                    options: ["365 days", "500 days", "700 days", "890 days"],
-                    correct: 3,
-                    funFact: "Chandramukhi (2005) had an unprecedented 890-day run at Chennai's Shanti theatre, setting a record that stood for years!",
-                    category: "Box Office",
-                    difficulty: "hard"
-                },
-                {
-                    id: 17,
-                    question: "Which Rajinikanth film was directed by Shankar?",
-                    options: ["Annamalai", "Sivaji", "Baashha", "Arunachalam"],
-                    correct: 1,
-                    funFact: "Director Shankar collaborated with Rajini on Sivaji (2007), Enthiran (2010), and 2.0 (2018), creating some of Tamil cinema's biggest spectacles!",
-                    category: "Directors",
-                    difficulty: "easy"
-                },
-                {
-                    id: 18,
-                    question: "What was Rajinikanth's character profession in Muthu?",
-                    options: ["Auto driver", "Bus driver", "Servant", "Mechanic"],
-                    correct: 2,
-                    funFact: "In Muthu, Rajini played a loyal servant who dreams of becoming a king. The film's success in Japan made him a phenomenon there!",
-                    category: "Films",
-                    difficulty: "medium"
-                },
-                {
-                    id: 19,
-                    question: "Which actress played the lead role opposite Rajini in Padayappa?",
-                    options: ["Simran", "Ramya Krishnan", "Soundarya", "Meena"],
-                    correct: 2,
-                    funFact: "Soundarya played the female lead, while Ramya Krishnan's portrayal of the antagonist Neelambari became iconic!",
-                    category: "Co-stars",
-                    difficulty: "medium"
-                },
-                {
-                    id: 20,
-                    question: "What is the famous opening line of Baashha?",
-                    options: ["Naan oru thadava sonna", "En vazhi thani vazhi", "Naan epdi irukannu", "Mind it"],
-                    correct: 0,
-                    funFact: "'Naan oru thadava sonna, nooru thadava sonna madhiri' became one of Indian cinema's most iconic dialogues!",
-                    category: "Dialogues",
-                    difficulty: "easy"
-                },
-                {
-                    id: 21,
-                    question: "Who gave Rajinikanth the name 'Superstar'?",
-                    options: ["K. Balachander", "Kalaipuli S. Thanu", "Bharathiraja", "J. Mahendran"],
-                    correct: 1,
-                    funFact: "Kalaipuli S Thanu promoted the 'Superstar' title for Rajinikanth's superhit move Billa.",
-                    category: "Career",
-                    difficulty: "hard"
-                },
-                {
-                    id: 22,
-                    question: "In which decade did Rajinikanth gain the title 'Thalaivar'?",
-                    options: ["1970s", "1980s", "1990s", "2000s"],
-                    correct: 2,
-                    funFact: "The title 'Thalaivar' (The Boss/Leader) became widely used in the 1990s after a series of blockbuster hits established his unparalleled stardom.",
-                    category: "Legacy",
-                    difficulty: "medium"
-                },
-                {
-                    id: 23,
-                    question: "Which Rajinikanth film featured a double role of father and son?",
-                    options: ["Thalapathi", "Annamalai", "Baba", "Netrikkan"],
-                    correct: 3,
-                    funFact: "In Netrikkan, Rajini played a middle-aged businessman Chakravarthy, a womanizer and his son Santhosh, who tried to mend his father.",
-                    category: "Films",
-                    difficulty: "medium"
-                },
-                {
-                    id: 24,
-                    question: "What was the budget of 2.0?",
-                    options: ["₹400 crore", "₹500 crore", "₹543 crore", "₹600 crore"],
-                    correct: 2,
-                    funFact: "2.0 (2018) was made with a budget of ₹543 crore, making it the most expensive Indian film at the time of release!",
-                    category: "Box Office",
-                    difficulty: "hard"
-                },
-                {
-                    id: 25,
-                    question: "Which film marked Rajinikanth's comeback after a brief hiatus in the early 2000s?",
-                    options: ["Chandramukhi", "Baba", "Sivaji", "Kuselan"],
-                    correct: 0,
-                    funFact: "After Baba's underwhelming performance, Chandramukhi (2005) marked Rajini's grand comeback and became a massive blockbuster!",
-                    category: "Career",
-                    difficulty: "medium"
-                },
-                {
-                    id: 26,
-                    question: "In which language was Rajinikanth's film 'Bloodstone' made?",
-                    options: ["Tamil", "Hindi", "English", "Telugu"],
-                    correct: 2,
-                    funFact: "Bloodstone (1988) was an English-language action film where Rajini acted alongside international cast members. It's one of his rare non-Indian films.",
-                    category: "Films",
-                    difficulty: "hard"
-                },
-                {
-                    id: 27,
-                    question: "Which 2019 film saw Rajinikanth collaborate with director Karthik Subbaraj?",
-                    options: ["Darbar", "Petta", "Annaatthe", "Jailer"],
-                    correct: 1,
-                    funFact: "Petta (2019) was a mass entertainer that brought back Rajini's vintage 'Kaali' avatar, delighting fans worldwide!",
-                    category: "Films",
-                    difficulty: "easy"
-                },
-                {
-                    id: 28,
-                    question: "What is Rajinikanth's signature gesture called?",
-                    options: ["The Flip", "The Toss", "The Rajini Style", "The Swag"],
-                    correct: 2,
-                    funFact: "The 'Rajini Style' includes his signature cigarette flip, sunglasses toss, and unique way of wearing sunglasses. It's been imitated worldwide!",
-                    category: "Style",
-                    difficulty: "easy"
-                },
-                {
-                    id: 29,
-                    question: "Which film featured the song 'Oruvan Oruvan Mudhalali'?",
-                    options: ["Muthu", "Baashha", "Padayappa", "Annamalai"],
-                    correct: 0,
-                    funFact: "This iconic song from Muthu became a chartbuster in India and Japan! The dance moves are still popular today.",
-                    category: "Music",
-                    difficulty: "easy"
-                },
-                {
-                    id: 30,
-                    question: "How many languages has Rajinikanth acted in?",
-                    options: ["4", "5", "6", "7"],
-                    correct: 2,
-                    funFact: "Rajini has acted in 6 languages: Tamil, Telugu, Kannada, Malayalam, Hindi, and English - showcasing his pan-Indian appeal!",
-                    category: "Career",
-                    difficulty: "medium"
-                }
-            ];
-            
-            // =============================================
-            // HELPER FUNCTIONS
-            // =============================================
-            
-            // Generate user ID (browser fingerprint)
+            // Get or create user ID (browser fingerprint)
             const getUserId = () => {
                 let userId = localStorage.getItem('rajini_trivia_user_id');
                 if (!userId) {
-                    // Generate unique ID
                     userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                     localStorage.setItem('rajini_trivia_user_id', userId);
                 }
                 return userId;
             };
             
-            // Get today's question based on date
-            const getTodaysQuestion = () => {
-                const today = new Date();
-                const startDate = new Date('2024-12-01'); // Start date
-                const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-                const questionIndex = daysSinceStart % triviaQuestions.length;
-                return triviaQuestions[questionIndex];
-            };
-            
-            // Load user data
-            const loadUserData = async () => {
+            // Load today's question from API
+            const loadQuestion = async () => {
                 try {
                     const userId = getUserId();
-                    const response = await fetch(`/api/trivia-streak?userId=${userId}`);
+                    const response = await fetch(`/api/trivia/today?userId=${userId}`);
                     const data = await response.json();
-                    setUserData(data);
-                    setShowResult(data.answeredToday);
+                    
+                    if (data.alreadyAnswered) {
+                        // User already answered - show their previous result
+                        setQuestion(data.question);
+                        setSelectedAnswer(data.userAnswer);
+                        setResult({
+                            correct: data.isCorrect,
+                            correctAnswer: data.correctAnswer,
+                            funFact: data.funFact,
+                            streak: data.streak.current,
+                            longestStreak: data.streak.longest,
+                            totalCorrect: data.streak.totalCorrect,
+                            totalAnswered: data.streak.totalAnswered,
+                            accuracy: data.streak.accuracy
+                        });
+                        setShowResult(true);
+                    } else {
+                        // New question - ready to answer
+                        setQuestion(data.question);
+                    }
+                    
                     setLoading(false);
                 } catch (error) {
-                    console.error('Error loading trivia data:', error);
-                    setUserData({
-                        currentStreak: 0,
-                        answeredToday: false,
-                        totalCorrect: 0,
-                        totalAnswered: 0
-                    });
+                    console.error('Error loading question:', error);
                     setLoading(false);
                 }
             };
             
-            // Submit answer
+            // Submit answer to API
             const submitAnswer = async (answerIndex) => {
-                const question = getTodaysQuestion();
-                const isCorrect = answerIndex === question.correct;
-                
                 setSelectedAnswer(answerIndex);
                 
                 // Wait a moment for visual feedback
@@ -2451,57 +2171,50 @@
                 
                 try {
                     const userId = getUserId();
-                    const today = new Date().toISOString().split('T')[0];
-                    
-                    const response = await fetch(`/api/trivia-streak?userId=${userId}`, {
+                    const response = await fetch('/api/trivia/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            correct: isCorrect,
-                            questionDate: today
+                            userId,
+                            questionId: question.id,
+                            selectedAnswer: answerIndex
                         })
                     });
                     
                     const data = await response.json();
                     
-                    setResult({
-                        correct: isCorrect,
-                        ...data
-                    });
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to submit answer');
+                    }
+                    
+                    setResult(data);
                     setShowResult(true);
-
-                    // ============================================
-                    // ADD TRACKING HERE - AFTER QUIZ COMPLETES
-                    // ============================================
+                    
+                    // Track engagement
                     try {
                         await fetch('/api/engagement-stats', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 type: 'trivia_completed',
-                                data: { score: isCorrect ? 1 : 0 }
+                                data: { score: data.correct ? 1 : 0 }
                             })
                         });
                     } catch (trackError) {
                         console.error('Tracking error:', trackError);
                     }
-                    // ============================================
                     
                 } catch (error) {
                     console.error('Error submitting answer:', error);
-                    setResult({
-                        correct: isCorrect,
-                        streak: userData.currentStreak + (isCorrect ? 1 : 0),
-                        error: true
-                    });
-                    setShowResult(true);
+                    alert('Error submitting answer. Please try again.');
+                    setSelectedAnswer(null);
                 }
             };
             
             // Share results
             const shareResults = () => {
-                const streak = result?.streak || userData?.currentStreak || 0;
-                const accuracy = result?.accuracy || userData?.accuracy || 0;
+                const streak = result?.streak || 0;
+                const accuracy = result?.accuracy || 0;
                 
                 const shareText = `🔥 ${streak}-day streak on Daily Rajini Trivia!\n📊 ${accuracy}% accuracy\n\nCan you beat my score? Play at rajinikanth.ai 🎬\n\n#Rajinikanth #Thalaivar #Trivia`;
                 const shareUrl = 'https://rajinikanth.ai';
@@ -2518,17 +2231,9 @@
                 }
             };
             
-            // Reset for new day
-            const resetForNewDay = () => {
-                setSelectedAnswer(null);
-                setShowResult(false);
-                setResult(null);
-                loadUserData();
-            };
-            
-            // Load data on mount
+            // Load question on mount
             useEffect(() => {
-                loadUserData();
+                loadQuestion();
             }, []);
             
             if (loading) {
@@ -2540,7 +2245,6 @@
                 );
             }
             
-            const todaysQuestion = getTodaysQuestion();
             const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
             
             return (
@@ -2566,35 +2270,21 @@
                                     <div className="text-sm text-gray-400">
                                         {today}
                                     </div>
-                                    <div className="flex gap-4">
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-yellow-500">
-                                                🔥 {userData.currentStreak}
-                                            </div>
-                                            <div className="text-xs text-gray-400">Streak</div>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="text-2xl font-bold text-yellow-500">
-                                                {userData.accuracy || 0}%
-                                            </div>
-                                            <div className="text-xs text-gray-400">Accuracy</div>
-                                        </div>
-                                    </div>
                                 </div>
                                 
                                 {/* Question */}
                                 <div className="mb-8">
                                     <div className="text-sm text-yellow-500 mb-2">
-                                        Question #{todaysQuestion.id} • {todaysQuestion.category} • {todaysQuestion.difficulty}
+                                        Question #{question?.id} • {question?.category} • {question?.difficulty}
                                     </div>
                                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                                        {todaysQuestion.question}
+                                        {question?.question}
                                     </h3>
                                 </div>
                                 
                                 {/* Answer Options */}
                                 <div className="space-y-3">
-                                    {todaysQuestion.options.map((option, index) => (
+                                    {question?.options.map((option, index) => (
                                         <button
                                             key={index}
                                             onClick={() => submitAnswer(index)}
@@ -2616,13 +2306,6 @@
                                         </button>
                                     ))}
                                 </div>
-                                
-                                {/* Progress */}
-                                {userData.totalAnswered > 0 && (
-                                    <div className="mt-6 pt-4 border-t border-gray-700 text-center text-sm text-gray-400">
-                                        You've answered {userData.totalAnswered} question{userData.totalAnswered !== 1 ? 's' : ''} • {userData.totalCorrect} correct
-                                    </div>
-                                )}
                             </div>
                         ) : (
                             // =============================================
@@ -2645,13 +2328,13 @@
                                 {/* Answer */}
                                 <div className="bg-black/30 rounded-lg p-6 mb-6">
                                     <p className="text-xl text-white mb-4">
-                                        <strong>Answer:</strong> {todaysQuestion.options[todaysQuestion.correct]}
+                                        <strong>Answer:</strong> {question?.options[result?.correctAnswer]}
                                     </p>
                                     
                                     <div className="text-left bg-yellow-500/10 border-l-4 border-yellow-500 p-4 rounded">
                                         <div className="text-sm text-yellow-500 font-bold mb-2">💡 DID YOU KNOW?</div>
                                         <p className="text-white/90">
-                                            {todaysQuestion.funFact}
+                                            {result?.funFact}
                                         </p>
                                     </div>
                                 </div>
@@ -2721,7 +2404,8 @@
                     </div>
                 </div>
             );
-        }; //RajiniTrivia ends
+        }; // end of Daily Rajini Trivia
+
 
         // =============================================
         // ENHANCED DIALOGUE CARD GENERATOR
