@@ -2212,23 +2212,29 @@
             };
             
             // Share results
-            const shareResults = () => {
+            const getShareText = () => {
                 const streak = result?.streak || 0;
                 const accuracy = result?.accuracy || 0;
-                
-                const shareText = `🔥 ${streak}-day streak on Daily Rajini Trivia!\n📊 ${accuracy}% accuracy\n\nCan you beat my score? Play at rajinikanth.ai 🎬\n\n#Rajinikanth #Thalaivar #Trivia`;
-                const shareUrl = 'https://rajinikanth.ai';
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Daily Rajini Trivia',
-                        text: shareText,
-                        url: shareUrl
-                    }).catch(err => console.log('Share failed', err));
-                } else {
-                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-                    window.open(twitterUrl, '_blank');
-                }
+                return `🔥 ${streak}-day streak on Daily Rajini Trivia!\n📊 ${accuracy}% accuracy\n\nCan you beat my score? https://rajinikanth.ai 🎬\n\n#Rajinikanth #Thalaivar`;
+            };
+            
+            const shareToTwitter = () => {
+                const text = getShareText();
+                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank', 'width=550,height=420');
+            };
+            
+            const copyForInstagram = () => {
+                const text = getShareText();
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('✅ Copied! Now:\n1. Open Instagram\n2. Create Story/Post\n3. Paste this text');
+                });
+            };
+            
+            const shareToWhatsApp = () => {
+                const text = getShareText();
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
             };
             
             // Load question on mount
@@ -2389,10 +2395,24 @@
                                 {/* Action Buttons */}
                                 <div className="flex flex-col md:flex-row gap-4 justify-center">
                                     <button
-                                        onClick={shareResults}
-                                        className="bg-gradient-to-r from-yellow-500 to-amber-600 text-black px-8 py-4 rounded-lg text-lg font-bold hover:from-yellow-400 hover:to-amber-500 transition transform hover:scale-105"
+                                        onClick={shareToTwitter}
+                                        className="bg-blue-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-600 transition"
                                     >
-                                        📱 Share Your Streak
+                                        𝕏 Share on Twitter
+                                    </button>
+                                    
+                                    <button
+                                        onClick={copyForInstagram}
+                                        className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-bold hover:from-purple-600 hover:to-pink-600 transition"
+                                    >
+                                        📸 Copy for Instagram
+                                    </button>
+                                    
+                                    <button
+                                        onClick={shareToWhatsApp}
+                                        className="bg-green-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-600 transition"
+                                    >
+                                        💬 Share on WhatsApp
                                     </button>
                                 </div>
                                 
@@ -2405,7 +2425,6 @@
                 </div>
             );
         }; // end of Daily Rajini Trivia
-
 
         // =============================================
         // ENHANCED DIALOGUE CARD GENERATOR
