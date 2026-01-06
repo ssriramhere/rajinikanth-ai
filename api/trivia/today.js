@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         await getOrCreateUser(userId);
         
         // Get today's question ID (rotates through 30 questions)
-        const questionId = getTodayQuestionId();
+        const questionId = await getTodayQuestionId();
         const today = getTodayDate();
         
         // Fetch question from KV
