@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     
     try {
         const today = getTodayDate();
-        const todayQuestionId = getTodayQuestionId();
+        const todayQuestionId = await getTodayQuestionId();
         
         // Validate question ID matches today's question
         if (questionId !== todayQuestionId) {
