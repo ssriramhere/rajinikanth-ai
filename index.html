@@ -2243,7 +2243,7 @@
             
             const copyForInstagram = async () => {
                 const text = getShareText();
-                navigator.clipboard.writeText(text).then(() => {
+                navigator.clipboard.writeText(text).then(async () => {
                     alert('✅ Copied! Now:\n1. Open Instagram\n2. Create Story/Post\n3. Paste this text');
                     await trackShare('instagram');
                 });
