@@ -2217,24 +2217,43 @@
                 const accuracy = result?.accuracy || 0;
                 return `🔥 ${streak}-day streak on Daily Rajini Trivia!\n📊 ${accuracy}% accuracy\n\nCan you beat my score? https://rajinikanth.ai 🎬\n\n#Rajinikanth #Thalaivar`;
             };
+
+            // Update Live Engagement Stats
+            const trackShare = async (platform) => {
+                try {
+                    await fetch('/api/engagement-stats', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'shared',
+                            data: { platform }
+                        })
+                    });
+                } catch (error) {
+                    console.error('Tracking error:', error);
+                }
+            };            
             
-            const shareToTwitter = () => {
+            const shareToTwitter = async () => {
                 const text = getShareText();
                 const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
                 window.open(url, '_blank', 'width=550,height=420');
+                await trackShare('twitter'); 
             };
             
-            const copyForInstagram = () => {
+            const copyForInstagram = async () => {
                 const text = getShareText();
                 navigator.clipboard.writeText(text).then(() => {
                     alert('✅ Copied! Now:\n1. Open Instagram\n2. Create Story/Post\n3. Paste this text');
+                    await trackShare('instagram');
                 });
             };
             
-            const shareToWhatsApp = () => {
+            const shareToWhatsApp = async () => {
                 const text = getShareText();
                 const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
                 window.open(url, '_blank');
+                await trackShare('whatsApp'); 
             };
             
             // Load question on mount
