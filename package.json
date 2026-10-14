@@ -18,7 +18,7 @@
   "author": "Sriram",
   "license": "MIT",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "dependencies": {
     "@vercel/kv": "^2.0.0"
