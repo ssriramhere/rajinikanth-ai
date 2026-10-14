@@ -864,6 +864,18 @@
                 description: "Completes 50 glorious years in cinema with Lokesh Kanagaraj",
                 icon: "🎊",
                 image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/coolie-2025.jpg"
+            },
+            {
+                year: 2026,
+                title: "Jailer 2",
+                tamil: "ஜெயிலர் 2",
+                role: "Tiger Muthuvel Pandian",
+                language: "Tamil",
+                director: "Nelson Dilipkumar",
+                significance: "The Tiger returns - Dussehra release, October 15, 2026",
+                description: "Thalaivar returns as Tiger Muthuvel Pandian in Nelson's sequel to the 2023 blockbuster, with Anirudh back on music for Sun Pictures",
+                icon: "🐅",
+                image: "https://raw.githubusercontent.com/ssriramhere/rajinikanth-ai/main/images/jailer2-2026.jpg"
             }
         ];
         
@@ -1137,11 +1149,11 @@
             // ========== 2025 (1 film) ==========
             { year: 2025, title: "Coolie", language: "Tamil", director: "Lokesh Kanagaraj", role: "Lead", dialogue: "Power House!" },
 
-            // ========== 2026 (2 films) ==========
-            { year: 2026, title: "Jailer 2", language: "Tamil", director: "Nelson Dilipkumar", role: "Lead", dialogue: "Sequel to blockbuster Jailer - In production" },
-            { year: 2026, title: "Dharman", language: "Tamil", director: "Ashwath Marimuthu", role: "Lead", dialogue: "Kamal Haasan produces Rajinikanth as 'The Deadly Doctor'" },
+            // ========== 2026 (1 film) ==========
+            { year: 2026, title: "Jailer 2", language: "Tamil", director: "Nelson Dilipkumar", role: "Lead", dialogue: "Alappara Kelapparom! - Released October 15, 2026" },
 
-            // ========== 2027 (1 film) ==========
+            // ========== 2027 (2 films) ==========
+            { year: 2027, title: "Dharman", language: "Tamil", director: "Ashwath Marimuthu", role: "Lead", dialogue: "Kamal Haasan produces Rajinikanth as 'The Deadly Doctor'" },
             { year: 2027, title: "Thalaivar 174", language: "Tamil", director: "Nelson Dilipkumar", role: "Lead", dialogue: "Rajinikanth and Kamal Haasan reunite on screen after 46 years" },
 
         ];
@@ -1419,6 +1431,48 @@
        
         
         // =============================================
+        // JAILER 2 RELEASE BANNER
+        // Countdown until 00:00 IST, Oct 15 2026; "Now in theatres" after.
+        // =============================================
+        const JAILER2_RELEASE_UTC = Date.UTC(2026, 9, 14, 18, 30, 0); // = 2026-10-15 00:00 IST
+        const Jailer2Banner = ({ onClick }) => {
+            const [now, setNow] = useState(Date.now());
+            useEffect(() => {
+                const t = setInterval(() => setNow(Date.now()), 1000);
+                return () => clearInterval(t);
+            }, []);
+            const remaining = JAILER2_RELEASE_UTC - now;
+            const released = remaining <= 0;
+            const pad = (n) => String(n).padStart(2, '0');
+            let countdown = null;
+            if (!released) {
+                const secs = Math.floor(remaining / 1000);
+                const d = Math.floor(secs / 86400);
+                const h = Math.floor((secs % 86400) / 3600);
+                const m = Math.floor((secs % 3600) / 60);
+                const s = secs % 60;
+                countdown = (d > 0 ? `${d}d ` : '') + `${pad(h)}:${pad(m)}:${pad(s)}`;
+            }
+            return (
+                <button
+                    onClick={onClick}
+                    className="mx-auto mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border-2 border-yellow-400 bg-black/70 px-6 py-3 text-base md:text-lg font-bold uppercase tracking-wider hover:bg-yellow-400 hover:text-black transition-all pulse-glow"
+                >
+                    <span>🐅 Jailer 2</span>
+                    {released ? (
+                        <span className="text-yellow-400">Now in theatres · Alappara Kelapparom!</span>
+                    ) : (
+                        <span>
+                            <span className="text-gray-300">In theatres in </span>
+                            <span className="text-yellow-400 font-mono">{countdown}</span>
+                            <span className="text-gray-300"> · Oct 15</span>
+                        </span>
+                    )}
+                </button>
+            );
+        };
+
+        // =============================================
         // NEW FEATURE 3: RAJINI FUN FACTS COMPONENT
         // =============================================
         const RajiniFacts = () => {
@@ -1492,6 +1546,13 @@
                     detail: "His signature moves - cigarette flip, sunglasses toss, walk style - have been imitated by millions worldwide.",
                     category: "Style",
                     color: "from-rose-600 to-pink-600"
+                },
+                {
+                    icon: "🐅",
+                    fact: "The Tiger Returns",
+                    detail: "Jailer 2 (Oct 15, 2026) brings back Tiger Muthuvel Pandian with the same core team - director Nelson Dilipkumar, composer Anirudh Ravichander and Sun Pictures. The 2023 original was the highest-grossing Tamil film of its year.",
+                    category: "Sequel",
+                    color: "from-amber-600 to-orange-700"
                 }
             ];
             
@@ -2478,7 +2539,8 @@
                 7: "mullum-malarum-1978.jpg", // Ketta payyan sir
                 8: "annamalai-1992.jpg",     // Naan solrathaiyum
                 9: "murattu-kaalai-1980.jpg", // Seividuven
-                10: "baba-2002.jpg"          // Katham katham
+                10: "baba-2002.jpg",         // Katham katham
+                11: "jailer2-2026.jpg"       // Alappara kelapparom
             };
         
             // =============================================
@@ -2611,6 +2673,14 @@
                     film: "Baba",
                     year: 2002,
                     icon: "🕉️"
+                },
+                {
+                    id: 11,
+                    tamil: "அலப்பறை கிளப்புறோம்!",
+                    english: "We're about to raise a storm!",
+                    film: "Jailer 2",
+                    year: 2026,
+                    icon: "🐅"
                 }
             ];
         
@@ -3340,6 +3410,7 @@
                         <div className="absolute inset-0 film-strip opacity-10"></div>
                         
                         <div className="text-center z-10 px-4 fade-in-up">
+                            <Jailer2Banner onClick={() => scrollToSection(timelineRef, 'timeline')} />
                             <div className="mb-6">
                                 <div className="text-yellow-400 text-xl mb-2 tracking-widest">CELEBRATING</div>
                                 <h1 className="hero-title text-8xl md:text-9xl mb-4 shimmer">
